@@ -1,0 +1,16 @@
+import * as React from 'react';
+import type { SVGProps } from 'react';
+function SvgBad(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 16" {...props}>
+      <path
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={1.2}
+        d="M5.088 9.189V3.691m0 5.498h-1.94a.63.63 0 0 1-.458-.201.7.7 0 0 1-.19-.486V3.69a.7.7 0 0 1 .19-.486.63.63 0 0 1 .457-.202h1.294c.172 0 .336.073.458.202a.7.7 0 0 1 .19.486m0 5.498c.686 0 1.344.29 1.83.805.485.516.757 1.215.757 1.944v.687c0 .365.137.715.38.972.242.258.571.403.915.403.343 0 .672-.145.915-.403.242-.257.379-.607.379-.972V9.19h1.94c.344 0 .673-.145.916-.403a1.42 1.42 0 0 0 .379-.972l-.647-3.436c-.093-.422-.27-.784-.503-1.032s-.511-.368-.791-.343h-4.53c-.514 0-1.008.218-1.372.604a2.13 2.13 0 0 0-.569 1.458m0 4.124V5.065m0-1.374v1.374"
+      />
+    </svg>
+  );
+}
+export default SvgBad;

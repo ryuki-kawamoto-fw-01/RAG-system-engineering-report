@@ -1,0 +1,38 @@
+# Git and IDE files
+.git*
+.vscode
+.idea/
+
+# Azure local storage emulator
+__azurite_db*__.json
+__blobstorage__
+__queuestorage__
+
+# Configuration files
+local.settings.json
+.env
+
+# Python compiled files
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+
+# Test directories
+test
+tests/
+
+# HTTP test files
+http-test/
+
+# Development and build outputs
+.pytest_cache/
+htmlcov/
+.coverage
+*.egg-info/
+build/
+dist/
+
+# Logs
+logs/
+*.log

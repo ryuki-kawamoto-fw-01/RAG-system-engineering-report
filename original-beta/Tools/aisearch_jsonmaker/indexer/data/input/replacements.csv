@@ -1,0 +1,4 @@
+indexer_name,data_source_name,skillset_name,target_index_name
+indexer-documents-01,datasource-blob-documents-01,skillset-ocr-01,search-index-documents-01
+indexer-documents-02,datasource-blob-documents-02,skillset-ocr-02,search-index-documents-02
+indexer-documents-03,datasource-blob-documents-03,skillset-ocr-03,search-index-documents-03

@@ -1,0 +1,52 @@
+### rag-chat
+POST http://localhost:7071/api/rag-chat
+Content-Type: application/json
+
+{
+  "question": "強みついての情報が知りたい",
+  "model": "gpt-5.2",
+  "chatHistory": [
+    {"role": "user", "content": "主な事業ついての情報が知りたい"},
+    {"role": "assistant", "content": "日立システムズは、先進技術と信頼のソリューションパートナーとして、AI、IoT、クラウドを駆使したイノベーションを提供しています。"}
+  ],
+  "searchMethod": "semantic-hybrid-search"
+}
+
+### rag-chat with agentic retrieval
+POST http://localhost:7071/api/rag-chat
+Content-Type: application/json
+
+{
+  "question": "業務自動化支援サービスの特徴と導入メリットについて詳しく教えてください",
+  "model": "gpt-5.2",
+  "chatHistory": [
+    {"role": "user", "content": "主な事業ついての情報が知りたい"},
+    {"role": "assistant", "content": "日立システムズは、先進技術と信頼のソリューションパートナーとして、AI、IoT、クラウドを駆使したイノベーションを提供しています。"}
+  ],
+  "searchMethod": "agentic-retrieval"
+}
+
+### rag-chat with semantic hybrid search
+POST http://localhost:7071/api/rag-chat
+Content-Type: application/json
+
+{
+  "question": "強みついての情報が知りたい",
+  "model": "gpt-5.2",
+  "chatHistory": [
+    {"role": "user", "content": "日立システムズについて教えて"},
+    {"role": "assistant", "content": "日立システムズは、日立グループの一員として、ITサービスやソリューションを提供する企業です。"},
+    {"role": "user", "content": "主な事業ついての情報が知りたい"},
+    {"role": "assistant", "content": "日立システムズは、先進技術と信頼のソリューションパートナーとして、AI、IoT、クラウドを駆使したイノベーションを提供しています。"}
+  ],
+  "searchMethod": "semantic-hybrid-search"
+}
+
+### get-file
+POST http://localhost:7071/api/get-file
+Content-Type: application/json
+
+{
+  "title": "Sample Title",
+  "filepath": "path/to/sample.txt"
+}

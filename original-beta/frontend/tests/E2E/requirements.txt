@@ -1,0 +1,14 @@
+# Playwright E2Eテスト用 依存パッケージ
+# インストールコマンド: pip install -r requirements.txt
+
+# テスティングフレームワーク
+pytest>=7.4.0
+
+# ブラウザ自動化ライブラリ
+playwright>=1.40.0
+
+# 注意事項:
+# Playwrightのインストール後、以下のコマンドでブラウザをインストールする必要があります:
+#   playwright install chromium
+#   または
+#   playwright install --with-deps chromium  (Linux環境でシステム依存パッケージも含める場合)

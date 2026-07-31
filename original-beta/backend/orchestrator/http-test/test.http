@@ -1,0 +1,9 @@
+POST http://localhost:7071/api/chat
+Content-Type: application/json
+
+{
+    "question": "こんにちは",
+    "model": "gpt-5",
+    "chatHistory": [],
+    "webSearch": false
+}

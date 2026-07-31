@@ -1,0 +1,27 @@
+### upload-file (ファイルアップロード)
+POST http://localhost:7071/api/upload-file
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="file"; filename="test.mp4"
+Content-Type: video/mp4
+
+< ./test.mp4
+--boundary--
+
+### ideathon_content_understanding_fn
+POST http://localhost:7071/api/ideathon_content_understanding_fn
+Content-Type: application/json
+
+{
+  "url": "https://stdevcopilot01.blob.core.windows.net/movie-manuals/test.mp4/upload/2025-10-27-05-38-11-test.mp4",
+  "similarity_threshold": 0.9,
+  "is_auto_threshold": false
+}
+
+### get_manual (生成結果取得: Excel/Word/Markdown の一部を確認する例)
+# 生成パイプライン後、特定の Blob 上のファイルを取得するための GET。URL は upload-file や create_manual 実行結果で得たSAS/Blob URLに置き換えてください。
+# correlation id (cid) を任意で付与しログトレースと紐付けることができます。
+GET http://localhost:7071/api/manual?url=https://stdevcopilot01.blob.core.windows.net/movie-manuals/test.mp4/upload/2025-10-27-05-38-11-test.mp4&cid=demo-correlation-id
+
+

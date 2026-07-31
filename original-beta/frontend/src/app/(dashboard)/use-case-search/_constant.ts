@@ -1,0 +1,90 @@
+// ステータス
+export const STATUS_DEVELOPMENT = '開発中';
+export const STATUS_AVAILABLE = '利用可';
+
+// 提供価値
+export const VALUE_PROPOSITION_COST = 'コスト';
+export const VALUE_PROPOSITION_REVENUE = '収益';
+export const VALUE_PROPOSITION_OTHER = 'その他';
+
+// 業務領域
+export const BUSINESS_DOMAIN_DESIGN_DEVELOPMENT = '設計・開発';
+export const BUSINESS_DOMAIN_MANUFACTURING_PRODUCTION = '製造・生産';
+export const BUSINESS_DOMAIN_CUSTOMER_SUPPORT = '顧客サポート';
+export const BUSINESS_DOMAIN_SALES_MARKETING = '営業・販売';
+export const BUSINESS_DOMAIN_OFFICE_GENERAL = 'オフィス業務全般';
+export const BUSINESS_DOMAIN_OTHER = 'その他';
+
+// カテゴリー
+export const CATEGORY_SALES = '営業';
+export const CATEGORY_CUSTOMER_SUPPORT = 'カスタマーサポート';
+export const CATEGORY_PLANNING = '企画';
+export const CATEGORY_MANUFACTURING = '製造';
+export const CATEGORY_DESIGN = '設計';
+export const CATEGORY_QUALITY_ASSURANCE = '品質保証';
+export const CATEGORY_OTHER = 'その他';
+
+// 区分
+export const CLASSIFICATION_SYSTEM_UI = 'システム化(UI化)';
+export const CLASSIFICATION_PROMPT_TEMPLATE = 'プロンプトテンプレート';
+export const CLASSIFICATION_AI_UTILIZATION = 'AI活用';
+export const CLASSIFICATION_OTHER = 'その他';
+
+// 検討元
+export const ORIGIN_INTERNAL = '社内';
+export const ORIGIN_EXTERNAL = '社外';
+
+// 開発部署
+export const DEVELOPMENT_DEPARTMENT_SANDI14 = '産D14';
+export const DEVELOPMENT_DEPARTMENT_OTHER = 'その他';
+
+// 配列定義
+export const STATUS_VALUES = [STATUS_DEVELOPMENT, STATUS_AVAILABLE] as const;
+
+export const VALUE_PROPOSITION_VALUES = [
+  VALUE_PROPOSITION_COST,
+  VALUE_PROPOSITION_REVENUE,
+  VALUE_PROPOSITION_OTHER,
+] as const;
+
+export const BUSINESS_DOMAIN_VALUES = [
+  BUSINESS_DOMAIN_DESIGN_DEVELOPMENT,
+  BUSINESS_DOMAIN_MANUFACTURING_PRODUCTION,
+  BUSINESS_DOMAIN_CUSTOMER_SUPPORT,
+  BUSINESS_DOMAIN_SALES_MARKETING,
+  BUSINESS_DOMAIN_OFFICE_GENERAL,
+  BUSINESS_DOMAIN_OTHER,
+] as const;
+
+export const CATEGORY_VALUES = [
+  CATEGORY_SALES,
+  CATEGORY_CUSTOMER_SUPPORT,
+  CATEGORY_PLANNING,
+  CATEGORY_MANUFACTURING,
+  CATEGORY_DESIGN,
+  CATEGORY_QUALITY_ASSURANCE,
+  CATEGORY_OTHER,
+] as const;
+
+export const CLASSIFICATION_VALUES = [
+  CLASSIFICATION_SYSTEM_UI,
+  CLASSIFICATION_PROMPT_TEMPLATE,
+  CLASSIFICATION_AI_UTILIZATION,
+  CLASSIFICATION_OTHER,
+] as const;
+
+export const ORIGIN_VALUES = [ORIGIN_INTERNAL, ORIGIN_EXTERNAL] as const;
+
+export const DEVELOPMENT_DEPARTMENT_VALUES = [
+  DEVELOPMENT_DEPARTMENT_SANDI14,
+  DEVELOPMENT_DEPARTMENT_OTHER,
+] as const;
+
+// フィルター用の全て選択オプション
+export const ALL_STATUSES = '全てのステータス';
+export const ALL_VALUE_PROPOSITIONS = '全ての提供価値';
+export const ALL_BUSINESS_DOMAINS = '全ての業務領域';
+export const ALL_CATEGORIES = '全てのカテゴリー';
+export const ALL_CLASSIFICATIONS = '全ての区分';
+export const ALL_ORIGINS = '全ての検討元';
+export const ALL_DEVELOPMENT_DEPARTMENTS = '全ての開発部署';

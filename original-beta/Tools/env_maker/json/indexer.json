@@ -1,0 +1,42 @@
+[
+  {
+    "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+    "value": "app-key-indexer",
+    "slotSetting": false
+  },
+  {
+    "name": "AzureWebJobsStorage__accountName",
+    "value": "storage-name",
+    "slotSetting": false
+  },
+  {
+    "name": "AzureWebJobsStorage__blobServiceUri",
+    "value": "https://storage-name.blob.core.windows.net",
+    "slotSetting": false
+  },
+  {
+    "name": "AzureWebJobsStorage__credential",
+    "value": "managedidentity",
+    "slotSetting": false
+  },
+  {
+    "name": "AzureWebJobsStorage__queueServiceUri",
+    "value": "https://storage-name.queue.core.windows.net",
+    "slotSetting": false
+  },
+  {
+    "name": "AzureWebJobsStorage__tableServiceUri",
+    "value": "https://storage-name.table.core.windows.net",
+    "slotSetting": false
+  },
+  {
+    "name": "FUNCTIONS_EXTENSION_VERSION",
+    "value": "~4",
+    "slotSetting": false
+  },
+  {
+    "name": "FUNCTIONS_WORKER_RUNTIME",
+    "value": "python",
+    "slotSetting": false
+  }
+]

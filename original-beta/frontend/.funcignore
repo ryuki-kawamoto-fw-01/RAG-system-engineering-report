@@ -1,0 +1,39 @@
+# Build outputs (⚠️ .next/ is REQUIRED for deployment)
+node_modules/
+# .next/  ← COMMENTED OUT: Required for Next.js production deployment
+dist/
+build/
+*.tsbuildinfo
+
+# Environment files (keep production configs)
+.env.local
+.env.development.local
+.env.test.local
+# .env.production.local  ← COMMENTED OUT: May be needed for production
+
+# Test files and directories
+tests/
+test/
+**/*.test.ts
+**/*.test.tsx
+**/*.spec.ts
+**/*.spec.tsx
+
+# Coverage reports
+coverage/
+.coverage
+htmlcov/
+
+# Development tools
+.vscode/
+.idea/
+
+# Logs
+logs/
+*.log
+
+# Development-only files
+.env.development
+
+# Local development
+public/uploads/

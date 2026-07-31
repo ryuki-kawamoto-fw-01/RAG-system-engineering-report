@@ -1,0 +1,25 @@
+{
+  "name": "{indexer_name}",
+  "description": null,
+  "dataSourceName": "{data_source_name}",
+  "skillsetName": "{skillset_name}",
+  "targetIndexName": "{target_index_name}",
+  "disabled": null,
+  "schedule": {
+    "interval": "PT5M",
+    "startTime": "{start_time}"
+  },
+  "parameters": {
+    "batchSize": null,
+    "maxFailedItems": null,
+    "maxFailedItemsPerBatch": null,
+    "configuration": {
+      "executionEnvironment": "private",
+      "allowSkillsetToReadFileData": true
+    }
+  },
+  "fieldMappings": [],
+  "outputFieldMappings": [],
+  "cache": null,
+  "encryptionKey": null
+}

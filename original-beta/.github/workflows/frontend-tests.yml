@@ -1,0 +1,106 @@
+# ============================================
+# Frontend Test Pipeline - 使い方ガイド
+# ============================================
+#
+# 【概要】
+# フロントエンド（Next.js）のテストを自動実行するワークフローです。
+# ESLint、TypeScriptの型チェック、Jestユニットテストを実行します。
+#
+# 【トリガー条件】
+# - プルリクエスト時（frontend/配下の変更のみ）
+#
+# 【実行されるテスト】
+# 1. ESLint - コードの静的解析
+# 2. TypeScript型チェック - 型の整合性確認
+# 3. Jestユニットテスト - カバレッジレポート付き
+#
+# 【テスト失敗時の動作】
+# - ESLintエラー → 後続のステップをスキップ、ワークフロー失敗
+# - TypeScriptエラー → 後続のステップをスキップ、ワークフロー失敗
+# - ユニットテスト失敗 → ワークフロー失敗
+# ※ set -o pipefail により、パイプライン内のエラーも正しく検知されます
+#
+# 【成果物】
+# - test-results.json: テスト結果の詳細
+# - test-output.log: テスト実行ログ
+# - coverage/: カバレッジレポート（HTML形式）
+# - Codecov: カバレッジレポートが自動アップロード
+#
+# ============================================
+
+name: Frontend Test Pipeline
+
+on:
+  # プルリクエスト時（フロントエンド関連の変更のみ）
+  push:
+    branches: [feature/XXX]
+    paths:
+      - 'infra/tenant/**/trial/**'
+
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+
+jobs:
+  # ============================================
+  # Frontend Tests
+  # ============================================
+  frontend-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
+    strategy:
+      matrix:
+        node-version: [20]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: frontend/package.json
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm install
+
+      - name: Fix pretty-format version for Jest compatibility
+        working-directory: frontend
+        run: npm install --no-save pretty-format@29.7.0
+
+      - name: Run ESLint
+        working-directory: frontend
+        run: npm run lint
+
+      - name: Run TypeScript check
+        working-directory: frontend
+        run: npm run type-check
+
+      - name: Run unit tests
+        working-directory: frontend
+        run: |
+          set -o pipefail
+          npm test -- --coverage --watchAll=false --passWithNoTests --verbose --json --outputFile=../test-results.json 2>&1 | tee ../test-output.log
+
+      - name: Upload test artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-test-results
+          path: |
+            test-results.json
+            test-output.log
+            frontend/coverage/
+
+      - name: Upload coverage to Codecov
+        if: success()
+        uses: codecov/codecov-action@v3
+        with:
+          directory: ./frontend/coverage
+          flags: frontend
+          name: frontend-coverage

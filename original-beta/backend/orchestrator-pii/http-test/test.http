@@ -1,0 +1,7 @@
+### pii
+POST http://localhost:7071/api/pii
+Content-Type: application/json
+
+{
+  "input": "個人情報を含むテキストをここに入力"
+}

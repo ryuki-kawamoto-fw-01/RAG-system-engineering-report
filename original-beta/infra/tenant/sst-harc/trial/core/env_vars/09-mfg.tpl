@@ -1,0 +1,20 @@
+{
+  "AGENT_DEPLOYMENT_NAME": "gpt-4.1-genashi-trial",
+  "AZURE_AI_FOUNDRY_PROJECT_ENDPOINT": "https://aif-genashi-trial-${environment_prefix}.services.ai.azure.com/api/projects/proj-genashi-trial-${environment_prefix}",
+  "AZURE_AISEARCH_ENDPOINT": "https://srch-genashi-trial-${environment_prefix}.search.windows.net",
+  "AZURE_AISEARCH_INDEX": "index-genashi-trial-document",
+  "AZURE_DOCUMENT_ENDPOINT": "https://di-genashi-trial-${environment_prefix}.cognitiveservices.azure.com/",
+  "AZURE_OPENAI_VERSION": "2025-01-01-preview",
+  "BUILD_FLAGS": "UseExpressBuild",
+  "DEPLOYMENT_NAME": "gpt-4.1-genashi-trial",
+  "EMBEDDING_MODEL": "text-embedding-3-large-genashi-trial",
+  "ENABLE_ORYX_BUILD": "true",
+  "FUNCTIONS_EXTENSION_VERSION": "~4",
+  "FUNCTIONS_WORKER_RUNTIME": "python",
+  "LOAD_BALANCER_ENDPOINT": "${loadbalancer_url}",
+  "MODEL_IDENTIFIER": "genashi-trial",
+  "SCM_DO_BUILD_DURING_DEPLOYMENT": "1",
+  "WEBSITE_RUN_FROM_PACKAGE": "1",
+  "XDG_CACHE_HOME": "/tmp/.cache",
+  "PROJECT_CONNECTION_STRING": "eastus2.api.azureml.ms;${subscription_id};rg-genashi-trial-${environment_prefix};proj-genashi-trial-${environment_prefix}"
+}

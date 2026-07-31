@@ -1,0 +1,27 @@
+{
+  "@odata.context": "https://srch-genashi-trial-${environment_prefix}.search.windows.net/$metadata#indexers/$entity",
+  "@odata.etag": "\"0x8DEB0BE9C7FA6D7\"",
+  "name": "indexer-genashi-trial-standard",
+  "description": null,
+  "dataSourceName": "datasource-genashi-trial-standard",
+  "skillsetName": "skillset-genashi-trial-standard",
+  "targetIndexName": "index-genashi-trial-standard",
+  "disabled": null,
+  "schedule": {
+    "interval": "PT5M",
+    "startTime": "2026-05-13T07:09:37.302Z"
+  },
+  "parameters": {
+    "batchSize": null,
+    "maxFailedItems": null,
+    "maxFailedItemsPerBatch": null,
+    "configuration": {
+      "executionEnvironment": "private",
+      "allowSkillsetToReadFileData": true
+    }
+  },
+  "fieldMappings": [],
+  "outputFieldMappings": [],
+  "cache": null,
+  "encryptionKey": null
+}

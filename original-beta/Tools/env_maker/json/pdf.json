@@ -1,0 +1,57 @@
+[
+  {
+    "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+    "value": "app-key-pdf",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_BLOB_STORAGE_DST_CON_STR",
+    "value": "https://storage-name.blob.core.windows.net",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_BLOB_STORAGE_DST_CONTAINER",
+    "value": "st-container-name-02",
+    "slotSetting": false
+  },
+  {
+    "name": "AzureWebJobsStorage__accountName",
+    "value": "storage-name",
+    "slotSetting": false
+  },
+  {
+    "name": "AzureWebJobsStorage__blobServiceUri",
+    "value": "https://storage-name.blob.core.windows.net",
+    "slotSetting": false
+  },
+  {
+    "name": "AzureWebJobsStorage__credential",
+    "value": "managedidentity",
+    "slotSetting": false
+  },
+  {
+    "name": "AzureWebJobsStorage__queueServiceUri",
+    "value": "https://storage-name.queue.core.windows.net",
+    "slotSetting": false
+  },
+  {
+    "name": "AzureWebJobsStorage__tableServiceUri",
+    "value": "https://storage-name.table.core.windows.net",
+    "slotSetting": false
+  },
+  {
+    "name": "DOCKER_REGISTRY_SERVER_URL",
+    "value": "acr-name.azurecr.io",
+    "slotSetting": false
+  },
+  {
+    "name": "FUNCTIONS_EXTENSION_VERSION",
+    "value": "~4",
+    "slotSetting": false
+  },
+  {
+    "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
+    "value": "false",
+    "slotSetting": false
+  }
+]

@@ -1,0 +1,22 @@
+{
+  "@odata.context": "https://srch-genashi-trial-97.search.windows.net/$metadata#datasources/$entity",
+  "@odata.etag": "\"0x8DEB7891C847C2E\"",
+  "name": "datasource-genashi-trial-02",
+  "description": null,
+  "type": "azureblob",
+  "subtype": null,
+  "indexerPermissionOptions": [],
+  "credentials": {
+    "connectionString": "ResourceId=/subscriptions/f6ad11c0-2675-4843-a3b5-2ab3972292ac/resourceGroups/rg-genashi-trial-97/providers/Microsoft.Storage/storageAccounts/stgenashitrial97;"
+  },
+  "container": {
+    "name": "genashi-trial-04",
+    "query": "インデックス２"
+  },
+  "dataChangeDetectionPolicy": null,
+  "dataDeletionDetectionPolicy": {
+    "@odata.type": "#Microsoft.Azure.Search.NativeBlobSoftDeleteDeletionDetectionPolicy"
+  },
+  "encryptionKey": null,
+  "identity": null
+}

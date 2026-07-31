@@ -1,0 +1,5 @@
+### cve-report
+POST http://localhost:7071/api/cve-report
+Content-Type: application/x-www-form-urlencoded
+
+cveNumber=CVE-2024-5000

@@ -1,0 +1,20 @@
+{
+  "name": "{data_source_name}",
+  "description": null,
+  "type": "azureblob",
+  "subtype": null,
+  "indexerPermissionOptions": [],
+  "credentials": {
+    "connectionString": "ResourceId={storage_account_resource_id};"
+  },
+  "container": {
+    "name": "{container_name}",
+    "query": "{folder_name}"
+  },
+  "dataChangeDetectionPolicy": null,
+  "dataDeletionDetectionPolicy": {
+    "@odata.type": "#Microsoft.Azure.Search.NativeBlobSoftDeleteDeletionDetectionPolicy"
+  },
+  "encryptionKey": null,
+  "identity": null
+}

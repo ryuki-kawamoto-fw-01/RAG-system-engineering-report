@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>詳細設計書: bubble_sort.py</title>
+<style>
+body { font-family: sans-serif; line-height: 1.6; }
+h1, h2, h3 { font-weight: 600; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+th { background-color: #f2f2f2; }
+code { background-color: #eee; padding: 2px 4px; border-radius: 4px; }
+</style>
+</head>
+<body>
+<h1>詳細設計書: bubble_sort.py</h1>
+<h2>1. 概要</h2>
+<p>このドキュメントは、<code>bubble_sort.py</code>スクリプトの詳細設計を記述したものです。このスクリプトは、ランダムに生成された数値のリストを、バブルソートアルゴリズムを用いて昇順にソートします。</p>
+<h2>2. 目的</h2>
+<p>このスクリプトの目的は、バブルソートアルゴリズムの具体的な実装を学ぶためのサンプルコードを提供することです。プログラミング初学者が、基本的な関数の定義、ループ処理、リスト操作を理解するのに役立ちます。</p>
+<h2>3. 依存関係</h2>
+<p>このスクリプトは、Pythonの標準ライブラリである<code>random</code>モジュールに依存しています。</p>
+<ul>
+<li><code>random</code>: 乱数を生成するために使用します。</li>
+</ul>
+<p>追加でインストールが必要なライブラリはありません。</p>
+<h2>4. 用語定義</h2>
+<table>
+<thead>
+<tr>
+<th>用語</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>バブルソート</td>
+<td>隣接する要素の大小を比較しながら整列させるアルゴリズム。単純だが効率はあまり良くない。</td>
+</tr>
+<tr>
+<td>昇順ソート</td>
+<td>数値のリストを小さいものから大きいものへと並べ替えること。</td>
+</tr>
+</tbody>
+</table>
+<h2>5. 機能仕様</h2>
+<ul>
+<li>0から99の範囲で、10個のランダムな整数を含むリストを生成します。</li>
+<li>生成したリスト（ソート前）をコンソールに出力します。</li>
+<li>バブルソートアルゴリズムを用いてリストを昇順にソートします。</li>
+<li>ソート後のリストをコンソールに出力します。</li>
+</ul>
+<h2>6. 詳細設計</h2>
+<h3>6.1. <code>bubble_sort(arr)</code> 関数</h3>
+<p>この関数は、引数として受け取ったリストをバブルソートアルゴリズムでソートします。</p>
+<ul>
+<li><strong>目的:</strong> リスト内の数値を昇順に並べ替える。</li>
+<li><strong>入力引数:</strong>
+<ul>
+<li><code>arr</code> (list): ソート対象の数値リスト。</li>
+</ul>
+</li>
+<li><strong>戻り値:</strong>
+<ul>
+<li><code>list</code>: 昇順にソートされたリストを返します。</li>
+</ul>
+</li>
+<li><strong>処理フロー:</strong>
+<ol>
+<li>リストの要素数を <code>n</code> に格納する。</li>
+<li>外側のループを <code>n</code> 回繰り返す (<code>i</code> は0から <code>n-1</code> まで)。
+<ol style="list-style-type: none;">
+<li>2-1. 内側のループを <code>n - i - 1</code> 回繰り返す (<code>j</code> は0から <code>n - i - 2</code> まで)。
+<ol style="list-style-type: none;">
+<li>2-1-1. <code>arr[j]</code> が <code>arr[j + 1]</code> より大きい場合、両者の値を交換する。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>ソートが完了したリスト <code>arr</code> を返す。</li>
+</ol>
+</li>
+<li><strong>ソースコード参照:</strong> <a href="bubble_sort.py#L3-L11">bubble_sort.py</a></li>
+</ul>
+<h3>6.2. メイン処理</h3>
+<p>スクリプトが直接実行された際のメイン処理です。</p>
+<ul>
+<li><strong>目的:</strong> ランダムな数値リストを生成し、<code>bubble_sort</code>関数を呼び出してソート結果を出力する。</li>
+<li><strong>処理フロー:</strong>
+<ol>
+<li><code>random.randint(0, 99)</code> を10回呼び出し、結果をリスト <code>random_numbers</code> として生成する。</li>
+<li>ソート前のリスト <code>random_numbers</code> をコンソールに出力する。</li>
+<li><code>random_numbers</code> のコピーを <code>bubble_sort</code> 関数に渡し、ソート済みのリスト <code>sorted_numbers</code> を受け取る。</li>
+<li>ソート後のリスト <code>sorted_numbers</code> をコンソールに出力する。</li>
+</ol>
+</li>
+<li><strong>ソースコード参照:</strong> <a href="bubble_sort.py#L13-L18">bubble_sort.py</a></li>
+</ul>
+<h2>7. エラーハンドリング</h2>
+<p>このスクリプトには、特定のユーザー入力や外部ファイルアクセスがないため、明示的なエラーハンドリングは実装されていません。入力リストが数値以外の要素を含む場合など、予期せぬデータ型が渡された場合は、比較演算子 <code>&gt;</code> で <code>TypeError</code> が発生する可能性があります。</p>
+<h2>8. 変更履歴</h2>
+<table>
+<thead>
+<tr>
+<th>日付</th>
+<th>バージョン</th>
+<th>変更内容</th>
+<th>担当者</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2025-12-23</td>
+<td>1.0</td>
+<td>新規作成</td>
+<td>GitHub Copilot</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

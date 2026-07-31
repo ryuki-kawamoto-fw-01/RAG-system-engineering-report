@@ -1,0 +1,16 @@
+.*ev
+*.pyc
+*.xlsx
+*.json
+*.jsonl
+*.txt
+*.png
+*.jpg
+.coverage
+!analyzer_schema.json
+!requirements.txt
+!host.json
+
+.python_packages
+__pycache__
+.venv

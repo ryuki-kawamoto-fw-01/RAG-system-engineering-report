@@ -1,0 +1,97 @@
+[
+  {
+    "name": "APPINSIGHTS_PROFILERFEATURE_VERSION",
+    "value": "1.0.0",
+    "slotSetting": true
+  },
+  {
+    "name": "APPINSIGHTS_SNAPSHOTFEATURE_VERSION",
+    "value": "1.0.0",
+    "slotSetting": true
+  },
+  {
+    "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+    "value": "app-key-load",
+    "slotSetting": false
+  },
+  {
+    "name": "ApplicationInsightsAgent_EXTENSION_VERSION",
+    "value": "~3",
+    "slotSetting": false
+  },
+  {
+    "name": "BACKEND_1_PRIORITY",
+    "value": "1",
+    "slotSetting": false
+  },
+  {
+    "name": "BACKEND_1_URL",
+    "value": "https://oai-name-001.openai.azure.com",
+    "slotSetting": false
+  },
+  {
+    "name": "BACKEND_2_PRIORITY",
+    "value": "2",
+    "slotSetting": false
+  },
+  {
+    "name": "BACKEND_2_URL",
+    "value": "https://oai-name-002.openai.azure.com",
+    "slotSetting": false
+  },
+  {
+    "name": "BACKEND_3_PRIORITY",
+    "value": "3",
+    "slotSetting": false
+  },
+  {
+    "name": "BACKEND_3_URL",
+    "value": "https://oai-name-003.openai.azure.com",
+    "slotSetting": false
+  },
+  {
+    "name": "DiagnosticServices_EXTENSION_VERSION",
+    "value": "~3",
+    "slotSetting": true
+  },
+  {
+    "name": "DISABLE_APPINSIGHTS_SDK",
+    "value": "disabled",
+    "slotSetting": false
+  },
+  {
+    "name": "HTTP_TIMEOUT_SECONDS",
+    "value": "230",
+    "slotSetting": false
+  },
+  {
+    "name": "IGNORE_APPINSIGHTS_SDK",
+    "value": "disabled",
+    "slotSetting": false
+  },
+  {
+    "name": "InstrumentationEngine_EXTENSION_VERSION",
+    "value": "disabled",
+    "slotSetting": true
+  },
+  {
+    "name": "SnapshotDebugger_EXTENSION_VERSION",
+    "value": "disabled",
+    "slotSetting": true
+  },
+  {
+    "name": "XDT_MicrosoftApplicationInsights_BaseExtensions",
+    "value": "disabled",
+    "slotSetting": true
+  },
+  {
+    "name": "XDT_MicrosoftApplicationInsights_Mode",
+    "value": "recommended",
+    "slotSetting": true
+  },
+  {
+    "name": "XDT_MicrosoftApplicationInsights_PreemptSdk",
+    "value": "disabled",
+    "slotSetting": true
+  }
+]

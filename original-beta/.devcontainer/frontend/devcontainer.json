@@ -1,0 +1,68 @@
+{
+    "name": "frontend",
+    "dockerFile": "Dockerfile",
+    "build": {
+      "args": {
+        "PROXY": "http://umproxy.prx.intra.hitachi.co.jp:8080/"
+      }
+    },
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+    "workspaceFolder": "/workspace/frontend",
+    "containerEnv": {
+        "HTTP_PROXY": "http://umproxy.prx.intra.hitachi.co.jp:8080/",
+        "HTTPS_PROXY": "http://umproxy.prx.intra.hitachi.co.jp:8080/",
+        "http_proxy": "http://umproxy.prx.intra.hitachi.co.jp:8080/",
+        "https_proxy": "http://umproxy.prx.intra.hitachi.co.jp:8080/"
+    },
+    "remoteEnv": {
+        "HTTP_PROXY": "http://umproxy.prx.intra.hitachi.co.jp:8080/",
+        "HTTPS_PROXY": "http://umproxy.prx.intra.hitachi.co.jp:8080/",
+        "http_proxy": "http://umproxy.prx.intra.hitachi.co.jp:8080/",
+        "https_proxy": "http://umproxy.prx.intra.hitachi.co.jp:8080/"
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/common-utils:2.5.2": {
+            "installZsh": true,
+            "configureZshAsDefaultShell": true,
+            "installOhMyZsh": true,
+            "upgradePackages": false,
+            "username": "node",
+            "remoteUser": "node",
+            "userUid": "automatic",
+            "userGid": "automatic"
+        },
+
+
+        "ghcr.io/stuartleeks/dev-container-features/shell-history:0": {},
+        "ghcr.io/azure/azure-dev/azd:0.1.0": {},
+        "ghcr.io/devcontainers/features/git:1": {}
+    },
+
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "editor.formatOnSave": true,
+                "editor.defaultFormatter": "esbenp.prettier-vscode",
+                "editor.codeActionsOnSave": {
+                    "source.fixAll.eslint": true
+                }
+            },
+            "extensions": [
+                "dbaeumer.vscode-eslint",
+                "esbenp.prettier-vscode",
+                "shardulm94.trailing-spaces",
+                "bradlc.vscode-tailwindcss",
+                "yoavbls.prettier-ts-errors",
+                "github.copilot",
+                "github.copilot-chat",
+                "dsznajder.es7-react-js-snippets",
+                "ms-vscode.vscode-typescript-next",
+                "infeng.vscode-react-typescript",
+                "mhutchie.git-graph",
+                "donjayamanne.githistory",
+                "streetsidesoftware.code-spell-checker"
+            ]
+        }
+    },
+    "postAttachCommand": "npm install"
+}

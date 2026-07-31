@@ -1,0 +1,7 @@
+tk==0.1.0
+pandas==2.2.3
+azure-cosmos==4.8.0
+xlsxwriter==3.2.0
+python-dotenv==1.0.1
+chardet==5.2.0
+azure.identity==1.19.0

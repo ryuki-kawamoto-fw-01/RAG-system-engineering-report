@@ -1,0 +1,1336 @@
+### create-prompt
+POST http://localhost:7071/api/create-prompt
+Content-Type: application/json
+
+{
+  "originalPrompt": "ここにオリジナルのプロンプトを入力"
+}
+
+### fix-prompt
+POST http://localhost:7071/api/fix-prompt
+Content-Type: application/json
+
+{
+  "revisionPrompt": "ここに修正事項を入力",
+  "enhancedPrompt": "ここに向上したプロンプトを入力"
+}
+
+### create-minutes
+POST http://localhost:7071/api/create-minutes
+Content-Type: multipart/form-data; boundary=boundary123
+
+--boundary123
+Content-Disposition: form-data; name="fileList"; filename="SJIS_LF.txt"
+Content-Type: text/plain
+
+< ./SJIS_LF.txt
+
+--boundary123
+Content-Disposition: form-data; name="meetingPurpose"
+
+新商品のアイデア出し
+--boundary123--
+
+### fix-minutes
+POST http://localhost:7071/api/fix-minutes
+Content-Type: multipart/form-data; boundary=boundary123
+
+--boundary123
+Content-Disposition: form-data; name="fileList"; filename="minutes.pdf"
+Content-Type: application/pdf
+
+< ./minutes.pdf
+
+--boundary123
+Content-Disposition: form-data; name="resultMinutes"
+
+1. 打ち合わせ議題\n生成AIを活用した新商品アイデアの検討\n\n2. 場所\n本社会議室A\n\n3. 出席者\n開発：田中\nマーケ：鈴木\n営業：佐藤\nデザイン：高橋\nAIエンジニア：山本\n\n4. 決定事項\n\n5. 宿題事項\n- 開発：プロトタイプ作成（1ヶ月目標）\n- マーケ：ユーザー調査とターゲット整理\n- 営業：企業向けユースケースの洗い出し\n- 法務：AI利用規約のドラフト作成\n\n6. 次回予定\n2週間後（2月XX日）に進捗確認会議を予定\n\n7. 会議内容\n■生成AIを活用した新商品アイデアの検討\n田中：生成AIを使って新しい商品を考えたい。どのようなことができそうか、また市場的に可能性があるかを議論したい。\n\n■アイデア出し\n鈴木：AIで文章作成をアシストするツールを考えている。メールやSNS、ブログの文章を簡単に作成できるもので、ユーザーの書き方を学習してそれっぽく出せると良い。また、チャット形式でアドバイスをする機能も考えられる。\n高橋：デザイン自動生成のアイデアもある。少しの指示でバナーや広告を作成できるもので、ブランドの雰囲気に合わせる機能が欲しい。Adobeとの連携ができればデザイナーの作業が減るかもしれない。\n山本：プレゼン資料を自動で作成するAIも面白い。テーマを入力するとスライドを作成し、グラフや図解も自動で生成する。プレゼン原稿も作成できると需要があるのではないか。\n佐藤：AIによるレシピ提案も考えられる。冷蔵庫の食材を入力するとレシピを提案し、栄養バランスや時短レシピも考慮する。音声アシストで調理ガイドをする機能も面白い。\n\n■市場チェック & 競合\n鈴木：似たサービスとしてChatGPT、Notion AI、Canva AIがある。どの層を狙うか、一般ユーザーかビジネスかクリエイターかを考える必要がある。競合との差別化として、使いやすさや精度、特化型のアプローチが考えられる。\n\n■課題\n山本：技術面ではどのAIモデルを使うかが課題である。GPTやClaude、独自開発の選択肢がある。ユーザーのデータ学習をどこまで許可するかも検討が必要。\n鈴木：マーケティング戦略として、ターゲットを誰にするか、最初はBtoCかBtoBかを決める必要がある。課金モデルもサブスクリプションか買い切りかを検討する。\n佐藤：法務・倫理面ではデータの取り扱い問題やフェイクコンテンツのリスク管理が課題である。\n\n■次のアクション\n田中：開発チームは1ヶ月を目標にプロトタイプを作成する。\n鈴木：マーケティングチームはユーザー調査とターゲットの整理を行う。\n佐藤：営業チームは企業向けユースケースの洗い出しを行う。\n山本：法務チームはAI利用規約のドラフトを作成する。\n\n次回会議は2週間後に進捗確認を行う予定である。情報共有はSlackの#AI開発チャンネルで随時行う
+
+--boundary123
+Content-Disposition: form-data; name="revisionPrompt"
+
+決定事項を詳細に記述する
+--boundary123--
+
+
+### download-minutes
+POST http://localhost:7071/api/download-minutes
+Content-Type: application/json
+
+{
+  "resultMinutes": "1. 打ち合わせ議題\\n生成AI × 新商品アイデア会議\\n\\n2. 場所\\n本社会議室A\\n\\n3. 出席者\\n開発：田中\\n日時\\n 2025年1月31日  \\nマーケティング：鈴木  \\n営業：佐藤  \\nデザイン：高橋  \\nAIエンジニア：山本\\n\\n4. 決定事項\\n無し\\n\\n5. 宿題事項\\n- プロトタイプ作成（開発：田中）\\n- ユーザー調査＆ターゲット整理（マーケティング：鈴木）\\n- 企業向けユースケースの洗い出し（営業：佐藤）\\n- AI利用規約ドラフト作成（法務）\\n\\n6. 次回予定\\n2週間後（2025年2月予定、具体日程未定）に進捗確認。\\n\\n7. 会議内容\\n■生成AIを活用したアイデア出し  \\n田中：生成AIを用いてどのような新商品を開発できるかアイデアを出したい。具体的には文章生成、デザイン補助、プレゼン資料作成、自動レシピ提案といった可能性を視野に入れている。それぞれの機能について議論を進めたい。  \\n\\n鈴木：AIで文章を作成するアシストツールは既存のサービスにもあるが、ユーザーの書き方を学習して自然な出力をする機能があると差別化ができる。また、チャット形式でユーザーにアドバイスを提供する形も考えられる。  \\n\\n高橋：デザインの自動生成に興味がある。例えば、簡単な指示を与えるだけで広告バナーやグラフィックを作成するツールがあると便利だ。ブランドの雰囲気にあわせたデザインを生成する機能も求められるだろう。また、Adobeなど既存のデザインツールと連携することで、作業効率を大きく向上させられる。  \\n\\n佐藤：プレゼン資料を生成するツールは幅広いニーズがあると思う。資料そのものだけでなく、グラフや図の自動生成、さらにはプレゼン原稿の作成まで対応するとユーザーにとても魅力的に映るだろう。  \\n\\n山本：AIを使用したレシピ提案も面白いアイデアだ。冷蔵庫内にある食材を元にレシピを提案する機能は市場的に強みになると思う。さらに栄養バランスや時短レシピを考慮したプランを出せるなら、使い勝手が向上しそうだ。音声アシストで調理ガイドを提供する仕組みを追加すれば一層魅力が増す。  \\n\\n■市場チェックと競合分析  \\n鈴木：既存競合としてChatGPT、Notion AI、Canva AIが上がるが、どの層をターゲットにするかが重要だ。一般ユーザーに向けたものか、ビジネス用途か、クリエイター向けかでアプローチが異なる。\\n\\n田中：競合との差別化を模索する必要がある。例えば、他にはない使いやすさや専門分野に特化した精度の高さが競争力になるかもしれない。  \\n\\n■課題の整理  \\n山本：技術面ではどのAIモデルを採用するかが鍵となる。GPTやClaudeなど既存モデルを使うのか、独自のモデルを開発するべきかは検討が必要だ。また、ユーザーのデータ学習範囲についても法的制約を確認しなければならない。  \\n\\n鈴木：マーケティング戦略として、まずターゲットを明確化することが重要だ。最初はBtoCで個人向けマーケットに注力しつつ、後々BtoBで企業向けに拡大する戦略も考えられる。また、サブスクリプションモデルと買い切りモデルのどちらを採用するかも検討する必要がある。  \\n\\n佐藤：法務や倫理的な課題も大きい。データの取り扱い問題や生成したコンテンツがフェイクである場合のリスク管理体制を整える必要がある。  \\n\\n■次のアクションの合意  \\n田中：開発チームとしては1ヶ月以内にプロトタイプを作成することを目指す。これにより具体的な検討が進むだろう。  \\n\\n鈴木：マーケティングではユーザー調査を行い、ターゲットを整理する作業に着手する。  \\n\\n佐藤：営業の立場からは企業向けユースケースを整理し、具体的なニーズを吸い上げていく。  \\n\\n山本：法務チームと連携し、AIの利用規約のドラフト作成を進める。  \\n\\n鈴木：進捗管理と情報共有のため、Slackの#AI開発チャンネルに随時情報をアップデートするよう周知する。"
+}
+
+### text-correction
+POST http://localhost:7071/api/text-correction
+Content-Type: application/x-www-form-urlencoded
+
+documentType=customer_brochure
+&checkpoints=誤字脱字
+&text=test
+
+### translate
+POST http://localhost:7071/api/translate
+Content-Type: application/json
+
+{
+  "text": "this is a pen",
+  "sourceLanguage": "auto",
+  "targetLanguage": "日本語",
+  "considerations": "丁寧な言葉で翻訳してください"
+}
+
+### create-idea
+POST http://localhost:7071/api/create-idea
+Content-Type: application/json
+
+{
+  "ideationSubject": "2025年の生成AIに関して企業が注力した方がよいこと",
+  "ideationRole": "生成AIのプロ",
+  "ideationCount": 1,
+  "ideationConsideration": "専門用語を控える"
+}
+
+### create-new-idea
+POST http://localhost:7071/api/create-new-idea
+Content-Type: application/json
+
+{
+  "result":"**主題: 2025年の生成AIにおける企業の注力ポイント**\n\nアイデア: ユーザー体験のパーソナライズと倫理的AIの統合\n\n説明: 2025年において、企業は生成AIを活用してユーザー体験をよりパーソナライズすることに注力すべきです。具体的には、AIがユーザーの過去の行動や好みを学習し、個々のニーズに合わせたコンテンツやサービスを提供することが求められます。しかし、これを実現するためには、ユーザーのプライバシーを尊重し、倫理的なAIの使用を確保することが不可欠です。企業は、透明性のあるデータ使用ポリシーを策定し、ユーザーが自分のデータをどのように使用されるかを理解し、コントロールできるようにする必要があります。これにより、信頼性の高いAI体験を提供し、顧客満足度を向上させることが可能になります。",
+  "newIdeaRequest":"具体的な例を出しながら提案して"
+}
+
+### corporate-survey
+POST http://localhost:7071/api/corporate-survey
+Content-Type: application/json
+
+{
+  "surveyCompany": "株式会社日立システムズ",
+  "selectedOptions": [
+    "業界（業種）",
+    "企業サイトURL",
+    "従業員数"
+  ],
+  "additionalConsideration": ""
+}
+
+### summary
+POST http://localhost:7071/api/summary
+Content-Type: application/x-www-form-urlencoded
+
+content=test
+&summaryLength=1
+&consideration=add_prompt
+
+
+### create-new-mail
+POST http://localhost:7071/api/create-new-mail
+Content-Type: application/x-www-form-urlencoded
+
+newMailTo=newMailTo
+&newMailFrom=newMailFrom
+&newMailPurpose=newMailPurpose
+&newMailContent=newMailContent
+&newMailConsiderations=newMailConsiderations
+
+### create-reply-mail
+POST http://localhost:7071/api/create-reply-mail
+Content-Type: application/x-www-form-urlencoded
+
+replyMailTo=replyMailTo
+&replyMailFrom=replyMailFrom
+&replyMailPurpose=replyMailPurpose
+&replyMailContent=replyMailContent
+&receivedMailText=receivedMailText
+&replyMailConsiderations=replyMailConsiderations
+
+### fix-new-mail
+POST http://localhost:7071/api/fix-new-mail
+Content-Type: application/x-www-form-urlencoded
+
+createdSubject=createdSubject
+&createdContent=createdContent
+&modify=modify
+
+### fix-reply-mail
+POST http://localhost:7071/api/fix-reply-mail
+Content-Type: application/x-www-form-urlencoded
+
+&createdContent=createdContent
+&modify=modify
+
+### modify-supposed-question
+POST http://localhost:7071/api/modify-supposed-question
+Content-Type: application/x-www-form-urlencoded
+
+description=test
+&qa_list=[{"description":"これはペンですか？","content":"はい、これはペンです。"}]
+&temp_file="※約本のセミナーなどアーカイブ動画をご覧いただけます（掲載動画数は変動します）　※掲載カテゴリー表示、コンテンツは状況により変動します。　※掲載画像はイメージです\nhttps://v2.nex-pro.com/mypage/login/HitachiSystems_SD_Seminar\n登録はコチラ\n「お役立ちセミナーポータル」\n日立システムズ\n動画コンテンツが見放題！\nここからログイン\n上記URL及び右記QRコードから会員登録（無料）をお願いします。\nDX推進を掲げており、\n情報収集がしたい\n業務に課題がある\n自分のタイミングで\nセミナー動画を見たい\n ●\n　\n●\n●\nこんなお客さまに\nピッタリ！\nこんなお客さまに\nピッタリ！\netc\nセミナー\n動画\nぞくぞく\n登場！\n●\n　\n●\n　\n●\n　\n●\nクラウド・セキュリティ\nhttps://v2.nex-pro.com/mypage/libraries/45677\n私たちが警戒すべき\n最新の脅威へのセキュリティ対策とは\nIot・ネットワーク\nhttps://v2.nex-pro.com/mypage/libraries/46049\nローカルG\n活用事例紹介セミナー\n製造業向けソリューション\nhttps://v2.nex-pro.com/mypage/libraries/42835\n【製造業DX】\n紙運用・電子管理のお悩みを解決セミナー \n管理会計\nhttps://v2.nex-pro.com/\nmypage/libraries/46858\n中堅・中小企業向け\nSAP導入のすすめ\nAI・ロボット・ノーコードアプリ\nhttps://v2.nex-pro.com/mypage/libraries/46926\n製造業の品質検査業務における\nAI活用セミナー\nこの他、多数のセミナー動画をご用意！\n※お申し込みにあたっては、下記URL及びQRコードに掲載されている当社個人情報の取り扱いを予めお読みいただき、\n　同意いただける場合のみお申し込みください。\n　【個人情報のお取り扱いについて】https://www.hitachi-systems.com/privacy/protection/info-event.html\n※SIer、同業他社様につきましては、お申込みをお断りさせていただく場合がございますので、予めご了承ください。\n株式会社日立システムズ　お役立ちセミナーポータル事務局\n担当：波多（はた）、森田（もりた）、桃沢（ももざわ）、阿久津（あくつ）　Mail：seminar-info.do@hitachi-systems.com\nお問い合わせ\n個人情報の\nお取り扱いについて\n会員制動画配信サービス\n\n"
+
+
+### techassess-report
+POST http://localhost:7071/api/techassess-report
+Content-Type: application/json
+
+{
+  "field": "半導体製造",
+  "region": "日本・アジア市場",
+  "companySize": "大企業",
+  "industryIssues": "人材不足と設備投資",
+  "granularity": "事業部単位",
+  "purpose": "技術戦略立案"
+}
+
+### problem_solving_advisor with complete conversation history
+POST http://localhost:7071/api/problem_solving_advisor
+Content-Type: multipart/form-data; boundary=boundary123
+
+--boundary123
+Content-Disposition: form-data; name="question"
+
+これまでの提案を踏まえて、具体的な実装ステップを教えてください。
+--boundary123
+Content-Disposition: form-data; name="chatHistory"
+
+[
+  {"role": "user", "content": "こんにちは、課題解決アドバイザーさん！AIを活用することで業務を効率化する案を考えてください。"},
+  {"role": "assistant", "content": "AIを活用した業務効率化についてですね。具体的にどのような業種や部門（例：営業、人事、製造など）の業務効率化をお考えですか？"},
+  {"role": "user", "content": "製造業の品質管理部門での活用を考えています。"},
+  {"role": "assistant", "content": "製造業の品質管理部門でのAI活用ですね。現在の品質管理プロセスで特に時間がかかっている、または課題を感じている作業はどのようなものでしょうか？"},
+  {"role": "user", "content": "製品の外観検査に時間がかかっており、人による判断のばらつきも課題です。"},
+  {"role": "assistant", "content": "外観検査の時間短縮と判断の均質化が課題なのですね。現在の外観検査ではどのような設備や方法を使用していますか？また、1日あたりの検査数や不良の発見率などの情報があれば教えていただけますか？"},
+  {"role": "user", "content": "現在は作業員が目視で1日500個ほど検査しており、不良発見率は約2%です。カメラはすでに設置していますが、画像の保存のみに使用しています。"},
+  {"role": "assistant", "content": "ありがとうございます。既存のカメラ設備があるとのことで、AIの導入がしやすい環境ですね。予算や導入までの期間に制約はありますか？また、社内にAIやデータ分析の知識を持った人材はいらっしゃいますか？"},
+  {"role": "user", "content": "予算は500万円程度、半年以内の導入を希望しています。社内にはITエンジニアはいますが、AI専門家はいません。"},
+  {"role": "assistant", "content": "予算、期間、人材の状況が明確になりました。最後に、不良品のパターンは比較的決まっているのでしょうか？それとも様々な種類の不良があり、新しいタイプの不良も時々発見されるような状況でしょうか？"}
+]
+--boundary123--
+
+### create-faq-formdata
+POST http://localhost:7071/api/faq-creation
+Content-Type: application/x-www-form-urlencoded
+
+documentType=FAQ
+&checkpoints=質問者の立場,回答者の立場
+&additionalConsiderations=専門用語は極力避け、わかりやすい言葉で回答する
+&text=生成AIとは何ですか？またビジネスでどのように活用できますか？
+
+### product-comparison
+POST http://localhost:7071/api/product-comparison
+Content-Type: application/json
+
+{
+  "products": [
+    "iPhone 15 Pro",
+    "Google Pixel 8 Pro"
+  ],
+  "purpose": "写真撮影とAI機能の比較",
+  "considerations": "価格帯や性能、特徴的な機能について詳しく比較してください"
+}
+
+### product-comparison-3products
+POST http://localhost:7071/api/product-comparison
+Content-Type: application/json
+
+{
+  "products": [
+    "iPhone 15 Pro",
+    "Google Pixel 8 Pro",
+    "Galaxy S24 Ultra"
+  ],
+  "purpose": "カメラ性能とバッテリー持ちの比較",
+  "considerations": "価格、重量、OSの違いも考慮してください"
+}
+
+### product-comparison-business
+POST http://localhost:7071/api/product-comparison
+Content-Type: application/json
+
+{
+  "products": [
+    "Microsoft Surface Pro 9",
+    "Apple iPad Pro",
+    "Lenovo ThinkPad X1"
+  ],
+  "purpose": "ビジネス用途での使いやすさ比較",
+  "considerations": "キーボードの使いやすさ、拡張性、サポート体制も比較してください"
+}
+
+### product-comparison-entry
+POST http://localhost:7071/api/product-comparison
+Content-Type: application/json
+
+{
+  "products": [
+    "Canon EOS Kiss X10",
+    "Nikon D3500"
+  ],
+  "purpose": "初心者向け一眼レフカメラの比較",
+  "considerations": "操作性や価格、重さ、対応レンズの種類も比較してください"
+}
+
+### product-comparison-no-consideration
+POST http://localhost:7071/api/product-comparison
+Content-Type: application/json
+
+{
+  "products": [
+    "PlayStation 5",
+    "Xbox Series X"
+  ],
+  "purpose": "ゲーム機としての性能比較"
+}
+
+### create-productname
+POST http://localhost:7071/api/create-productname
+Content-Type: application/json
+
+{
+  "productnameSubject": "製造業向けの販売・生産管理の基幹業務パッケージ",
+  "productnameRole": "受注・販売、生産計画（MRP）、作業実績、材料仕入、在庫管理及び原価計算までの業務管理をパッケージとして網羅",
+  "productnameConvention": "新しい、革新的なイメージ"
+}
+
+### create-new-productname
+POST http://localhost:7071/api/create-new-productname
+Content-Type: application/json
+
+{
+  "result":"### ネーミング案：製造業向けの販売・生産管理基幹業務パッケージ\n\n1. **ManuVision（マニュヴィジョン）**  \n   - 「Manufacturing（製造）」と「Vision（ビジョン）」を組み合わせた名称で、製造業の未来を見据えた革新的なソリューションであることを強調しています。\n\n2. **CoreFlow（コアフロー）**  \n   - 業務の「基幹（Core）」をスムーズに流れる「Flow」として統合するというイメージを表現し、生産性向上や効率化の未来を感じさせます。\n\n3. **NexProd（ネクスプロッド）**  \n   - 「Next（新しい/次の）」と「Production（生産）」を掛け合わせ、未来志向で革新性のある製造業務管理の新時代を意識させる名前です。",
+  "newproductnameRequest": "別のもっとキャッチーなネーミング案提案して"
+
+}
+
+### technology-trend-research
+POST http://localhost:7071/api/technology-trend-research
+Content-Type: application/json
+
+{
+  "technicalField": "生成AI",
+  "timeRange": "過去1年間のトレンド",
+  "targetArea": "日本",
+  "reportFormat": "A4 1枚程度、要点を箇条書きでまとめてください"
+}
+
+###　create-product-idea
+POST http://localhost:7071/api/create-product-idea
+Content-Type: multipart/form-data; boundary=boundary123
+
+--boundary123
+# Content-Disposition: form-data; name="productIdeaFile"; filename="productIdea.pdf"
+# Content-Type: application/pdf
+
+# < ./productIdea.pdf
+
+--boundary123
+# ファイルではなくテキスト入力でテストする場合
+Content-Disposition: form-data; name="text"
+
+2025年の生成AIに関して日立システムズが注力した方がよい新商品アイデア
+
+--boundary123
+Content-Disposition: form-data; name="ideaDirection"
+
+市場調査を踏まえて他が思いついていないアイデアを考えて
+
+--boundary123
+
+Content-Disposition: form-data; name="additionalConsiderations"
+
+実現性が高そうなアイデアを出力すること
+
+--boundary123--
+
+### brainstorming
+POST http://localhost:7071/api/brainstorming
+Content-Type: application/json
+
+{
+  "theme":"社内業務を効率化するためのサービスで生成AIをどう活用できるか",
+  "expert1":"市場アナリスト",
+  "expert2":"戦略コンサルタント"
+}
+
+### new-brainstorming
+POST http://localhost:7071/api/new-brainstorming
+Content-Type: application/json
+
+{
+  "result":"テスト",
+  "newIdeaRequest":"さらに具体的なアドバイスにしてください"
+}
+
+### production_tech
+POST http://localhost:7071/api/production_tech
+Content-Type: application/json
+
+{
+  "category": "自動車",
+  "focus": "コスト削減",
+  "issues": ""
+}
+
+### new-production_tech
+POST http://localhost:7071/api/new_production_tech
+Content-Type: application/json
+
+{
+  "result":"【自動車分野・新製品製造プロセスにおける生産技術の洗い出し】\n\n#### 1. 生産技術の洗い出し（コスト削減の観点から）\n\n1. 自動化ラインの導入と最適化  \n    - ロボットアーム、AGV（無人搬送車）、IoTによるライン自動制御  \n    - 人件費削減、不良率低減、高効率化\n\n2. 部品モジュール化  \n    - 共通部品の採用、モジュール組立方式  \n    - 設計・在庫管理・組立コスト削減\n\n3. プレス・成形技術の高度化  \n    - プレス成形の多工程一体化、高速金型交換  \n    - 材料ロス低減、段取り時間短縮\n\n4. 材料歩留まりの向上（マテリアル・エンジニアリング）  \n    - レーザー切断、最適ネスティング活用  \n    - 原材料コスト削減\n\n5. サプライチェーンマネジメントの強化  \n    - JIT（ジャストインタイム）生産、需要予測AIの導入  \n    - 過剰在庫・ロス削減\n\n6. デジタルツインやシミュレーション活用  \n    - 生産ラインの仮想モデルによる検証・実験  \n    - 投資・手戻りコスト低減\n\n7. 品質管理の自動化  \n    - 画像認識AIによる検査自動化  \n    - 検査工数と人的ミス削減\n\n8. エネルギー・ユーティリティ効率化  \n    - 生産設備の省電力運転、再生可能エネルギー利用  \n    - ランニングコスト低減\n\n---\n\n#### 2. 既存生産技術の課題例と対応策\n\n- 人手依存による工数・コスト高 → 自動化・ロボット導入\n- 生産ラインの柔軟性不足 → モジュール化、少量多品種対応ライン\n- 不良率・リワークによるコスト上昇 → AI品質検査・フィードバック活用\n- 部材・材料ロス → 材料最適化・先端加工技術活用\n- 設備稼働率低下 → 予知保全（IoT・センサーで状況監視）\n\n---\n\n#### まとめ\n\nコスト削減を重視した場合、  \n「自動化技術の導入」「モジュール化による共通化」「高度な加工・検査による歩留まり向上」「サプライチェーン最適化」  \nなどが重要な生産技術として挙げられます。これらは、既存技術の課題も改善しながら全体的なコスト競争力を高めます。",
+  "newProductionTechRequest":"具体的な例を出しながら提案して"
+}
+
+### quality-standard-document
+POST http://localhost:7071/api/quality-standard-document
+Content-Type: application/json
+
+{
+  "product_name": "自動車用ブレーキパッド",
+  "manufacturing_type": "自動車部品製造",
+  "applicable_regulations": [
+    "JIS D 4411（自動車用ブレーキライニング及びブレーキパッド）",
+    "ECE R90（ブレーキライニング規則）"
+  ],
+  "product_specifications": "寸法：150mm×80mm×15mm、材質：セミメタリック、重量：200g±10g",
+  "tolerance_requirements": "摩擦係数±5%、寸法公差±0.1mm",
+  "document_detail_level": "detailed",
+  "quality_characteristics": ["摩擦係数", "耐熱性", "寸法精度", "騒音レベル"],
+  "existing_inspection_methods": ["摩擦係数測定試験", "寸法測定"],
+  "additional_considerations": "コスト効率を考慮し、既存設備で実施可能な方法を優先"
+}
+
+### defect-analysis-report
+POST http://localhost:7071/api/defect-analysis-report
+Content-Type: application/x-www-form-urlencoded
+
+productName=スマートフォン用バッテリー Model ABC-123
+&defectDescription=充電中にバッテリーが異常発熱し、最大60度まで温度が上昇する
+&occurenceCondition=急速充電機能を使用し、バッテリー残量が20%以下の状態から充電を開始した場合
+&usageEnvironment=iOS 17.0以降のiPhone、Android 13以降のスマートフォン
+&impactScope=対象製品：2024年4月〜2024年8月製造分（約50,000個）、報告件数：127件
+&defectData=温度測定データ：平均最高温度58.7度、内部抵抗値：正常範囲50-70mΩ→異常時120-150mΩ
+&consideration=製品のブランドイメージへの影響を最小限に抑えつつ、ユーザーの安全を最優先とした分析を実施してください
+
+### fix-defect-analysis-report
+POST http://localhost:7071/api/fix-defect-analysis-report
+Content-Type: application/x-www-form-urlencoded
+
+result=不具合分析レポートの内容
+&modify=実施計画をより具体的にし、各フェーズでの責任者と予算も含めて詳細化してください
+
+
+### error-analysis
+POST http://localhost:7071/api/error-analysis
+Content-Type: application/json
+
+{
+  "programmingLanguage": "Python",
+  "errorMessage": "NameError: name 'variabl' is not defined",
+  "considerations": "初心者にも分かりやすく説明してください"
+}
+
+### crisis_management_scenarios
+POST http://localhost:7071/api/crisis-management-scenarios
+Content-Type: application/json
+
+{
+  "industry":"食品加工",
+  "businessSize": "中小企業",
+  "businessContent":"製品の出荷",
+  "selectedOptions":["品質・製品リスク"],
+  "additionalContents":"高齢化と若手不足により、業務継続が困難になる可能性",
+  "considerations": "3パターンの想定ケースと予防策を出力"
+}
+
+### new_crisis_management_scenarios
+POST http://localhost:7071/api/new-crisis-management-scenarios
+Content-Type: application/json
+
+{
+  "result":"危機管理シナリオ  \n\n- リスクカテゴリ  \n  品質・製品リスク  \n\n- リスク内容  \n  出荷時パッケージに装着したIoT温度ロガーのデータ改ざんにより、実際には冷温管理が破綻している製品が「適正温度で輸送済み」と誤判定されたまま市場流出する。  \n\n- 想定ケース  \n  1) 出荷先までの輸送中に車両トラブルで庫内温度が10℃超で6時間継続  \n  2) 運転手が端末を不正リセットし正常ログを書き込み → 見掛け上問題なし  \n  3) 小売りで検査されず店頭販売 → 食中毒クレーム発生・回収・風評被害  \n\n- 予防策  \n  1) 改ざん防止：  \n     • 署名付きワンタイム書込型温度ロガー＋ブロックチェーン自動アップロード  \n     • 端末物理封印・改ざん痕検知シール   \n  2) 多重検証：  \n     • 出荷時と受入時に別系統のハンディ温度計で抜取測定  \n     • GPS/走行ログと温度データの自動突合  \n  3) 教育・契約：  \n     • 物流委託契約にデータ改ざん時の高額違約金を明記  \n     • ドライバー向け倫理・コンプライアンス研修  \n  4) 発生時対応：  \n     • 異常検知時は即時ロット隔離し微生物迅速試験  \n     • 事故調査チームが端末・車両ログをフォレンジック解析  \n     • 規制当局・取引先へ24時間以内に初報、リコール実施  \n     • 再発防止策を1か月以内に公表し信頼回復を図る",
+  "newIdeaRequest":"簡潔にまとめてください"
+}
+
+
+### judge-idea
+POST http://localhost:7071/api/judge-idea
+Content-Type: application/json
+
+{
+  "ideationFunction": "重量が20トンを超えた自転車",
+  "ideationUse": "通勤、通学などの移動手段",
+  "ideationMarket": "都市部の通勤者、学生",
+  "ideationCountry": "日本"
+}
+
+### judge-new-idea
+POST http://localhost:7071/api/judge-new-idea
+Content-Type: application/json
+
+{
+  "result":"違反1  \n違反箇所：車両総重量が20トンを超える点  \n基準となる法令：道路交通法施行令 第22条（車両の幅・長さ・高さ・総重量等の最高限度）  \nコメント：自転車として走行させる場合でも、道路交通法上は「軽車両」ではなく総重量20トンの大型車両として扱われる。一般道路を通行するには法定最高限度（総重量20t、軸重10t 等）を超過する可能性が高く、特殊車両通行許可が必要となり、通勤・通学用途として通常走行させることは事実上不可能。  \n\n違反2  \n違反箇所：車両の構造・安全基準（ブレーキ性能・操縦装置等）を満たしていない恐れ  \n基準となる法令：道路運送車両法 第41条（保安基準）および同施行規則、保安基準第11条ほか  \nコメント：20トンを人力で制動・操縦できる設計は保安基準が想定する自転車（軽車両）の範囲外。ブレーキ制動力・操舵性・視界確保など多数の保安基準を充足できないため、型式認証・保安基準適合性を得られず、公道走行に供する製造販売は認められない。  \n\n違反3  \n違反箇所：自転車としての製品安全基準（JIS D 9111 ほか）に適合しない  \n基準となる法令：消費生活用製品安全法（PSCマーク制度）  \nコメント：一般用自転車はPSC特別特定製品であり、JIS D 9111等に適合しないと販売できない。20トンの車両はフレーム強度、操縦安定性、ブレーキ性能等の試験条件を根本的に満たせず、PSCマークを取得できない。  \n\n違反4  \n違反箇所：「自転車」「通勤・通学用途」としての表示・広告  \n基準となる法令：景品表示法 第5条（不当表示の禁止）  \nコメント：重量20トンで人力走行不可能にもかかわらず、一般消費者向けに「自転車」「通勤・通学用」と表示すれば、著しく優良誤認・誤表示に該当するため違法となる。",
+  "newJudgeRequest":"簡潔にまとめて"
+}
+
+### key-point-extraction (text入力)
+POST http://localhost:7071/api/key-point-extraction
+Content-Type: multipart/form-data; boundary=boundary123
+
+--boundary123
+Content-Disposition: form-data; name="text"
+
+本日、弊社は新製品「AIサポートツール」の発表会を開催しました。発表会では、開発責任者の田中が製品の特徴や導入メリットについて説明し、多くの参加者から高い関心が寄せられました。今後は、全国の販売代理店を通じて順次販売を開始する予定です。また、初年度は1万台の販売を目標としています。質疑応答では、価格設定やサポート体制について多くの質問があり、担当者が丁寧に回答しました。
+--boundary123
+Content-Disposition: form-data; name="additionalConsiderations"
+
+抽出時の考慮事項があればここに入力
+--boundary123--
+
+### key-point-extraction (ファイルアップロード)
+POST http://localhost:7071/api/key-point-extraction
+Content-Type: multipart/form-data; boundary=boundary123
+
+--boundary123
+Content-Disposition: form-data; name="fileList"; filename="sample.txt"
+Content-Type: text/plain
+
+< ./sample.txt
+
+--boundary123
+Content-Disposition: form-data; name="additionalConsiderations"
+
+抽出時の考慮事項があればここに入力
+--boundary123--
+
+### product-aarrr
+POST http://localhost:7071/api/product-aarrr
+Content-Type: application/json
+
+{
+  "product_service": "スマートフォンアプリ「家計簿AI」",
+  "product_service_content": "AIが自動でレシート読み取りと家計分析を行い、節約アドバイスを提供するフリーミアムモデルの家計簿アプリ。プレミアム版では詳細な分析レポートと投資アドバイス機能を提供。",
+  "additionalConsiderations": "具体的で実行可能な施策を重視して分析してください"
+}
+
+### sales-forecast(販売予測分析-新規作成)
+POST http://localhost:7071/api/sales-forecast
+Content-Type: application/json
+
+{
+  "productName": "営業文書自動生成ツール",
+  "productCategory": ["ソフトウェア", "アプリケーション", "AI関連製品", "生成AI"],
+  "features": "営業メールと提案書を生成・パーソナライズ。CRM連携、業界別テンプレート。自動ドラフト生成、成功パターン学習。",
+  "useCase": "商談フォローの次回アクションメール作成、提案書・見積提示前の提案骨子ドラフト生成",
+  "analysisPriorities": ["市場シェア獲得見込み", "競合製品との差別化要素"],
+  "targetIndustry": ["製造業", "情報通信業", "生活関連サービス業・娯楽業"],
+  "targetCustomers": ["中小企業", "大企業", "営業部門"],
+  "targetRegions": ["日本全国", "アジア"],
+  "marketData": "国内の従業員50~500名規模の企業数は約90,000社。生成AI営業ツール市場は年成長率30%。自社PoCでメール返信率+25%。",
+  "competingProducts": "競合A：月額8万円、高機能帯。競合B：月額49000円、機能限定版。日本語表現に課題有。"
+}
+
+### fix-sales-forecast（販売予測分析-結果調整）
+POST http://localhost:7071/api/fix-sales-forecast
+Content-Type: application/json
+
+{
+  "result":"危機管理シナリオ  \n\n- リスクカテゴリ  \n  品質・製品リスク  \n\n- リスク内容  \n  出荷時パッケージに装着したIoT温度ロガーのデータ改ざんにより、実際には冷温管理が破綻している製品が「適正温度で輸送済み」と誤判定されたまま市場流出する。  \n\n- 想定ケース  \n  1) 出荷先までの輸送中に車両トラブルで庫内温度が10℃超で6時間継続  \n  2) 運転手が端末を不正リセットし正常ログを書き込み → 見掛け上問題なし  \n  3) 小売りで検査されず店頭販売 → 食中毒クレーム発生・回収・風評被害  \n\n- 予防策  \n  1) 改ざん防止：  \n     • 署名付きワンタイム書込型温度ロガー＋ブロックチェーン自動アップロード  \n     • 端末物理封印・改ざん痕検知シール   \n  2) 多重検証：  \n     • 出荷時と受入時に別系統のハンディ温度計で抜取測定  \n     • GPS/走行ログと温度データの自動突合  \n  3) 教育・契約：  \n     • 物流委託契約にデータ改ざん時の高額違約金を明記  \n     • ドライバー向け倫理・コンプライアンス研修  \n  4) 発生時対応：  \n     • 異常検知時は即時ロット隔離し微生物迅速試験  \n     • 事故調査チームが端末・車両ログをフォレンジック解析  \n     • 規制当局・取引先へ24時間以内に初報、リコール実施  \n     • 再発防止策を1か月以内に公表し信頼回復を図る",
+  "newIdeaRequest":"簡潔にまとめてください"
+}
+
+### risk-assessment
+POST http://localhost:7071/api/risk-assessment
+Content-Type: application/json
+
+{
+  "workerInfo": "20~50歳、平均5年、フォークリフト運転資格保持者3名",
+  "machineInfo": "機械名：プレス機　特性：高圧で金属を加工する",
+  "workerCountAndPlacement": "人数：5人　配置：プレス機操作3名、材料供給2名",
+  "processDetails": "工程：材料供給→プレス加工→完成品回収　作業時間：8時間/日",
+  "currentMeasures": "定期点検：月1回実施"
+}
+
+### business_plan
+POST http://localhost:7071/api/business_plan
+Content-Type: application/json
+
+{
+  "businessName": "キトサン配合・脂質吸収抑制D2C飲料",
+  "businessPurpose": "生活習慣病リスク低減を狙い、食事時に飲むだけで脂質の吸収を抑える飲料をD2Cで提供。短期（4週間）で効果指標の改善を可視化し、長期的な継続を促進。",
+  "targetMarket": "国内全国、通販D2C",
+  "businessModel": "通常価格: 1本180〜280円、初回トライアル: 14本（2週間）2,000〜2,800円＋送料無料、継続割: 3回継続で10%オフ、6回で15%オフ、スキップ・本数変更可",
+  "competitiveAdvantage": "味: 食事の邪魔をしない毎日飲みやすい風味、成分独自性: キトサン中心設計（必要に応じて少量の可溶性食物繊維等を補完）",
+  "financialProjection": "原価率（製造＋物流＋決済＋CS）: 60〜70%以内、広告販促: 20〜25%、営業利益率: 10%目標"
+}
+
+### new-business_plan
+POST http://localhost:7071/api/new_business_plan
+Content-Type: application/json
+
+{
+  "result":"【仮で設定した情報】  \n- 法人名：株式会社ヘルシーライフ  \n- 製品名：「リブケア・キトサンドリンク」  \n- 運営体制：代表取締役1名、マーケティング2名、製造・物流委託  \n- 初年度投入資金：1,500万円  \n- 初年度売上目標：6,000万円  \n- 生産協力工場：国内OEM飲料メーカー  \n- 主な広告媒体：Web広告、SNS、インフルエンサー  \n- 想定効果指標：空腹時血中脂質（TG値/LDL値）、BMIの4週間変化\n\n---\n\n## 1. 事業の目的と背景\n\n### 1.1 事業の目的  \nキトサン配合の脂質吸収抑制飲料をD2Cモデルで展開し、生活習慣病リスク軽減、健康寿命延伸をサポートする。\n\n### 1.2 事業の背景・市場ニーズ  \n国内における生活習慣病（肥満、脂質異常症、糖尿病等）は年々増加傾向。多忙な現代人は「手軽な予防策」に高い関心を持ち、特定保健用食品（トクホ）等の機能性飲料マーケットも拡大。既存製品は「毎日継続しにくい味」「定期購入のしづらさ」「効果実感が見えにくい」など課題があり、その解決が市場ニーズとなっている。\n\n### 1.3 事業の目標  \n初年度：新規2万人獲得、継続率25%以上、顧客満足度85%以上。指標可視化で2週間以内に効果実感80%以上を目指す。\n\n---\n\n## 2. 市場分析\n\n### 2.1 市場規模・成長性  \n- 国内の機能性飲料/サプリメント市場規模：約6,000億円（2023年）で、年3～6%成長傾向。\n- D2Cチャネルの参入も拡大中、定期購入型ビジネスのシェア拡大。\n\n### 2.2 競合分析  \n- 主要競合：ヘルシア緑茶、黒烏龍茶、サプリメントタイプ脂質吸収抑制製品。  \n- 競合製品の課題：味や飲みやすさ、効果可視化、継続購入インセンティブの弱さ。\n\n### 2.3 顧客ニーズ  \n- 簡便（生活になじむ）\n- 飲みやすい味\n- 継続しやすい仕組み（割引やスキップ等）\n- 効果指標が明確\n- 無理のない価格感\n\n---\n\n## 3. 事業の概要\n\n### 3.1 事業内容・事業モデル  \n- 商品：「リブケア・キトサンドリンク」（キトサン配合ドリンクをD2C直販）\n- モデル：初回トライアル＋定期サブスク、全国送料無料\n- 定期特典（3回10%/6回15%オフ、スキップ・本数調整自由）\n\n### 3.2 強み・独自性  \n- 食事の邪魔をしない味設計（毎日続けやすい）  \n- キトサン中心×補助の可溶性繊維等で適切な機能設計  \n- 効果指標（脂質値やBMI変化等）改善を短期間で可視化＆実感サポート  \n- SNS中心に顧客体験シェアを促進\n\n### 3.3 実現可能性  \n- OEM製造委託で安定供給\n- Web・SNSマーケティング活用のD2C運営体制\n- 初年度投資で広告・生産・CSを確保\n\n---\n\n## 4. 事業計画の詳細\n\n### 4.1 製品（サービス）詳細  \n- 味：微香柑橘、低甘味、無果汁、サラッと飲みやすい\n- 内容成分：キトサン500〜800mg／本、必要に応じ難消化性デキストリン等追加  \n- 容量：1本350ml、カロリー5kcal以下、保存料不使用  \n- トライアル：14本2,000〜2,800円（送料無料）  \n- 通常定期：1本180〜280円（発送14本単位）\n\n### 4.2 運営体制  \n- 代表取締役1名、マーケティング2名\n- 製造・物流：国内OEM工場委託  \n- カスタマーサポート：自社／コールセンター委託  \n- 顧問（管理栄養士、薬剤師等）を月額契約でアドバイス\n\n### 4.3 マーケティング戦略  \n- 動画広告、SNS広告（Instagram/Twitter）、インフルエンサーマーケ\n- 体験レビュー投稿キャンペーン\n- 医療/健康系メディアタイアップ\n- 2週間毎の効果測定チャレンジ訴求\n\n---\n\n## 5. 財務計画\n\n### 5.1 収支計画\n- 原価率（製造＋物流＋決済＋CS）：60〜70%\n- 広告販促費：20〜25%\n- 営業利益率：10%\n- 初年度売上目標：6,000万円（平均単価220円×2万人×14本）\n- 利益目標：600万円（月販50万円強、年間黒字化）\n\n### 5.2 資金調達方法  \n- 自己資金＋金融機関融資\n- 必要によりエンジェル投資家参画を検討\n\n### 5.3 採算性分析  \n- 継続率25%でLTV確保、利益率10%確保可能\n- 3回・6回継続特典＝利益と顧客満足度を両立\n\n---\n\n## 6. 事業計画書まとめ\n\n- 事業目的：生活習慣病リスク低減をD2C飲料で支援\n- 市場分析：成長市場で機能性・飲みやすさ・継続性を実現\n- 製品内容：毎日続けやすい味×可視化できる効果\n- 販売戦略：初回トライアル＋定期サブスク／割引・スキップ機能\n- 財務計画：原価・広告管理で営業利益10%確保を目指す\n\n---\n\n## 7. 事業計画書最終版\n\n以上の内容にて事業計画書草案を作成。ご確認ください。",
+  "newBusinessPlanRequest":"初年度売上目標を300万円に変更したうえで事業計画書を作成して"
+}
+boundary123
+
+--boundary123
+Content-Disposition: form-data; name="text"
+
+本日、弊社は新製品「AIサポートツール」の発表会を開催しました。発表会では、開発責任者の田中が製品の特徴や導入メリットについて説明し、多くの参加者から高い関心が寄せられました。今後は、全国の販売代理店を通じて順次販売を開始する予定です。また、初年度は1万台の販売を目標としています。質疑応答では、価格設定やサポート体制について多くの質問があり、担当者が丁寧に回答しました。
+--boundary123
+Content-Disposition: form-data; name="additionalConsiderations"
+
+抽出時の考慮事項があればここに入力
+--boundary123--
+
+### task-breakdown
+POST http://localhost:7071/api/task-breakdown
+Content-Type: application/json
+
+{
+  "task": "売上データを纏めて、月次報告書を作成する",
+  "consideration": "社内報告用"
+}
+
+### fix-task-breakdown
+POST http://localhost:7071/api/fix-task-breakdown
+Content-Type: application/json
+
+{
+  "result":"Step1: 売上データを纏めて月次報告書を作成するための主要な要素  \n・売上データ収集  \n・データ整理・検証  \n・データ分析（対前年比・前月比、部門別など）  \n・ビジュアル作成（グラフ・表）  \n・月次報告書ドラフト作成  \n・レビュー・承認プロセス  \n・最終版配布・アーカイブ  \n\n\n\nStep2: 主要な要素ごとに必要なタスク  \n1. 売上データ収集  \n   - 各部門／システムから売上データを取得  \n   - データ取得期限を通知し進捗をフォロー  \n\n2. データ整理・検証  \n   - フォーマット統一（通貨・日付・部門コード）  \n   - 欠損・重複チェック  \n   - 異常値の一次確認と修正依頼  \n\n3. データ分析  \n   - 前月比・前年比計算  \n   - 主要KPI（売上高、粗利、客単価など）算出  \n   - 要因分析（部門別、商品別、地域別）  \n\n4. ビジュアル作成  \n   - 分析結果をグラフ化（棒・折れ線・円グラフ）  \n   - 主要数字をハイライトした表を作成  \n\n5. 月次報告書ドラフト作成  \n   - 目的・サマリー記載  \n   - 主要ハイライトと示唆を文章化  \n   - グラフ・表の配置とレイアウト調整  \n\n6. レビュー・承認プロセス  \n   - 上長・経営企画部へドラフト送付  \n   - コメント反映／再提出  \n   - 最終承認取得  \n\n7. 最終版配布・アーカイブ  \n   - 社内ポータル／メールで配布  \n   - ファイル命名規則に従い共有ドライブへ保存  \n\n\n\nStep3: タスクを優先順位で並び替え  \n1. 売上データ収集  \n2. データ整理・検証  \n3. データ分析  \n4. ビジュアル作成  \n5. 月次報告書ドラフト作成  \n6. レビュー・承認プロセス  \n7. 最終版配布・アーカイブ  \n\n\n\nStep4: 各タスクの具体的アクション・手順  \n1. 売上データ収集  \n   a. 月初1営業日に各部門へ依頼メール送信  \n   b. BIシステム・ERPから自動抽出スクリプト実行  \n   c. 取得確認リストを更新し、未着部門へリマインド  \n\n2. データ整理・検証  \n   a. 取得データを統合テンプレートにインポート  \n   b. PowerQueryでフォーマット自動変換  \n   c. 欠損・重複レポートを生成し、担当者へ照会  \n   d. 修正済みデータを再取り込みし、チェック完了フラグ付与  \n\n3. データ分析  \n   a. ピボットテーブルで月次集計  \n   b. Python/Excel関数で前年比・前月比計算  \n   c. KPI計算シートを自動更新  \n   d. 部門・商品・地域別の寄与度分析を行いコメント用素材作成  \n\n4. ビジュアル作成  \n   a. 標準テンプレートに従いグラフを生成  \n   b. 色・フォントを社内ブランドガイドラインに合わせ調整  \n   c. ダッシュボード形式で主要数字をハイライト  \n\n5. 月次報告書ドラフト作成  \n   a. 表紙・目次自動生成  \n   b. 「サマリー」「今月のポイント」「課題・対策案」セクション記載  \n   c. グラフ・表を埋め込み、ページレイアウト確認  \n\n6. レビュー・承認プロセス  \n   a. ドラフト版をPDF化し、上長・経営企画部へ送付  \n   b. フィードバックを一覧表にまとめ、修正対応  \n   c. 修正版を再送し、承認印取得  \n\n7. 最終版配布・アーカイブ  \n   a. 最終PDFを社内ポータルにアップロードし通知メール送信  \n   b. 共有ドライブに「YYYYMM_月次報告書」として保存  \n   c. 次月の改善点をメモし、プロセス振り返り資料更新  \n\n\n\nStep5: 最終タスクリストと順序  \n1. 売上データ収集  \n2. データ整理・検証  \n3. データ分析  \n4. ビジュアル作成  \n5. 月次報告書ドラフト作成  \n6. レビュー・承認プロセス  \n7. 最終版配布・アーカイブ",
+  "revisionPrompt":"作成後に課長とのレビューを追加して"
+}
+
+### design-document-review
+POST http://localhost:7071/api/design-document-review
+Content-Type: multipart/form-data; boundary=boundary456
+
+--boundary456
+Content-Disposition: form-data; name="fileList"; filename="design_document_sample.txt"
+Content-Type: text/plain
+
+< ./design_document_sample.txt
+
+--boundary456
+Content-Disposition: form-data; name="reviewPurpose"
+
+初期設計の抜け漏れ洗い出しと、性能・安定性・セキュリティ・運用性の主要リスク評価、将来拡張（非同期化・S3・RBAC）を見据えた妥当性確認
+--boundary456
+Content-Disposition: form-data; name="priorityPoint"
+
+主要機能フローとAPI（POST /api/upload, GET /api/result/:id）の整合性とエラー設計
+--boundary456
+Content-Disposition: form-data; name="consideration"
+
+社内検証用途（情報システム部想定）
+--boundary456--
+
+### technology-training
+POST http://localhost:7071/api/technology-training
+Content-Type: application/json
+
+{
+  "technology": "生成AI",
+  "learningLevel": "中級者",
+  "studyTime": 80,
+  "consideration": "段階的に学べるように"
+}
+
+### create-schedule
+POST http://localhost:7071/api/schedule
+Content-Type: application/json
+
+{
+  "newSchedulework": "スケジュールの作成",
+  "newSchedulestartdate": "2025-09-01",
+  "newScheduleenddate": "2025-09-05",
+  "newScheduleConsiderations": "備考"
+}
+
+### trouble-shooting-guide
+POST http://localhost:7071/api/trouble-shooting-guide
+Content-Type: multipart/form-data; boundary=boundary123
+
+--boundary123
+Content-Disposition: form-data; name="productSpecificationFiles"; filename="productSpecificationTest.txt"
+Content-Type: text/plain
+
+< ./productSpecificationTest.txt
+
+--boundary123
+Content-Disposition: form-data; name="productName"
+
+AvenirPrint X500
+
+--boundary123
+Content-Disposition: form-data; name="productPurpose"
+
+オフィスコピー機
+--boundary123--### create-source-code
+POST http://localhost:7071/api/create-source-code
+Content-Type: application/x-www-form-urlencoded
+
+languageSelect=Python
+&pastQA=
+&inputMessage=標準入力から整数を受け取り、その2乗を出力するプログラムを作成してください。
+
+
+### incident-report
+POST http://localhost:7071/api/incident-report
+Content-Type: application/x-www-form-urlencoded
+
+incidentDateTime=2025-09-09T14:30:00
+&incidentLocation=工場内機械設備付近
+&reporter=田中太郎
+&yearsOfService=5年
+&workExperience=機械操作経験3年
+&jobDescription=プレス機操作
+&disasterType=挟まれ・巻き込まれ
+&manualAvailability=あり
+&complianceStatus=一部遵守
+&manualLastUpdated=2024-01-15
+&equipmentName=プレス機A-1
+&installationYear=2018年
+&lastInspectionDate=2025-08-15
+&maintenanceHistory=2024年1月 - 定期点検実施、2024年6月 - 安全装置交換
+&equipmentMalfunctionHistory=2023年12月 - 安全装置故障、2024年3月 - 油圧系統の不具合
+
+### text-check (直接入力)
+POST http://localhost:7071/api/text-check
+Content-Type: multipart/form-data; boundary=boundary123
+
+--boundary123
+Content-Disposition: form-data; name="textInput"
+
+この製品は高性能で使いやすいです。多くのユーザーに支持されています。
+--boundary123
+Content-Disposition: form-data; name="checkContent1"
+
+誤字脱字がないか
+--boundary123
+Content-Disposition: form-data; name="checkContent2"
+
+表現が適切か
+--boundary123
+Content-Disposition: form-data; name="checkContent3"
+
+専門用語が多すぎないか
+--boundary123--
+
+{
+  "result":"【１．主要前提】  \n\n・対象地域：日本国内  \n・対象企業数：従業員 50〜500 名の法人＝約 90,000 社（中小企業白書・帝国データバンクを統合推計）  \n・CRM導入率：35％（IDC Japan 2023）  \n・営業組織を有しアウトバウンドメールを実施：80％  \n　⇒ 90,000 × 35％ × 80％ ≒ 25,200 社が一次的に導入可能な母集団  \n・価格：月額 5 万円（年額 60 万円）／1 テナント  \n・市場成長率：CAGR 30％（提示データ）  \n・製品優位性：①競合 A より 38％安価 ②日本語精度・返信率 +25％（PoC 実績）  \n・ローンチ時期：FY2025/04（１年間の実売期は 9 か月＝0.75 年と仮定）  \n・個人情報保護：国際 SOC2＋国内 ISMS 認証を取得済み（売上機会ロス 5％削減効果を仮置き）  \n\n\n\n【２．市場規模整理（TAM／SAM／SOM）】  \n\n1) TAM（理論上の最大）  \n　90,000 社 × 60 万円 ＝ 540 億円／年  \n\n2) SAM（CRM 利用かつアウトバウンド重視企業）  \n　25,200 社 × 60 万円 ＝ 151.2 億円／年  \n\n3) SOM（初年度に実際に狙えるシェア）  \n　営業リソース・CS 人員から 0.5〜2％ を想定  \n　⇒ 126〜504 社  \n\n\n\n【３．導入社数シナリオ】  \n\n・保守（ローンチ遅延／競合値下げ）：0.5％＝約 126 社  \n・ベース（計画値）：1.0％＝約 252 社  \n・強気（バンドワゴン効果）：2.0％＝約 504 社  \n\n獲得ペースは四半期ごとに 20％→25％→25％→30％（計 100％）で逓増と設定。  \n\n\n\n【４．価格モデルおよび ARPC】  \n\n・サブスク：月額 5 万円（年額 60 万円）  \n・オンボーディング／API セットアップ：10 万円（導入時のみ、採用率 70％）  \n・追加ユーザー課金：現時点では未算入  \n\n\n\n【５．初年度売上予測（単位：百万円）】  \n\n　　　　　　保守　　　　　ベース　　　　　強気  \n-------------------------------------------------  \n契約社数　　126 社　　　　 252 社　　　　 504 社  \nARR換算　　75.6　　　　　 151.2　　　　 302.4  \nオンボード　 8.8　　　　　　17.6　　　　　 35.3  \n合計売上　　84.4　　　　　 168.8　　　　 337.7  \n\n※9 か月稼働補正（0.75）を掛けた実現売上  \n　保守：63.3　ベース：126.6　強気：253.3（百万円）  \n\n\n\n【６．感度分析（主要レバー別インパクト）】  \n\n1) 価格を＋10％（5.5 万円）  \n　→ 売上＋10％、解約率上昇で純増＋7％見込み  \n\n2) 導入転換率を＋5pt  \n　→ 社数＋47 (保守)／＋94 (ベース)／＋188 (強気)  \n　→ 売上約＋24〜96 百万円  \n\n3) 個人情報法規制強化に伴う認証遅延（3 か月）  \n　→ 実売期 0.5 年に短縮＝売上▲33％  \n\n\n\n【７．リスクと対応策】  \n\n1) 競合 A の価格攻勢  \n　→ 年額ディスカウント（年一括で 54 万円）、差別化機能の早期リリース  \n\n2) 個人情報保護・越境移転リスク  \n　→ 国内データセンター利用、CCPA/改正個人情報保護法への準拠を開示  \n\n3) 導入後効果のばらつき  \n　→ KPI ダッシュボード提供と月次レビューで LTV 最大化、解約率 8％→5％へ抑制  \n\n4) セールスキャパ不足  \n　→ リセラー（SIer・CRM ベンダー）チャネルを Q3 から追加、SOM 2％達成のバックアップ  \n\n\n\n【８．結論／アクション】  \n\n・初年度（実売 9 か月）の売上レンジ  \n　保守：6.3 億円　ベース：12.7 億円　強気：25.3 億円  \n\n・ARR ベースでは 0.8〜3.4 億円／FY  \n・チャネル強化とプライバシー準拠を両立すれば、SOM 2％超・年商 3 億円台は十分狙える。  \n\n最優先アクション：  \n① 初期 50 社の導入成功事例を Q2 までに確保  \n② SOC2 TypeⅡ／ISMS Claud をリリース前に取得  \n③ 価格アップセルの布石として「生成提案書モジュール」をオプション化  \n\n以上が新製品 AI 営業自動化ツールの初年度販売予測である。",
+  "revisionPrompt":"各セクション3行以内で出力してください。専門用語を控えて。読み手に分かりやすい文章で出力して。"
+}
+
+### term-summary
+POST http://localhost:7071/api/term-summary
+Content-Type: application/json
+
+{
+  "domain": "IT系",
+  "content": "インターネットは、世界中のコンピュータやネットワークを相互に接続する巨大な情報通信網です。1960年代にアメリカで開発されたARPANETがその起源とされ、1990年代以降、一般家庭や企業にも急速に普及しました。インターネットを利用することで、ウェブサイトの閲覧、メールの送受信、動画の視聴、オンラインショッピング、SSでの交流、クラウドサービスの利用など、さまざまなサービスが可能となります。インターネットの仕組みは、TCP/IPという通信プロトコルによって成り立っています。これにより、異なる機器やOS同士でも情報のやり取りが可能です。また、インターネットは分散型のネットワークであり、特定の管理者が存在しないため、世界中の誰もが自由に情報を発信・取得できます。近年では、IoT（モノのインターネット）やAI、ビッグデータなどの新技術とも連携し、社会や経済の発展に大きく貢献しています。今やインターネットは、私たちの生活やビジネスに不可欠なインフラであり、情報社会の基盤となっています。",
+  "consideration": "わかりやすい言葉でまとめて"
+}
+
+### research-report
+POST http://localhost:7071/api/research-report
+Content-Type: application/json
+
+{
+  "subject": "2025年の生成AIに関して企業が注力した方がよいこと",
+  "purpose": "生成AIを活用したユーザー体験の向上",
+  "method": "ユーザーの行動データを分析し、パーソナライズされたコンテンツを提供する",
+  "researchresult": "ユーザー満足度の向上とリピート率の増加",
+  "references": "関連文献や事例",
+  "consideration": ""
+}
+
+### research-new-report
+POST http://localhost:7071/api/research-new-report
+Content-Type: application/json
+
+{
+  "result":"**主題: 2025年の生成AIにおける企業の注力ポイント**\n\nアイデア: ユーザー体験のパーソナライズと倫理的AIの統合\n\n説明: 2025年において、企業は生成AIを活用してユーザー体験をよりパーソナライズすることに注力すべきです。具体的には、AIがユーザーの過去の行動や好みを学習し、個々のニーズに合わせたコンテンツやサービスを提供することが求められます。しかし、これを実現するためには、ユーザーのプライバシーを尊重し、倫理的なAIの使用を確保することが不可欠です。企業は、透明性のあるデータ使用ポリシーを策定し、ユーザーが自分のデータをどのように使用されるかを理解し、コントロールできるようにする必要があります。これにより、信頼性の高いAI体験を提供し、顧客満足度を向上させることが可能になります。",
+  "newIdeaRequest":"具体的な例を出しながら提案して"
+}
+
+
+### marketing-strategy
+POST http://localhost:7071/api/marketing-strategy
+Content-Type: application/json
+
+{
+  "MarketSize":"世界の電気自動車市場：約4000万台（2030年予測）",
+  "GrowthRate":"横ばい傾向、今後3年は年1～2％程度の微増予測",
+  "KeyPlayer":"トヨタ、テスラ、BYD",
+  "Competitors":"テスラ Model 3：価格約500万円〜。航続距離約600km、OTAアップデートによる常時進化、ブランド力・先進性が強み。",
+  "CustomerAttributes":"年齢層：30代〜50代中心。比較的高所得層（年収700万円以上）。居住地：都市部や郊外在住者。自宅に駐車場（充電設備導入可能）を持つケースが多い。",
+  "PurchasingBehavior":"ディーラー訪問よりも、公式サイトや比較サイトを通じた情報収集が中心。試乗体験を重視する傾向が強い。航続距離充電インフラの利便性を最重要視。"
+}
+
+### new-marketing-strategy
+POST http://localhost:7071/api/new-marketing-strategy
+Content-Type: application/json
+
+{
+  "result":"マーケティング戦略\n\n1. 市場動向と顧客ニーズの分析結果\n・市場規模：2030年4,000万台予測、直近3年は年1〜2％の微増で成熟期入り  \n・主要プレイヤー／強み：テスラ（ブランド・OTA）、トヨタ（信頼性・販売網）、BYD（コスト力）  \n・課題：価格帯の高さ・充電インフラの不安・製品差別化の難しさ  \n・顧客属性：30〜50代・年収700万円以上・都市／郊外在住・自宅充電可  \n・購買行動：公式／比較サイトでの情報収集→試乗重視→オンライン購入志向  \n・潜在需要：①テスラより割安かつ同等航続距離　②家庭充電＋急速充電ネットワーク保証　③OTAで常時進化する安心感\n\n2. 効果的なマーケティング施策の検討\n①製品開発・改善  \n　- 価格：450万円〜（Model 3 比▲10％）  \n　- 航続距離：550km以上・800V急速充電対応  \n　- 無償家庭用充電器＋設置サポート、OTAアップデート標準\n\n②価格設定  \n　- 現金・残価設定ローン・サブスク（月額5万円台）を並列提示\n\n③販売チャネル  \n　- D2Cオンライン＋都市部ショールーム／郊外試乗拠点  \n　- 住宅デベロッパー・商業施設と共同で充電器設置→顧客囲い込み\n\n④プロモーション  \n　- デジタル広告（検索・SNS）に70％集中、リターゲティング強化  \n\t- VR試乗体験＆期間限定ポップアップ  \n\t- 既存EVオーナー紹介プログラム：紹介者・被紹介者各15万円相当ポイント\n\n3. 最適なマーケティング戦略の立案\n・数値目標（3年累計）：販売10万台、売上4,500億円、シェア0.25％  \n・KPI：  \n　- 月間リード数3万件／CVR5％  \n\t- 試乗予約率20％→試乗後成約率25％  \n・予算（年間）  \n　- マーケティング費220億円（売上の5％）  \n　　内訳：デジタル広告40％、試乗/イベント25％、リファラル15％、PR10％、市場調査10％  \n・体制：マーケティング本部60名（デジタル25、ブランド10、リサーチ5、CRM10、イベント10）\n\n4. 戦略の実行計画\nQ1：製品最終仕様確定／公式サイト・予約開始  \nQ2：デジタルティザー広告→リード獲得、VR試乗コンテンツ公開  \nQ3：都市ショールーム3拠点オープン、ポップアップ10拠点、試乗車500台配備  \nQ4：正式販売開始、家庭充電器設置キャンペーン  \n年2：海外主要都市展開、充電ネットワーク提携拡大  \n進捗管理：月次KPIレビュー、四半期ごとにPDCA／ダッシュボード共有\n\n5. 効果検証と改善の方針\n・指標：CAC、ROAS、試乗→成約率、OTA利用率、NPS  \n・手法：A/Bテスト（広告クリエイティブ・LP）、顧客アンケート、車両テレメトリ分析  \n・改善：KPI未達が2四半期連続の場合、施策予算配分を20％まで再調整  \n・VOCフィードバックを製品OTAに反映し、機能追加ごとにNPS変化を追跡",
+  "newIdeaRequest":"より簡潔にしてください。"
+}
+### hiyari-hat
+POST http://localhost:7071/api/hiyari-hat-kyt
+Content-Type: application/json
+
+{
+  "location": "工場内",
+  "task": "フォークリフトによる荷物の運搬",
+  "additionalConsiderations": "周囲の安全を考慮する"
+}
+
+
+### needs_survey
+POST http://localhost:7071/api/needs-survey
+Content-Type: application/json
+
+{
+  "industry":"製造業",
+  "purpose": "新規導入企業の獲得",
+  "product":"紙帳票の電子化",
+  "persona":"生産管理担当者、40代男性、現場経験が長くITには不慣れ、人手不足解消に関心あり",
+  "additionalConsiderations": "初期費用を抑えたい"
+}
+
+### new_needs_survey
+POST http://localhost:7071/api/new-needs-survey
+Content-Type: application/json
+
+{
+  "result":"{
+  "headers": ["認知", "検討", "購入", "使用", "リピート"],
+  "rows": [
+    {
+      "label": "行動",
+      "values": [
+        "業界サイトや展示会で情報収集",
+        "複数ベンダーの資料請求・デモ視聴",
+        "社内稟議書作成・見積交渉",
+        "現場でテスト導入・操作研修",
+        "他ラインへ拡張・追加ライセンス購入"
+      ]
+    },
+    {
+      "label": "思考",
+      "values": [
+        "紙運用ではもう限界かもしれない",
+        "うちでも簡単に使えるだろうか",
+        "初期費用に見合う効果を得たい",
+        "操作は想像より分かりやすい",
+        "全社導入でさらに効率化できるはず"
+      ]
+    },
+    {
+      "label": "ニーズ",
+      "values": [
+        "低コストで人手不足を補う手段を知りたい",
+        "導入ハードルが低いシステムを比較したい",
+        "小規模から始められる料金プランが欲しい",
+        "簡単UIと迅速なサポートが必要",
+        "拡張性とリピート割引を期待"
+      ]
+    },
+    {
+      "label": "感情",
+      "values": [
+        "現状への不満と解決策への好奇心",
+        "慎重だが期待感が高まる",
+        "投資判断への不安と決意",
+        "安堵と軽い学習ストレス",
+        "満足と自信、さらなる意欲"
+      ]
+    }
+  ]
+}",
+  "newIdeaRequest":"内容を補足して具体的に記載してほしい"
+}
+### new-product-proposal
+POST http://localhost:7071/api/new-product-proposal
+Content-Type: application/json
+
+{
+  "productName": "げんあし",
+  "productMarket": "生成AI",
+  "targetCustomer": "製造業",
+  "concept": "製造現場の効率化",
+  "comparisonPoints": "使用場面に応じたユースケース",
+  "consideration":""
+}
+### create-technology-proposal
+POST http://localhost:7071/api/create-technology-proposal
+Content-Type: application/json
+
+{
+  "technologyName": "AI画像認識",
+  "market": "自動車",
+  "current_Issues": "品質が低下している",
+  "consideration": "コストを抑えたい"
+}
+
+### fix-technology-proposal
+POST http://localhost:7071/api/fix-technology-proposal
+Content-Type: application/json
+
+{
+  "result":"---\n# AI画像認識導入提案書 － 自動車市場向け\n\n---\n\n## 1. 市場・現状と課題\n\n- **対象市場**：自動車製造業\n- **現状の課題**：\n    - 品質低下（目視検査・従来型自動検査装置の限界）\n    - クレーム・リコール増加によるブランドイメージ毀損・コスト増大\n    - 担当者の技術/人手不足による判定精度のバラツキ\n\n---\n\n## 2. 新技術の概要\n\n### (1) AI画像認識の特徴\n- カメラ・センサなどを用い外観・部品認識、不良判定を自動化\n- ディープラーニング技術（CNN等）で微細な欠陥も高精度検出\n- 過去データから自動学習・精度向上\n\n### (2) 技術的動向\n- 大手完成車メーカー・部品サプライヤーで検討／導入進行中\n- AI画像認識ソリューションの低価格化と使いやすさ向上\n- ベンダー提供のクラウド型・エッジ実装モデルの選択可能\n\n### (3) 導入コスト\n| 項目         | 初期費用（目安）      | 維持・運用コスト（年）        |\n|--------------|--------------------|--------------------------|\n| カメラ・センサ| 約50～100万円/ライン | 5～10万円/ライン            |\n| AIソフト      | 約150～300万円         | 10～20万円                    |\n| 導入支援費用  | 約30～50万円           | -                              |\n| **合計**     | **230～450万円**       | **15～30万円**                 |\n\n※コストは既存インフラ活用・最小構成の場合。段階的なスモールスタートも可能（要件に応じ調整）\n\n### (4) 必要リソース\n- 既存検査ラインへのAIカメラ＆端末追加、ネットワーク整備\n- データタグ付け、基礎マスタデータ作成（現場協力要）\n- IT／製造担当者基本対応、ベンダー伴走導入支援\n\n---\n\n## 3. AI画像認識導入のメリット・期待効果\n\n- **品質改善**\n    - 部品や工程ごとの不良判定を均一・高精度化\n    - ヒューマンエラー・見逃しの大幅低減\n- **コスト削減**\n    - 人件費節減（目視工程の自動化）\n    - 不良流出・クレーム発生抑止で保証・再作業費削減\n    - 初期導入分をスモールスタートで抑制可能\n- **生産性向上**\n    - 検査工程の自動化による検査タクト短縮\n    - 不良品流出前の早期感知によるリカバリー支援\n- **エネルギー効率改善**\n    - 不具合品の加工・廃棄を抑制することで無駄エネルギー低減\n- **データ活用強化**\n    - 検査結果を蓄積し、工程改善やトレーサビリティに活用\n\n---\n\n## 4. 導入プロセス・リスク管理\n\n### (1) 導入ステップ  \n1. 現状調査・課題分析  \n2. パイロットライン選定（優先度・インパクトが高い工程）\n3. 最小構成での試行導入\n4. 実データ収集・アルゴリズムチューニング\n5. 段階的に対象拡大・全社展開\n\n### (2) スケジュール（例）\n| フェーズ                | 期間                 |\n|-------------------------|----------------------|\n| 調査・企画              | 1か月               |\n| パイロットライン導入    | 2か月               |\n| 評価・精度検証          | 1か月               |\n| 本格展開（段階拡大）    | 3～6か月             |\n\n### (3) リスクと対応\n- AI判定の学習不足 ⇒ 初期データ/タグ付け体制整備、段階的アップデート\n- システム障害・運用トラブル ⇒ ベンダー保守契約・現場教育強化\n- 現場抵抗感 ⇒ コミュニケーション・作業負荷軽減訴求\n- 輸出対応工場：国・地域の品質規格との整合も要確認\n\n### (4) モニタリングと評価\n- 検査精度・不良流出数/KPIの継続監視\n- 導入前後の定量効果レポート（歩留まり・工数・クレーム件数）\n- 利活用停止ラインの迅速な是正措置\n\n---\n\n## 5. サポート・コミュニケーション\n\n### (1) 競合他社・先行事例\n- トヨタ自動車・日産自動車：複数工程でAI画像認識を採用し検査コスト2～3割減/品質クレーム半減（公表事例）\n- 部品大手B社：スモールスタートから段階展開、3年で全面化\n\n### (2) トレーニング計画\n- 導入初期：管理者/現場検査員向け集合研修・e-learning活用\n- オンボーディング：マニュアル整備・Q&A体制\n- 継続教育：AIアップデートやトラブル対応\n\n### (3) 導入コミュニケーション計画\n- 定期経営会議への進捗レポーティング（月次/四半期）\n- 部門横断PJチーム設置、現場ヒアリング\n- 効果事例の社内共有／表彰\n\n---\n\n## まとめ・提言\n\n- 品質安定とコスト最適化を両立するにはAI画像認識導入が不可欠です\n- パイロット⇒評価⇒段階拡大のスモールスタート推奨、初期コストも最小限に抑制可能\n- 競合優位性強化のため迅速な意思決定と段階的導入を提案します\n\n---",
+  "modify":"コストをできるだけ抑えて"
+}
+
+### problem_solving_advisor with complete conversation history
+POST http://localhost:7071/api/problem_solving_advisor
+Content-Type: multipart/form-data; boundary=boundary123
+
+--boundary123
+Content-Disposition: form-data; name="question"
+
+これまでの提案を踏まえて、具体的な実装ステップを教えてください。
+--boundary123
+Content-Disposition: form-data; name="chatHistory"
+
+[
+  {"role": "user", "content": "こんにちは、課題解決アドバイザーさん！AIを活用することで業務を効率化する案を考えてください。"},
+  {"role": "assistant", "content": "AIを活用した業務効率化についてですね。具体的にどのような業種や部門（例：営業、人事、製造など）の業務効率化をお考えですか？"},
+  {"role": "user", "content": "製造業の品質管理部門での活用を考えています。"},
+  {"role": "assistant", "content": "製造業の品質管理部門でのAI活用ですね。現在の品質管理プロセスで特に時間がかかっている、または課題を感じている作業はどのようなものでしょうか？"},
+  {"role": "user", "content": "製品の外観検査に時間がかかっており、人による判断のばらつきも課題です。"},
+  {"role": "assistant", "content": "外観検査の時間短縮と判断の均質化が課題なのですね。現在の外観検査ではどのような設備や方法を使用していますか？また、1日あたりの検査数や不良の発見率などの情報があれば教えていただけますか？"},
+  {"role": "user", "content": "現在は作業員が目視で1日500個ほど検査しており、不良発見率は約2%です。カメラはすでに設置していますが、画像の保存のみに使用しています。"},
+  {"role": "assistant", "content": "ありがとうございます。既存のカメラ設備があるとのことで、AIの導入がしやすい環境ですね。予算や導入までの期間に制約はありますか？また、社内にAIやデータ分析の知識を持った人材はいらっしゃいますか？"},
+  {"role": "user", "content": "予算は500万円程度、半年以内の導入を希望しています。社内にはITエンジニアはいますが、AI専門家はいません。"},
+  {"role": "assistant", "content": "予算、期間、人材の状況が明確になりました。最後に、不良品のパターンは比較的決まっているのでしょうか？それとも様々な種類の不良があり、新しいタイプの不良も時々発見されるような状況でしょうか？"}
+]
+--boundary123--
+
+### create-faq-formdata
+POST http://localhost:7071/api/faq-creation
+Content-Type: application/x-www-form-urlencoded
+
+documentType=FAQ
+&checkpoints=質問者の立場,回答者の立場
+&additionalConsiderations=専門用語は極力避け、わかりやすい言葉で回答する
+&text=生成AIとは何ですか？またビジネスでどのように活用できますか？
+
+### product-comparison
+POST http://localhost:7071/api/product-comparison
+Content-Type: application/json
+
+{
+  "products": [
+    "iPhone 15 Pro",
+    "Google Pixel 8 Pro"
+  ],
+  "purpose": "写真撮影とAI機能の比較",
+  "considerations": "価格帯や性能、特徴的な機能について詳しく比較してください"
+}
+
+### product-comparison-3products
+POST http://localhost:7071/api/product-comparison
+Content-Type: application/json
+
+{
+  "products": [
+    "iPhone 15 Pro",
+    "Google Pixel 8 Pro",
+    "Galaxy S24 Ultra"
+  ],
+  "purpose": "カメラ性能とバッテリー持ちの比較",
+  "considerations": "価格、重量、OSの違いも考慮してください"
+}
+
+### product-comparison-business
+POST http://localhost:7071/api/product-comparison
+Content-Type: application/json
+
+{
+  "products": [
+    "Microsoft Surface Pro 9",
+    "Apple iPad Pro",
+    "Lenovo ThinkPad X1"
+  ],
+  "purpose": "ビジネス用途での使いやすさ比較",
+  "considerations": "キーボードの使いやすさ、拡張性、サポート体制も比較してください"
+}
+
+### product-comparison-entry
+POST http://localhost:7071/api/product-comparison
+Content-Type: application/json
+
+{
+  "products": [
+    "Canon EOS Kiss X10",
+    "Nikon D3500"
+  ],
+  "purpose": "初心者向け一眼レフカメラの比較",
+  "considerations": "操作性や価格、重さ、対応レンズの種類も比較してください"
+}
+
+### product-comparison-no-consideration
+POST http://localhost:7071/api/product-comparison
+Content-Type: application/json
+
+{
+  "products": [
+    "PlayStation 5",
+    "Xbox Series X"
+  ],
+  "purpose": "ゲーム機としての性能比較"
+}
+
+
+### error-analysis
+POST http://localhost:7071/api/error-analysis
+Content-Type: application/json
+
+{
+  "programmingLanguage": "Python",
+  "errorMessage": "NameError: name 'variabl' is not defined",
+  "considerations": "初心者にも分かりやすく説明してください"
+}
+
+### crisis_management_scenarios
+POST http://localhost:7071/api/crisis-management-scenarios
+Content-Type: application/json
+
+{
+  "industry":"食品加工",
+  "businessSize": "中小企業",
+  "businessContent":"製品の出荷",
+  "selectedOptions":["品質・製品リスク"],
+  "additionalContents":"高齢化と若手不足により、業務継続が困難になる可能性",
+  "considerations": "3パターンの想定ケースと予防策を出力"
+}
+
+### new_crisis_management_scenarios
+POST http://localhost:7071/api/new-crisis-management-scenarios
+Content-Type: application/json
+
+{
+  "result":"危機管理シナリオ  \n\n- リスクカテゴリ  \n  品質・製品リスク  \n\n- リスク内容  \n  出荷時パッケージに装着したIoT温度ロガーのデータ改ざんにより、実際には冷温管理が破綻している製品が「適正温度で輸送済み」と誤判定されたまま市場流出する。  \n\n- 想定ケース  \n  1) 出荷先までの輸送中に車両トラブルで庫内温度が10℃超で6時間継続  \n  2) 運転手が端末を不正リセットし正常ログを書き込み → 見掛け上問題なし  \n  3) 小売りで検査されず店頭販売 → 食中毒クレーム発生・回収・風評被害  \n\n- 予防策  \n  1) 改ざん防止：  \n     • 署名付きワンタイム書込型温度ロガー＋ブロックチェーン自動アップロード  \n     • 端末物理封印・改ざん痕検知シール   \n  2) 多重検証：  \n     • 出荷時と受入時に別系統のハンディ温度計で抜取測定  \n     • GPS/走行ログと温度データの自動突合  \n  3) 教育・契約：  \n     • 物流委託契約にデータ改ざん時の高額違約金を明記  \n     • ドライバー向け倫理・コンプライアンス研修  \n  4) 発生時対応：  \n     • 異常検知時は即時ロット隔離し微生物迅速試験  \n     • 事故調査チームが端末・車両ログをフォレンジック解析  \n     • 規制当局・取引先へ24時間以内に初報、リコール実施  \n     • 再発防止策を1か月以内に公表し信頼回復を図る",
+  "newIdeaRequest":"簡潔にまとめてください"
+}
+
+
+### judge-idea
+POST http://localhost:7071/api/judge-idea
+Content-Type: application/json
+
+{
+  "ideationFunction": "重量が20トンを超えた自転車",
+  "ideationUse": "通勤、通学などの移動手段",
+  "ideationMarket": "都市部の通勤者、学生",
+  "ideationCountry": "日本"
+}
+
+### judge-new-idea
+POST http://localhost:7071/api/judge-new-idea
+Content-Type: application/json
+
+{
+  "result":"違反1  \n違反箇所：車両総重量が20トンを超える点  \n基準となる法令：道路交通法施行令 第22条（車両の幅・長さ・高さ・総重量等の最高限度）  \nコメント：自転車として走行させる場合でも、道路交通法上は「軽車両」ではなく総重量20トンの大型車両として扱われる。一般道路を通行するには法定最高限度（総重量20t、軸重10t 等）を超過する可能性が高く、特殊車両通行許可が必要となり、通勤・通学用途として通常走行させることは事実上不可能。  \n\n違反2  \n違反箇所：車両の構造・安全基準（ブレーキ性能・操縦装置等）を満たしていない恐れ  \n基準となる法令：道路運送車両法 第41条（保安基準）および同施行規則、保安基準第11条ほか  \nコメント：20トンを人力で制動・操縦できる設計は保安基準が想定する自転車（軽車両）の範囲外。ブレーキ制動力・操舵性・視界確保など多数の保安基準を充足できないため、型式認証・保安基準適合性を得られず、公道走行に供する製造販売は認められない。  \n\n違反3  \n違反箇所：自転車としての製品安全基準（JIS D 9111 ほか）に適合しない  \n基準となる法令：消費生活用製品安全法（PSCマーク制度）  \nコメント：一般用自転車はPSC特別特定製品であり、JIS D 9111等に適合しないと販売できない。20トンの車両はフレーム強度、操縦安定性、ブレーキ性能等の試験条件を根本的に満たせず、PSCマークを取得できない。  \n\n違反4  \n違反箇所：「自転車」「通勤・通学用途」としての表示・広告  \n基準となる法令：景品表示法 第5条（不当表示の禁止）  \nコメント：重量20トンで人力走行不可能にもかかわらず、一般消費者向けに「自転車」「通勤・通学用」と表示すれば、著しく優良誤認・誤表示に該当するため違法となる。",
+  "newJudgeRequest":"簡潔にまとめて"
+}
+
+### key-point-extraction (text入力)
+POST http://localhost:7071/api/key-point-extraction
+Content-Type: multipart/form-data; boundary=boundary123
+
+--boundary123
+Content-Disposition: form-data; name="text"
+
+本日、弊社は新製品「AIサポートツール」の発表会を開催しました。発表会では、開発責任者の田中が製品の特徴や導入メリットについて説明し、多くの参加者から高い関心が寄せられました。今後は、全国の販売代理店を通じて順次販売を開始する予定です。また、初年度は1万台の販売を目標としています。質疑応答では、価格設定やサポート体制について多くの質問があり、担当者が丁寧に回答しました。
+--boundary123
+Content-Disposition: form-data; name="additionalConsiderations"
+
+抽出時の考慮事項があればここに入力
+--boundary123--
+
+### key-point-extraction (ファイルアップロード)
+POST http://localhost:7071/api/key-point-extraction
+Content-Type: multipart/form-data; boundary=boundary123
+
+--boundary123
+Content-Disposition: form-data; name="fileList"; filename="sample.txt"
+Content-Type: text/plain
+
+< ./sample.txt
+
+--boundary123
+Content-Disposition: form-data; name="additionalConsiderations"
+
+抽出時の考慮事項があればここに入力
+--boundary123--
+
+### product-aarrr
+POST http://localhost:7071/api/product-aarrr
+Content-Type: application/json
+
+{
+  "product_service": "スマートフォンアプリ「家計簿AI」",
+  "product_service_content": "AIが自動でレシート読み取りと家計分析を行い、節約アドバイスを提供するフリーミアムモデルの家計簿アプリ。プレミアム版では詳細な分析レポートと投資アドバイス機能を提供。",
+  "additionalConsiderations": "具体的で実行可能な施策を重視して分析してください"
+}
+
+### sales-forecast(販売予測分析-新規作成)
+POST http://localhost:7071/api/sales-forecast
+Content-Type: application/json
+
+{
+  "productName": "営業文書自動生成ツール",
+  "productCategory": ["ソフトウェア", "アプリケーション", "AI関連製品", "生成AI"],
+  "features": "営業メールと提案書を生成・パーソナライズ。CRM連携、業界別テンプレート。自動ドラフト生成、成功パターン学習。",
+  "useCase": "商談フォローの次回アクションメール作成、提案書・見積提示前の提案骨子ドラフト生成",
+  "analysisPriorities": ["市場シェア獲得見込み", "競合製品との差別化要素"],
+  "targetIndustry": ["製造業", "情報通信業", "生活関連サービス業・娯楽業"],
+  "targetCustomers": ["中小企業", "大企業", "営業部門"],
+  "targetRegions": ["日本全国", "アジア"],
+  "marketData": "国内の従業員50~500名規模の企業数は約90,000社。生成AI営業ツール市場は年成長率30%。自社PoCでメール返信率+25%。",
+  "competingProducts": "競合A：月額8万円、高機能帯。競合B：月額49000円、機能限定版。日本語表現に課題有。"
+}
+
+### fix-sales-forecast（販売予測分析-結果調整）
+POST http://localhost:7071/api/fix-sales-forecast
+Content-Type: application/json
+
+{
+  "result":"危機管理シナリオ  \n\n- リスクカテゴリ  \n  品質・製品リスク  \n\n- リスク内容  \n  出荷時パッケージに装着したIoT温度ロガーのデータ改ざんにより、実際には冷温管理が破綻している製品が「適正温度で輸送済み」と誤判定されたまま市場流出する。  \n\n- 想定ケース  \n  1) 出荷先までの輸送中に車両トラブルで庫内温度が10℃超で6時間継続  \n  2) 運転手が端末を不正リセットし正常ログを書き込み → 見掛け上問題なし  \n  3) 小売りで検査されず店頭販売 → 食中毒クレーム発生・回収・風評被害  \n\n- 予防策  \n  1) 改ざん防止：  \n     • 署名付きワンタイム書込型温度ロガー＋ブロックチェーン自動アップロード  \n     • 端末物理封印・改ざん痕検知シール   \n  2) 多重検証：  \n     • 出荷時と受入時に別系統のハンディ温度計で抜取測定  \n     • GPS/走行ログと温度データの自動突合  \n  3) 教育・契約：  \n     • 物流委託契約にデータ改ざん時の高額違約金を明記  \n     • ドライバー向け倫理・コンプライアンス研修  \n  4) 発生時対応：  \n     • 異常検知時は即時ロット隔離し微生物迅速試験  \n     • 事故調査チームが端末・車両ログをフォレンジック解析  \n     • 規制当局・取引先へ24時間以内に初報、リコール実施  \n     • 再発防止策を1か月以内に公表し信頼回復を図る",
+  "newIdeaRequest":"簡潔にまとめてください"
+}
+
+### risk-assessment
+POST http://localhost:7071/api/risk-assessment
+Content-Type: application/json
+
+{
+  "workerInfo": "20~50歳、平均5年、フォークリフト運転資格保持者3名",
+  "machineInfo": "機械名：プレス機　特性：高圧で金属を加工する",
+  "workerCountAndPlacement": "人数：5人　配置：プレス機操作3名、材料供給2名",
+  "processDetails": "工程：材料供給→プレス加工→完成品回収　作業時間：8時間/日",
+  "currentMeasures": "定期点検：月1回実施"
+}
+
+
+### wall-hitting
+POST http://localhost:7071/api/wall-hitting
+Content-Type: application/json
+
+{
+  "theme": "生成AI",
+  "idea": "作業を効率化できる製品"
+}
+
+### wall-hitting-chat
+POST http://localhost:7071/api/wall-hitting-chat
+Content-Type: application/x-www-form-urlencoded
+
+question=生成AIを活用した新しいアイデアを考えています。フィードバックをください。
+&chatHistory=[{"role":"user","content":"テーマは生成AI、アイデアは作業効率化です。"},{"role":"assistant","content":"そのアイデアの具体的な活用シーンを教えてください。"}]
+
+
+### advice-react
+POST http://localhost:7071/api/advice-react
+Content-Type: application/json
+
+{
+  "adviceInput": "売上データを纏めて、月次報告書を作成するにはどうすればよいですか？"
+}
+
+### product-service-benefit-idea
+POST http://localhost:7071/api/product-service-benefit-idea
+Content-Type: application/json
+
+{
+  "Product": "スマートフォン用ワイヤレス充電器",
+  "Features": "15W急速充電対応、Qi規格準拠、過熱防止機能付き、LEDインジケーター搭載、滑り止めパッド付き",
+  "Consideration": "環境に優しい素材の使用と、幅広いスマートフォンモデルとの互換性を重視してください"
+}
+
+### product-service-benefit-new-idea
+POST http://localhost:7071/api/product-service-benefit-new-idea
+Content-Type: application/json
+
+{
+  "result": "1. **利便性の向上**\n   - ケーブル不要で簡単充電\n   - デスク周りがすっきり\n   - 置くだけで充電開始\n\n2. **安全性の確保**\n   - 過熱防止機能で安心\n   - 異物検知機能搭載\n   - 品質保証付き\n\n3. **効率的な充電**\n   - 15W急速充電対応\n   - 充電効率最適化\n   - バッテリー寿命保護",
+  "newIdeaRequest": "オフィスワーカー向けの具体的なメリットを追加してください"
+}
+
+### advice-consulting
+POST http://localhost:7071/api/advice-consulting
+Content-Type: application/json
+
+{
+  "role": "新入社員のOJT担当者",
+  "constraints": "100字以内で簡潔に、実践的なアドバイスを提供",
+  "adviceInput": "新入社員が業務に慣れずモチベーションが下がっています。どのようにサポートすれば良いでしょうか？"
+}
+
+### advice-consulting (コンサルタント例)
+POST http://localhost:7071/api/advice-consulting
+Content-Type: application/json
+
+{
+  "role": "経営コンサルタント",
+  "constraints": "具体的な手順を3つのステップで示し、200字以内で回答",
+  "adviceInput": "中小企業の売上向上のための戦略を教えてください"
+}
+
+### advice-consulting (技術アドバイザー例)
+POST http://localhost:7071/api/advice-consulting
+Content-Type: application/json
+
+{
+  "role": "ITシステムアドバイザー",
+  "constraints": "専門用語を避け、初心者にもわかりやすく150字以内で回答",
+  "adviceInput": "業務効率化のためのツール導入を検討していますが、何から始めれば良いでしょうか？"
+}
+
+### create-design-document
+POST http://localhost:7071/api/create-design-document
+Content-Type: application/json
+
+{
+  "product":"工場用AI異常検知カメラ",
+  "purpose": "工場ラインで作業員の安全確認や異常動作を検知する",
+  "feature":"作業員の転倒や危険動作をリアルタイムでアラート検知",
+  "considerations": "プライバシー保護のため、録画データの暗号化が必要"
+}
+
+### create-new-design-document
+POST http://localhost:7071/api/create-new-design-document
+Content-Type: application/json
+
+{
+  "result":"製造システム設計書  \n製品名：工場用AI異常検知カメラ\n\n---\n\n## 1. 製品仕様\n\n- **目的**  \n  工場ラインにおいて作業員の安全確認ならびに、作業員の転倒・危険動作などの異常検知を行い、リアルタイムで管理者へアラートを発報する。\n\n- **主な機能**  \n  1. 作業員の転倒や特定の危険動作をAIによりリアルタイムで検知  \n  2. 検知時に即座にアラート発報（警報音・管理システムへの通知等）  \n  3. 録画データの記録と指定期間保存  \n  4. 録画およびアラート情報の暗号化保存機能  \n  5. ネットワーク経由での遠隔監視・アラート連携\n\n- **性能**  \n  - 動画解像度: フルHD (1080p/30fps)  \n  - AI検知遅延時間: 1秒以内  \n  - 動作温度範囲: 0℃～45℃  \n  - 保存期間: 最大30日間分（カスタム設定可）  \n  - 通信：有線LAN/PoE対応/無線Wi-Fi（工場規格適合時）\n\n- **品質基準**  \n  - IP65以上の防塵・防水性能  \n  - 24時間連続稼働の安定性と耐久性  \n  - データ暗号化(暗号化規格AES-256)  \n  - 国内電気用品安全法(PSE)適合\n\n---\n\n## 2. 設計要件\n\n- **法規制・標準**  \n  - 個人情報保護法ならびに関連するプライバシー法規  \n  - 国内工場安全規法・電気用品安全法（PSE）  \n  - GDPR（必要な業務範囲での適用考慮）\n\n- **業界標準**  \n  - ONVIF（ネットワークカメラ標準規格）  \n  - JIS Q 15001（個人情報保護マネジメントシステム）  \n  - IEC 62676（CCTV監視システム国際規格）\n\n- **顧客要求**  \n  - プライバシー配慮（顔情報・録画データはすべて暗号化）  \n  - 管理者用UIは多言語対応（日本語、英語を基本）  \n  - 異常検知精度95％以上（社内評価基準）\n\n---\n\n## 3. 材料仕様\n\n- **カメラ筐体** :  \n  - 材質：アルミニウム合金(耐腐食性、防塵・防水コーティング)  \n  - ガラス部：強化ガラス（耐衝撃、防曇コート付き）\n\n- **電子部品** :  \n  - メインプロセッサ：AI処理対応SoC例:NVIDIA Jetsonシリーズ/同等品  \n  - ストレージ：SSD 256GB以上（拡張可）/暗号化コントローラ内蔵  \n  - ネットワークインターフェース：RJ-45 PoE（IEEE802.3af）準拠  \n  - 無線モジュール：Wi-Fi 6対応（工場ネットワーク許可時）\n\n- **供給元例**  \n  - カメラモジュール：SONY、OmniVision  \n  - SSD：SAMSUNG、WesternDigital  \n  - AIボード：NVIDIA、Xilinx\n\n---\n\n## 4. 製造プロセス\n\n1. 部品調達：指定サプライヤより主要部品を調達（カメラ・AI基板・筐体・配線）\n2. 組立工程：  \n   a. 筐体ユニット組立・初期動作テスト  \n   b. カメラモジュールおよびAIプロセッサ実装  \n   c. 配線接続・SSD実装  \n   d. 電源ユニット・ネットワークI/F組込み\n3. ファームウェア/AIモデルの書き込み  \n4. 組立後検査（初期通電、画像・AI検知動作確認）\n5. ファイナルテスト（防水/防塵/耐久/長時間連続動作）\n6. 梱包・出荷前検査（シリアル管理）\n\n**必要な設備・工具**  \n- 静電気防止作業台・精密ドライバー・カメラ調整ジグ・防水試験設備・AI動作検証PC\n\n---\n\n## 5. 図面\n\n- 外形寸法図（例：高さ150mm、幅80mm、奥行70mm、詳細別図面作成）\n- 部品展開図（カメラ部分、AI基板、配線経路の分解図）\n- 組立図（分解→組立の順序付き説明）\n- 配線図（電源・信号・通信）\n  \n**（詳細なCAD図面や部品図はご用途・設計ツール指定により提出可能です。 必要なフォーマット/DXF等を指示ください）**\n\n---\n\n## 6. 試験・検査基準\n\n- **機能試験**  \n  - カメラ映像品質（焦点、色調、ノイズレベル）  \n  - AI異常検知の精度試験（模擬異常動作シナリオ再現、誤検知率、精度95%以上確認）\n  \n- **耐環境試験**  \n  - 動作温度/湿度サイクル（0～45℃/最大90%RH）  \n  - 防水・防塵テスト（IP65規格準拠）\n\n- **セキュリティ試験**  \n  - 録画データ暗号化・復号化試験（AES-256による暗号化の動作確認）  \n  - 通信暗号化（TLS1.3対応の確認）\n\n- **品質管理**  \n  - 24時間連続稼働検査  \n  - シリアルNo毎に製造履歴・検査記録の管理\n\n---\n\n## 7. リスク管理\n\n- **リスク：プライバシー侵害**  \n  - **対策**：データ全暗号化、管理UIのアクセス制御、不要画像の自動マスキング・削除\n  \n- **リスク：AI異常検知の精度不足**  \n  - **対策**：学習データの拡充・現場テストによる継続精度向上\n  \n- **リスク：故障による安全監視喪失**  \n  - **対策**：冗長化（2台設置）、定期セルフチェック・管理システム定期監視\n  \n- **リスク：設置環境でのノイズ/異常**  \n  - **対策**：ノイズ対策部品、AIの現場カスタマイズ\n  \n- **リスク：法的対応遅延**  \n  - **対策**：法規制変更のモニタリング/適宜ファームウェア更新\n\n---\n\n## 8. 全体の設計概要\n\n本製品は、工場の現場安全を支援し作業員の危険動作をAIでリアルタイム検知・記録する高耐久のネットワーク対応カメラです。映像および録画データについては全てAES-256による強力な暗号化を施し、プライバシーを最大限に保護します。高い異常検知精度と堅牢な筐体設計、豊富な動作検証により、工場ラインにおける安全・安心な労働環境の実現に寄与する製品です。",
+  "newIdeaRequest":"簡潔にまとめてください"
+}
+
+### flow-designer (工程管理表作成)
+POST http://localhost:7071/api/flow-designer
+Content-Type: multipart/form-data; boundary=boundary123
+
+--boundary123
+Content-Disposition: form-data; name="text"
+
+自動車部品（ブレーキパッド）の製造工程：
+1. 材料混合工程：摩擦材とバインダーを混合
+2. 成型工程：プレス機械で成型
+3. 熱処理工程：400度で2時間加熱
+4. 検査工程：寸法・硬度検査
+5. 梱包工程：専用ケースに梱包
+--boundary123
+Content-Disposition: form-data; name="type"
+
+FMEA形式工程管理表
+--boundary123
+Content-Disposition: form-data; name="consideration"
+
+品質基準ISO/TS16949に準拠し、トレーサビリティを確保
+--boundary123--
+
+### fix-flow-designer (工程管理表再作成)
+POST http://localhost:7071/api/fix-flow-designer
+Content-Type: application/json
+
+{
+  "result": "## FMEA形式工程管理表\n\n| 工程番号 | 工程名 | 作業内容 | 想定される故障モード | 影響度 | 発生頻度 | 検出度 | RPN | 対策 |\n|----------|--------|----------|---------------------|--------|----------|--------|-----|------|\n| 1 | 材料混合 | 摩擦材とバインダーを混合 | 混合不良 | 8 | 3 | 4 | 96 | 混合時間の標準化 |\n| 2 | 成型 | プレス機械で成型 | 寸法不良 | 7 | 2 | 3 | 42 | プレス圧力の管理 |\n| 3 | 熱処理 | 400度で2時間加熱 | 温度異常 | 9 | 2 | 2 | 36 | 温度監視システム |\n| 4 | 検査 | 寸法・硬度検査 | 検査漏れ | 8 | 1 | 5 | 40 | ダブルチェック体制 |\n| 5 | 梱包 | 専用ケースに梱包 | 破損 | 5 | 2 | 4 | 40 | 梱包材の改善 |",
+  "revisionPrompt": "各工程にタクトタイムと必要な設備・人員を追加してください。また、品質管理のチェックポイントをより詳細に記載してください。"
+}
+
+### fix-flow-designer (工程管理表再作成 - 食品製造業)
+POST http://localhost:7071/api/fix-flow-designer
+Content-Type: application/json
+
+{
+  "result": "## 食品製造工程管理表（パン製造）\n\n| 工程 | 作業内容 | 管理項目 | 基準値 | 記録頻度 |\n|------|----------|----------|--------|----------|\n| 1. 原料計量 | 小麦粉、イースト等の計量 | 重量精度 | ±2g | 毎バッチ |\n| 2. 混合 | 材料を混合機で混合 | 混合時間 | 10分 | 毎回 |\n| 3. 発酵 | 一次発酵を行う | 温度・湿度 | 30℃、75% | 30分毎 |\n| 4. 分割・成型 | 生地を分割し成型 | 重量均一性 | 50g±5g | 抜取検査 |\n| 5. 最終発酵 | 二次発酵 | 温度・時間 | 35℃、45分 | 毎回 |\n| 6. 焼成 | オーブンで焼成 | 庫内温度 | 200℃ | 連続監視 |\n| 7. 冷却・包装 | 冷却後包装 | 中心温度 | 25℃以下 | 毎時 |",
+  "revisionPrompt": "HACCP対応のため、各工程で重要管理点（CCP）を明確にし、微生物汚染防止対策と温度管理の詳細を追加してください。また、アレルゲン管理についても記載してください。"
+}
+
+### product-promotion-strategy
+POST http://localhost:7071/api/product-promotion-strategy
+Content-Type: application/json
+
+{
+  "productDescription": "スマートウォッチ「FitLife Pro」- 健康管理とフィットネス追跡に特化した多機能ウェアラブルデバイス。心拍数モニタリング、GPS追跡、睡眠分析、防水機能搭載",
+  "targetMarket": "30-50代の健康意識の高いビジネスパーソン、フィットネス愛好者、年収500万円以上の中高所得層",
+  "differentiationPoint": "医療グレードのセンサー精度、7日間のバッテリー持続、AI による個別化されたヘルスアドバイス、企業の健康経営支援機能",
+  "promotionTools": "インフルエンサーマーケティング、健康関連のWebメディア広告、フィットネスジムでの体験イベント、SNS広告",
+  "salesChannels": "公式オンラインストア、Amazon、家電量販店、スポーツ用品店、企業向け直販"
+}
+
+### product-promotion-strategy (BtoB製品例)
+POST http://localhost:7071/api/product-promotion-strategy
+Content-Type: application/json
+
+{
+  "productDescription": "クラウド型在庫管理システム「StockMaster」- 中小企業向けの在庫最適化とコスト削減を実現するSaaSソリューション",
+  "targetMarket": "従業員数50-300名の中小製造業、卸売業、小売業の経営者・管理者",
+  "differentiationPoint": "導入コストの低さ、直感的な操作性、既存システムとの連携のしやすさ、専門サポート体制",
+  "promotionTools": "業界誌広告、展示会出展、ウェビナー開催、パートナー企業との協業",
+  "salesChannels": "直販営業、代理店販売、オンライン申込、紹介営業"
+}
+
+### text-completion
+POST http://localhost:7071/api/text-completion
+Content-Type: application/json
+
+{
+  "documentType": "ビジネス提案書",
+  "text": "新規事業として、当社では___を検討しております。この事業により、___という課題を解決し、___の効果を期待しています。実装計画として、第一段階では___、第二段階では___を進める予定です。"
+}
+
+### survey-creation
+POST http://localhost:7071/api/survey-creation
+Content-Type: application/json
+
+{
+  "surveyPurpose": "新商品の顧客満足度調査",
+  "targetAudience": "20代から40代の女性顧客",
+  "questionCount": "10",
+  "responseMethod": "選択式（一部自由記述）"
+}
+
+### image-generation-png
+POST http://localhost:7071/api/image-generation
+Content-Type: application/json
+
+{
+  "imageContent": "青い空と白い雲",
+  "imageSize": "1024x1024",
+  "imageFormat": "png"
+}
+
+### image-generation-jpeg
+POST http://localhost:7071/api/image-generation
+Content-Type: application/json
+
+{
+  "imageContent": "赤い夕焼けと山",
+  "imageSize": "1024x1024",
+  "imageFormat": "jpeg"
+}
+
+### image-generation-jpg
+POST http://localhost:7071/api/image-generation
+Content-Type: application/json
+
+{
+  "imageContent": "緑の森と川",
+  "imageSize": "1024x1024",
+  "imageFormat": "jpg"
+}
+
+### fix-image
+POST http://localhost:7071/api/fix-image
+Content-Type: application/json
+
+{
+  "blobName": "20251111/c61241a4-b340-4d09-bf24-b2ed1f502524.jpeg",
+  "fixImageRequest": "より鮮やかな色にしてください",
+  "imageSize": "1024x1024",
+  "imageFormat": "jpeg"
+}

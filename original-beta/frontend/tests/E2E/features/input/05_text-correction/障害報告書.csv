@@ -1,0 +1,15 @@
+section,key,value
+metadata,title,2026年2月3日に発生したシステム障害についての報告
+metadata,report_date,2026-02-04
+metadata,author,運用チーム テスト太郎
+incident,start,2026-02-03 08:12
+incident,end,2026-02-03 09:05
+incident,duration_minutes,53
+summary,phenomenon,社内ポータルの一部ユーザがログイン不可。エラー『サーバーに接続できませんでした。』表示
+impact,affected_users_total,58
+impact,affected_departments,"営業部, 総務部"
+impact,functions_unavailable,"ポータル経由のワークフロー申請, 勤怠登録"
+impact,other_departments,影響特になし（ただし一部で遅いとの声）
+root_cause_status,confidence,暫定
+root_cause,hypothesis,夜間バッチ異常終了によりセッション管理モジュールのキャッシュクリア未実行、古いセッション残留
+root_cause,log_analysis_status,継続中

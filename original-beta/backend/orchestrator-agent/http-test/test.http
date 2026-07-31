@@ -1,0 +1,128 @@
+### planning
+POST http://localhost:7071/api/planning
+Content-Type: application/json
+
+{
+  "question": "手順計画に関連する規格をTTSとJKSから検索して下さい。",
+  "model": "gpt-5.2",
+  "task": "specification",
+  "chatHistory": [],
+  "searchMethod": "semantic-hybrid-search"
+}
+
+### tool_use
+POST http://localhost:7071/api/tool-use
+Content-Type: application/json
+
+{
+    "task": "rag",
+    "tool_calls": [
+         {
+        "function": {
+          "arguments": "{\"query\": \"手順計画に関連する規格 TTS JKS\", \"desc\": \"手順計画に関連する規格について、TTSとJKSを含むセマンティック検索を行います。検索クエリは「手順計画に関連する規格 TTS JKS」です。\"}",
+          "name": "semantic_search"
+        }
+         }
+    ]
+}
+
+### reflection
+POST http://localhost:7071/api/reflection
+Content-Type: application/json
+
+{
+    "model": "gpt-5.2",
+    "user_message_rev": "トヨタのAIエージェントo-beyaについて教えて",
+    "task": "rag",
+    "messages": [
+      {
+        "role": "system",
+        "content": "あなたは、社内の検索システムの検索クエリを生成するのが得意な調査エージェントです。\n\nユーザーリクエストを受け取り、検索クエリのバリエーションを生成します。\n検索クエリは検索エンジンで使用されることを念頭に置いて、社内検索に適した検索クエリを生成してください。\n生成したキーワードが以下の条件を満たしているか確認してください。\n- 具体的で明確である\n- 可能な限り短く、簡潔である\n- 異なる視点や側面をカバーしている\n- ユーザーの意図を正確に反映している\n- 複合キーワードの場合はスペースでつないで1つのキーワードにしてください。"
+      },
+      {
+        "role": "user",
+        "content": "ユーザーの質問に正しく回答するための必要な情報を検索ツールを使って集めて回答してください。\nもし回答するために十分な情報の検索が得られない場合は、回数制限がありますが再検索可能です。\n十分な回答が得られた場合は、検索をやめて回答してください。関係ない情報は無視してください。\nかならず1回は検索を行ってください。検索を行わない場合は、回答が不十分になる可能性があります。\n- セマンティック検索とキーワード検索どちらも使ってください。\nユーザーの質問: \n    トヨタのAIエージェントo-beyaについて教えて\n\n    ## 補足情報\n    \n    "
+      },
+      {
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"query\": \"トヨタ AIエージェント o-beya\"}",
+              "name": "keyword_search"
+            },
+            "id": "call_QjUOF9vnC9NEXFywxSK8bASR",
+            "type": "function"
+          },
+          {
+            "function": {
+              "arguments": "{\"query\": \"トヨタ AIエージェント o-beya\"}",
+              "name": "semantic_search"
+            },
+            "id": "call_HqSqIsIRHoOHt03Oh26VFzww",
+            "type": "function"
+          }
+        ]
+      },
+      {
+        "role": "tool",
+        "content": "{\"segments\":[{\"text\":\":unselected:\\t1台\\t1台/1~10台程度\\t1~10台程度\\n\\t実行用ライセンス\\t不要\\t不要\\t不要\\n\\tプロジェクト管理 :unselected:\\t×\\n:selected:\\t×/O :unselected:\\t:unselected: C\\n\\t実行ユーザー管理\\t×\\t×/O\\t:unselected:\\n\\tテクニカルサポート\\t有り(オプション)\\t有り(オンサイト+リモート)\\t有り(リモート)\\n\\t価格\\t年間90万円~\\t28万円~ (3ヵ月まで)\\t年間720万円 (月額60万円)~\\n\\t価格単位\\tアカウント\\tアカウント/UNIT\\tUNIT\\n\\n \\n\\nBizRobo! mini の特長\\n\\nWebページをクリックの場合\\n● BizRobo! miniは作成したロボットを他のPC上でも利用可能です\\n\\n項目の存在を認識 (オブジェクト) :unselected: コボット作成時点 :unselected: ロボットコピー\\n画面のサイズや位置が 変わっても項目を認識 することが可能。一つ のロボットを複数PCへ コピーしても正常に 起動!\",\"citation\":[{\"search_title\":\"Bizrobo!miniリーフレット-1.pdf\",\"search_path\":\"03_インデックスC/BizRobo!/Bizrobo!miniリーフレット/Bizrobo!miniリーフレット-1.pdf\"}]},{\"text\":\"派生物徴量を作成するためにどのようなローリングウィンドウを使用します か,0 機械学習自動化プラットフォーム\\nDataRobot\\n小売業のあらゆる問題をAI活用で解決しませんか? 日々の業務で発生する様々なデータを活用することで、 過剰発注·在庫や品切れ、予測や最適化担当の俗人化\\nなどの課題解決をサポートする。それがDataRobotの役目です。\\nAI活用の専門家がいないから導入は難しい…\\n自社データから超高精度な機械学習モデルを自動的に構築\\n世界的なデータサイエンティスト達のノウハウがふんだんに盛り込まれた機械学習自動化ツールだから…\\n1クリックやドラック&ドロップ\\nによる簡単な操作\\n21,000を超えるのアルゴリズムから\\nAIが自動で選出·モデル作成\\n3分類·回帰·時系列で予測可能 テキストだけでなく画像も対応!\\n何を予測しますか? 貸し倒れ\\n分類\\nターゲットなし?\\n40k - HE\\n30k-\\n20k 1Ck-\\nFals 貸し倒れ\\n開始\\nモデリングモード: クイックv 特徴量セット·有用な特徴屋 根通化指標 LogLoss\",\"citation\":[{\"search_title\":\"【リーフレット】DataRobot_小売業向け202101-0.pdf\",\"search_path\":\"02_インデックスB/DataRobot/【リーフレット】DataRobot_小売業向け202101/【リーフレット】DataRobot_小売業向け202101-0.pdf\"}]},{\"text\":\"最新の脅威へのセキュリティ対策とは https://v2.nex-pro.com/mypage/libraries/45677\\n製造業向けソリューション\\n【製造業DX】 紙運用·電子管理のお悩みを解決セミナー https://v2.nex-pro.com/mypage/libraries/42835\\nlot·ネットワーク\\nローカル5G 活用事例紹介セミナー https://v2.nex-pro.com/mypage/libraries/46049\\nAI·ロボット·ノーコードアプリ\\n製造業の品質検査業務における AI活用セミナー https://v2.nex-pro.com/mypage/libraries/46926\\n私たちが警戒すべき 最新の脅威への セキュリティ対策とは マエントポイントセキュリティとう」 脱PPAP\\n製造業DX\\n紙運用·電話税理电お飲み物\\n解決セミナー\\n中国·中小企業肉粉 SAP導入のすすめ\\n日立システムズメSAP 一中堅·中小企業の味方です\",\"citation\":[{\"search_title\":\"（案内状）202301_セミナ動画サイト-0.pdf\",\"search_path\":\"01_インデックスA/（案内状）202301_セミナ動画サイト/（案内状）202301_セミナ動画サイト-0.pdf\"}]},{\"text\":\"DataRobot データ モデル デプロイ インサイト Jupyter リポジトリ\\n店鋪売上予測.xlsx\\n何を予測しますか?\\n売上\\n回冊\\n240 瓶 200\\nIT 160 120 80 - 40 n\\n10% 15k 20k 25% 30k 売上\\n開始\\nモデリングモード:オートパイロット v 特技量セット:有用な特徴量 最適化指标:RMSE\\n← 時間認識モデルを使わない 主時間を表す特徴量は?@\\n日付 日\\n平均売上\\n204\\nD\\n2012-07-01\\n日付\\n2014-06-15\\nワーカー 現在全プロジェクト合わせ て20個中0個のワーカーを 使用しています\\n00\\nステータス ✔1.データをアップロード中 (1.808 () :selected: ▼2.元データを読み取り中 〔クイック】 (14.748 19)\\n√ 3.探索的データ解析:18/18\\n特微量 (3.485 秒]\\n<h1>AIによる品質管理、予知保全で業務効率化·自動化をサポート</h1>\\n派生物欲量を作成するためにどのようなローリングウィンドウを使用します か,0\\n機械学習自動化プラットフォーム\\nDataRobot\",\"citation\":[{\"search_title\":\"【リーフレット】DataRobot_製造業向け202102-0.pdf\",\"search_path\":\"02_インデックスB/DataRobot/【リーフレット】DataRobot_製造業向け202102/【リーフレット】DataRobot_製造業向け202102-0.pdf\"}]},{\"text\":\"DataRobot\\nビジネス課題\\n不適合製品によるムダな生産コストを削減したい メンテナンスの効率化で生産量を向上させたい\\n現状の取り組みでは… 人手によるデータ収集で時間がかかっている モデルを作成しても、変化に柔軟に対応できない\\n活用データ\\nシステム連携やセンサーからデータ収集 品質データ、稼働データなど\\nインパクト 不適合製品発生割合を47%削減! メンテナンスにかかる工場の停止時間を25%削減! 2か月かかっていた予測モデル更新の所要時間を2分に短縮!\\nまずはお気軽にご相談ください! 無料トライアルもございます\\n●日立システムズのAI診断プログラム\\n「どのようなビジネス課題にAI(機械学習)を活用できるかわからない」「立ち上げた機械学習プロジェクトを具体的な ビジネス課題に適用する方法がわからない」といったお悩みを抱えているお客様に。協創しながら、AIの活用方法をご支援します。\\n0 日立システムズのトータルデータ利活用ソリューション DataRobot導入のみならず、様々なツールとの連携でお客様のさらなる業務効率化·自動化をご支援いたします。\\nお問い合わせ\",\"citation\":[{\"search_title\":\"【リーフレット】DataRobot_製造業向け202102-1.pdf\",\"search_path\":\"02_インデックスB/DataRobot/【リーフレット】DataRobot_製造業向け202102/【リーフレット】DataRobot_製造業向け202102-1.pdf\"}]}]}",
+        "tool_call_id": "call_QjUOF9vnC9NEXFywxSK8bASR"
+      },
+      {
+        "role": "tool",
+        "content": "{\"segments\":[{\"text\":\":unselected:\\t1台\\t1台/1~10台程度\\t1~10台程度\\n\\t実行用ライセンス\\t不要\\t不要\\t不要\\n\\tプロジェクト管理 :unselected:\\t×\\n:selected:\\t×/O :unselected:\\t:unselected: C\\n\\t実行ユーザー管理\\t×\\t×/O\\t:unselected:\\n\\tテクニカルサポート\\t有り(オプション)\\t有り(オンサイト+リモート)\\t有り(リモート)\\n\\t価格\\t年間90万円~\\t28万円~ (3ヵ月まで)\\t年間720万円 (月額60万円)~\\n\\t価格単位\\tアカウント\\tアカウント/UNIT\\tUNIT\\n\\n \\n\\nBizRobo! mini の特長\\n\\nWebページをクリックの場合\\n● BizRobo! miniは作成したロボットを他のPC上でも利用可能です\\n\\n項目の存在を認識 (オブジェクト) :unselected: コボット作成時点 :unselected: ロボットコピー\\n画面のサイズや位置が 変わっても項目を認識 することが可能。一つ のロボットを複数PCへ コピーしても正常に 起動!\",\"citation\":[{\"search_title\":\"Bizrobo!miniリーフレット-1.pdf\",\"search_path\":\"03_インデックスC/BizRobo!/Bizrobo!miniリーフレット/Bizrobo!miniリーフレット-1.pdf\"}]},{\"text\":\"最新の脅威へのセキュリティ対策とは https://v2.nex-pro.com/mypage/libraries/45677\\n製造業向けソリューション\\n【製造業DX】 紙運用·電子管理のお悩みを解決セミナー https://v2.nex-pro.com/mypage/libraries/42835\\nlot·ネットワーク\\nローカル5G 活用事例紹介セミナー https://v2.nex-pro.com/mypage/libraries/46049\\nAI·ロボット·ノーコードアプリ\\n製造業の品質検査業務における AI活用セミナー https://v2.nex-pro.com/mypage/libraries/46926\\n私たちが警戒すべき 最新の脅威への セキュリティ対策とは マエントポイントセキュリティとう」 脱PPAP\\n製造業DX\\n紙運用·電話税理电お飲み物\\n解決セミナー\\n中国·中小企業肉粉 SAP導入のすすめ\\n日立システムズメSAP 一中堅·中小企業の味方です\",\"citation\":[{\"search_title\":\"（案内状）202301_セミナ動画サイト-0.pdf\",\"search_path\":\"01_インデックスA/（案内状）202301_セミナ動画サイト/（案内状）202301_セミナ動画サイト-0.pdf\"}]},{\"text\":\"最新の脅威へのセキュリティ対策とは https://v2.nex-pro.com/mypage/libraries/45677\\n製造業向けソリューション\\n【製造業DX】 紙運用·電子管理のお悩みを解決セミナー https://v2.nex-pro.com/mypage/libraries/42835\\nlot·ネットワーク\\nローカル5G 活用事例紹介セミナー https://v2.nex-pro.com/mypage/libraries/46049\\nAI·ロボット·ノーコードアプリ\\n製造業の品質検査業務における AI活用セミナー https://v2.nex-pro.com/mypage/libraries/46926\\n私たちが警戒すべき 最新の脅威への セキュリティ対策とは マエントポイントセキュリティとう」 脱PPAP\\n製造業DX\\n紙運用·電話税理电お飲み物\\n解決セミナー\\n中国·中小企業肉粉 SAP導入のすすめ\\n日立システムズメSAP 一中堅·中小企業の味方です\",\"citation\":[{\"search_title\":\"（案内状）202301_セミナ動画サイト-0.pdf\",\"search_path\":\"01_インデックスA/（案内状）202301_セミナ動画サイト/（案内状）202301_セミナ動画サイト-0.pdf\"}]}]}",
+        "tool_call_id": "call_HqSqIsIRHoOHt03Oh26VFzww"
+      }
+    ]
+  }
+
+### merge
+POST http://localhost:7071/api/merge
+Content-Type: application/json
+
+{
+    "model": "gpt-5.2",
+    "user_message_rev": "トヨタのAIエージェントo-beyaについて教えて",
+    "messages": [
+      {
+        "role": "system",
+        "content": "あなたは、社内の検索システムの検索クエリを生成するのが得意な調査エージェントです。\n\nユーザーリクエストを受け取り、検索クエリのバリエーションを生成します。\n検索クエリは検索エンジンで使用されることを念頭に置いて、社内検索に適した検索クエリを生成してください。\n生成したキーワードが以下の条件を満たしているか確認してください。\n- 具体的で明確である\n- 可能な限り短く、簡潔である\n- 異なる視点や側面をカバーしている\n- ユーザーの意図を正確に反映している\n- 複合キーワードの場合はスペースでつないで1つのキーワードにしてください。"
+      },
+      {
+        "role": "user",
+        "content": "ユーザーの質問に正しく回答するための必要な情報を検索ツールを使って集めて回答してください。\nもし回答するために十分な情報の検索が得られない場合は、回数制限がありますが再検索可能です。\n十分な回答が得られた場合は、検索をやめて回答してください。関係ない情報は無視してください。\nかならず1回は検索を行ってください。検索を行わない場合は、回答が不十分になる可能性があります。\n- セマンティック検索とキーワード検索どちらも使ってください。\nユーザーの質問: \n    トヨタのAIエージェントo-beyaについて教えて\n\n    ## 補足情報\n    \n    "
+      },
+      {
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"query\": \"トヨタ AIエージェント o-beya\"}",
+              "name": "keyword_search"
+            },
+            "id": "call_QjUOF9vnC9NEXFywxSK8bASR",
+            "type": "function"
+          },
+          {
+            "function": {
+              "arguments": "{\"query\": \"トヨタ AIエージェント o-beya\"}",
+              "name": "semantic_search"
+            },
+            "id": "call_HqSqIsIRHoOHt03Oh26VFzww",
+            "type": "function"
+          }
+        ]
+      },
+      {
+        "role": "tool",
+        "content": "{\"segments\":[{\"text\":\":unselected:\\t1台\\t1台/1~10台程度\\t1~10台程度\\n\\t実行用ライセンス\\t不要\\t不要\\t不要\\n\\tプロジェクト管理 :unselected:\\t×\\n:selected:\\t×/O :unselected:\\t:unselected: C\\n\\t実行ユーザー管理\\t×\\t×/O\\t:unselected:\\n\\tテクニカルサポート\\t有り(オプション)\\t有り(オンサイト+リモート)\\t有り(リモート)\\n\\t価格\\t年間90万円~\\t28万円~ (3ヵ月まで)\\t年間720万円 (月額60万円)~\\n\\t価格単位\\tアカウント\\tアカウント/UNIT\\tUNIT\\n\\n \\n\\nBizRobo! mini の特長\\n\\nWebページをクリックの場合\\n● BizRobo! miniは作成したロボットを他のPC上でも利用可能です\\n\\n項目の存在を認識 (オブジェクト) :unselected: コボット作成時点 :unselected: ロボットコピー\\n画面のサイズや位置が 変わっても項目を認識 することが可能。一つ のロボットを複数PCへ コピーしても正常に 起動!\",\"citation\":[{\"search_title\":\"Bizrobo!miniリーフレット-1.pdf\",\"search_path\":\"03_インデックスC/BizRobo!/Bizrobo!miniリーフレット/Bizrobo!miniリーフレット-1.pdf\"}]},{\"text\":\"派生物徴量を作成するためにどのようなローリングウィンドウを使用します か,0 機械学習自動化プラットフォーム\\nDataRobot\\n小売業のあらゆる問題をAI活用で解決しませんか? 日々の業務で発生する様々なデータを活用することで、 過剰発注·在庫や品切れ、予測や最適化担当の俗人化\\nなどの課題解決をサポートする。それがDataRobotの役目です。\\nAI活用の専門家がいないから導入は難しい…\\n自社データから超高精度な機械学習モデルを自動的に構築\\n世界的なデータサイエンティスト達のノウハウがふんだんに盛り込まれた機械学習自動化ツールだから…\\n1クリックやドラック&ドロップ\\nによる簡単な操作\\n21,000を超えるのアルゴリズムから\\nAIが自動で選出·モデル作成\\n3分類·回帰·時系列で予測可能 テキストだけでなく画像も対応!\\n何を予測しますか? 貸し倒れ\\n分類\\nターゲットなし?\\n40k - HE\\n30k-\\n20k 1Ck-\\nFals 貸し倒れ\\n開始\\nモデリングモード: クイックv 特徴量セット·有用な特徴屋 根通化指標 LogLoss\",\"citation\":[{\"search_title\":\"【リーフレット】DataRobot_小売業向け202101-0.pdf\",\"search_path\":\"02_インデックスB/DataRobot/【リーフレット】DataRobot_小売業向け202101/【リーフレット】DataRobot_小売業向け202101-0.pdf\"}]},{\"text\":\"最新の脅威へのセキュリティ対策とは https://v2.nex-pro.com/mypage/libraries/45677\\n製造業向けソリューション\\n【製造業DX】 紙運用·電子管理のお悩みを解決セミナー https://v2.nex-pro.com/mypage/libraries/42835\\nlot·ネットワーク\\nローカル5G 活用事例紹介セミナー https://v2.nex-pro.com/mypage/libraries/46049\\nAI·ロボット·ノーコードアプリ\\n製造業の品質検査業務における AI活用セミナー https://v2.nex-pro.com/mypage/libraries/46926\\n私たちが警戒すべき 最新の脅威への セキュリティ対策とは マエントポイントセキュリティとう」 脱PPAP\\n製造業DX\\n紙運用·電話税理电お飲み物\\n解決セミナー\\n中国·中小企業肉粉 SAP導入のすすめ\\n日立システムズメSAP 一中堅·中小企業の味方です\",\"citation\":[{\"search_title\":\"（案内状）202301_セミナ動画サイト-0.pdf\",\"search_path\":\"01_インデックスA/（案内状）202301_セミナ動画サイト/（案内状）202301_セミナ動画サイト-0.pdf\"}]},{\"text\":\"DataRobot データ モデル デプロイ インサイト Jupyter リポジトリ\\n店鋪売上予測.xlsx\\n何を予測しますか?\\n売上\\n回冊\\n240 瓶 200\\nIT 160 120 80 - 40 n\\n10% 15k 20k 25% 30k 売上\\n開始\\nモデリングモード:オートパイロット v 特技量セット:有用な特徴量 最適化指标:RMSE\\n← 時間認識モデルを使わない 主時間を表す特徴量は?@\\n日付 日\\n平均売上\\n204\\nD\\n2012-07-01\\n日付\\n2014-06-15\\nワーカー 現在全プロジェクト合わせ て20個中0個のワーカーを 使用しています\\n00\\nステータス ✔1.データをアップロード中 (1.808 () :selected: ▼2.元データを読み取り中 〔クイック】 (14.748 19)\\n√ 3.探索的データ解析:18/18\\n特微量 (3.485 秒]\\n<h1>AIによる品質管理、予知保全で業務効率化·自動化をサポート</h1>\\n派生物欲量を作成するためにどのようなローリングウィンドウを使用します か,0\\n機械学習自動化プラットフォーム\\nDataRobot\",\"citation\":[{\"search_title\":\"【リーフレット】DataRobot_製造業向け202102-0.pdf\",\"search_path\":\"02_インデックスB/DataRobot/【リーフレット】DataRobot_製造業向け202102/【リーフレット】DataRobot_製造業向け202102-0.pdf\"}]},{\"text\":\"DataRobot\\nビジネス課題\\n不適合製品によるムダな生産コストを削減したい メンテナンスの効率化で生産量を向上させたい\\n現状の取り組みでは… 人手によるデータ収集で時間がかかっている モデルを作成しても、変化に柔軟に対応できない\\n活用データ\\nシステム連携やセンサーからデータ収集 品質データ、稼働データなど\\nインパクト 不適合製品発生割合を47%削減! メンテナンスにかかる工場の停止時間を25%削減! 2か月かかっていた予測モデル更新の所要時間を2分に短縮!\\nまずはお気軽にご相談ください! 無料トライアルもございます\\n●日立システムズのAI診断プログラム\\n「どのようなビジネス課題にAI(機械学習)を活用できるかわからない」「立ち上げた機械学習プロジェクトを具体的な ビジネス課題に適用する方法がわからない」といったお悩みを抱えているお客様に。協創しながら、AIの活用方法をご支援します。\\n0 日立システムズのトータルデータ利活用ソリューション DataRobot導入のみならず、様々なツールとの連携でお客様のさらなる業務効率化·自動化をご支援いたします。\\nお問い合わせ\",\"citation\":[{\"search_title\":\"【リーフレット】DataRobot_製造業向け202102-1.pdf\",\"search_path\":\"02_インデックスB/DataRobot/【リーフレット】DataRobot_製造業向け202102/【リーフレット】DataRobot_製造業向け202102-1.pdf\"}]}]}",
+        "tool_call_id": "call_QjUOF9vnC9NEXFywxSK8bASR"
+      },
+      {
+        "role": "tool",
+        "content": "{\"segments\":[{\"text\":\":unselected:\\t1台\\t1台/1~10台程度\\t1~10台程度\\n\\t実行用ライセンス\\t不要\\t不要\\t不要\\n\\tプロジェクト管理 :unselected:\\t×\\n:selected:\\t×/O :unselected:\\t:unselected: C\\n\\t実行ユーザー管理\\t×\\t×/O\\t:unselected:\\n\\tテクニカルサポート\\t有り(オプション)\\t有り(オンサイト+リモート)\\t有り(リモート)\\n\\t価格\\t年間90万円~\\t28万円~ (3ヵ月まで)\\t年間720万円 (月額60万円)~\\n\\t価格単位\\tアカウント\\tアカウント/UNIT\\tUNIT\\n\\n \\n\\nBizRobo! mini の特長\\n\\nWebページをクリックの場合\\n● BizRobo! miniは作成したロボットを他のPC上でも利用可能です\\n\\n項目の存在を認識 (オブジェクト) :unselected: コボット作成時点 :unselected: ロボットコピー\\n画面のサイズや位置が 変わっても項目を認識 することが可能。一つ のロボットを複数PCへ コピーしても正常に 起動!\",\"citation\":[{\"search_title\":\"Bizrobo!miniリーフレット-1.pdf\",\"search_path\":\"03_インデックスC/BizRobo!/Bizrobo!miniリーフレット/Bizrobo!miniリーフレット-1.pdf\"}]},{\"text\":\"最新の脅威へのセキュリティ対策とは https://v2.nex-pro.com/mypage/libraries/45677\\n製造業向けソリューション\\n【製造業DX】 紙運用·電子管理のお悩みを解決セミナー https://v2.nex-pro.com/mypage/libraries/42835\\nlot·ネットワーク\\nローカル5G 活用事例紹介セミナー https://v2.nex-pro.com/mypage/libraries/46049\\nAI·ロボット·ノーコードアプリ\\n製造業の品質検査業務における AI活用セミナー https://v2.nex-pro.com/mypage/libraries/46926\\n私たちが警戒すべき 最新の脅威への セキュリティ対策とは マエントポイントセキュリティとう」 脱PPAP\\n製造業DX\\n紙運用·電話税理电お飲み物\\n解決セミナー\\n中国·中小企業肉粉 SAP導入のすすめ\\n日立システムズメSAP 一中堅·中小企業の味方です\",\"citation\":[{\"search_title\":\"（案内状）202301_セミナ動画サイト-0.pdf\",\"search_path\":\"01_インデックスA/（案内状）202301_セミナ動画サイト/（案内状）202301_セミナ動画サイト-0.pdf\"}]},{\"text\":\"最新の脅威へのセキュリティ対策とは https://v2.nex-pro.com/mypage/libraries/45677\\n製造業向けソリューション\\n【製造業DX】 紙運用·電子管理のお悩みを解決セミナー https://v2.nex-pro.com/mypage/libraries/42835\\nlot·ネットワーク\\nローカル5G 活用事例紹介セミナー https://v2.nex-pro.com/mypage/libraries/46049\\nAI·ロボット·ノーコードアプリ\\n製造業の品質検査業務における AI活用セミナー https://v2.nex-pro.com/mypage/libraries/46926\\n私たちが警戒すべき 最新の脅威への セキュリティ対策とは マエントポイントセキュリティとう」 脱PPAP\\n製造業DX\\n紙運用·電話税理电お飲み物\\n解決セミナー\\n中国·中小企業肉粉 SAP導入のすすめ\\n日立システムズメSAP 一中堅·中小企業の味方です\",\"citation\":[{\"search_title\":\"（案内状）202301_セミナ動画サイト-0.pdf\",\"search_path\":\"01_インデックスA/（案内状）202301_セミナ動画サイト/（案内状）202301_セミナ動画サイト-0.pdf\"}]}]}",
+        "tool_call_id": "call_HqSqIsIRHoOHt03Oh26VFzww"
+      }
+    ]
+  }

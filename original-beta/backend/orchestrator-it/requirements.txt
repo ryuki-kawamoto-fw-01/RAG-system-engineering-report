@@ -1,0 +1,8 @@
+# DO NOT include azure-functions-worker in this file
+# The Python Worker is managed by Azure Functions platform
+# Manually managing azure-functions-worker may cause unexpected issues
+
+azure-identity==1.19.0
+azure-functions==1.21.3
+openai==1.55.3
+requests>=2.32.3

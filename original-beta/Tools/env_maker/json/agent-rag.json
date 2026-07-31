@@ -1,0 +1,242 @@
+[
+  {
+    "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+    "value": "app-key-agent-rag",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_AI_FOUNDRY_PROJECT_ENDPOINT",
+    "value": "aif-url",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_AISEARCH_ENDPOINT",
+    "value": "https://aisearch-name.search.windows.net",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_AISEARCH_FILEPATH",
+    "value": "agent-index-name",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_AISEARCH_QA_ANSWER_FIELD",
+    "value": "answer",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_AISEARCH_QA_ID_FIELD",
+    "value": "id",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_AISEARCH_QA_INDEX",
+    "value": "qa-index-name",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_AISEARCH_QA_QUESTION_FIELD",
+    "value": "question",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_AISEARCH_QA_SEMANTIC_CONFIG",
+    "value": "semantic-01",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_AISEARCH_QA_VECTOR_FIELD",
+    "value": "questionVector",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_AISEARCH_STRICTNESS",
+    "value": "3",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_AISEARCH_TITLE",
+    "value": "storage_blob_name",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_AISEARCH_TOPNDOCUMENTS",
+    "value": "20",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_AISEARCH_TOPNDOCUMENTS_QA",
+    "value": "2",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_DATABASE_NAME",
+    "value": "cosmos-database-name-01",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_DICTIONARY_CONTAINER_NAME",
+    "value": "dictionary",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_URI",
+    "value": "https://cosmosdb-name.documents.azure.com:443/",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_OPENAI_ENDPOINT",
+    "value": "load-balancer-url",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_OPENAI_MODEL_NAME",
+    "value": "aif-model-name",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_OPENAI_VERSION",
+    "value": "2025-04-01-preview",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_STORAGE_CONNECTION_STRING",
+    "value": "https://storage-name.blob.core.windows.net",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_STORAGE_MARKDOWN_CONTAINER",
+    "value": "st-agent-container-name-03",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_STORAGE_SPLIT_CONTAINER",
+    "value": "st-agent-container-name-02",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_STORAGE_SRC_CONTAINER",
+    "value": "st-agent-container-name-01",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_STORAGE_TEMPFILE_CONNECTION_STRING",
+    "value": "https://storage-name.blob.core.windows.net",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_STORAGE_TEMPFILE_CONTAINER_NAME",
+    "value": "st-container-name-05",
+    "slotSetting": false
+  },
+  {
+    "name": "AzureWebJobsStorage__accountName",
+    "value": "storage-name",
+    "slotSetting": false
+  },
+  {
+    "name": "AzureWebJobsStorage__blobServiceUri",
+    "value": "https://storage-name.blob.core.windows.net",
+    "slotSetting": false
+  },
+  {
+    "name": "AzureWebJobsStorage__credential",
+    "value": "managedidentity",
+    "slotSetting": false
+  },
+  {
+    "name": "AzureWebJobsStorage__queueServiceUri",
+    "value": "https://storage-name.queue.core.windows.net",
+    "slotSetting": false
+  },
+  {
+    "name": "AzureWebJobsStorage__tableServiceUri",
+    "value": "https://storage-name.table.core.windows.net",
+    "slotSetting": false
+  },
+  {
+    "name": "BUILD_FLAGS",
+    "value": "UseExpressBuild",
+    "slotSetting": false
+  },
+  {
+    "name": "DEFAULT_CATEGORY",
+    "value": "agent-index-name",
+    "slotSetting": false
+  },
+  {
+    "name": "EMBEDDING_MODEL",
+    "value": "embedding-model-name",
+    "slotSetting": false
+  },
+  {
+    "name": "ENABLE_ORYX_BUILD",
+    "value": "true",
+    "slotSetting": false
+  },
+  {
+    "name": "FUNCTIONS_EXTENSION_VERSION",
+    "value": "~4",
+    "slotSetting": false
+  },
+  {
+    "name": "FUNCTIONS_WORKER_RUNTIME",
+    "value": "python",
+    "slotSetting": false
+  },
+  {
+    "name": "JKS_FILE_PREFIX",
+    "value": "規格/JKS/",
+    "slotSetting": false
+  },
+  {
+    "name": "KEYWORD_SEARCH_COUNT",
+    "value": "5",
+    "slotSetting": false
+  },
+  {
+    "name": "LOAD_BALANCER_ENDPOINT",
+    "value": "load-balancer-url",
+    "slotSetting": false
+  },
+  {
+    "name": "MAX_TOKENS",
+    "value": "4096",
+    "slotSetting": false
+  },
+  {
+    "name": "MODEL_IDENTIFIER",
+    "value": "model-id",
+    "slotSetting": false
+  },
+  {
+    "name": "SEMANTIC_SEARCH_CONFIG",
+    "value": "semantic-01",
+    "slotSetting": false
+  },
+  {
+    "name": "SEMANTIC_SEARCH_COUNT",
+    "value": "5",
+    "slotSetting": false
+  },
+  {
+    "name": "TABLE_SEARCH_MODEL",
+    "value": "aif-model-name",
+    "slotSetting": false
+  },
+  {
+    "name": "TOP_P",
+    "value": "0.9",
+    "slotSetting": false
+  },
+  {
+    "name": "TTS_FILE_PREFIX",
+    "value": "規格/TTS/",
+    "slotSetting": false
+  },
+  {
+    "name": "XDG_CACHE_HOME",
+    "value": "/tmp/.cache",
+    "slotSetting": false
+  }
+]

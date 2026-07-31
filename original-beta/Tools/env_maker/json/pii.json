@@ -1,0 +1,67 @@
+[
+  {
+    "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+    "value": "app-key-pii",
+    "slotSetting": false
+  },
+  {
+    "name": "AzureWebJobsStorage__accountName",
+    "value": "storage-name",
+    "slotSetting": false
+  },
+  {
+    "name": "AzureWebJobsStorage__blobServiceUri",
+    "value": "https://storage-name.blob.core.windows.net",
+    "slotSetting": false
+  },
+  {
+    "name": "AzureWebJobsStorage__credential",
+    "value": "managedidentity",
+    "slotSetting": false
+  },
+  {
+    "name": "AzureWebJobsStorage__queueServiceUri",
+    "value": "https://storage-name.queue.core.windows.net",
+    "slotSetting": false
+  },
+  {
+    "name": "AzureWebJobsStorage__tableServiceUri",
+    "value": "https://storage-name.table.core.windows.net",
+    "slotSetting": false
+  },
+  {
+    "name": "BUILD_FLAGS",
+    "value": "UseExpressBuild",
+    "slotSetting": false
+  },
+  {
+    "name": "ENABLE_ORYX_BUILD",
+    "value": "true",
+    "slotSetting": false
+  },
+  {
+    "name": "FUNCTIONS_EXTENSION_VERSION",
+    "value": "~4",
+    "slotSetting": false
+  },
+  {
+    "name": "FUNCTIONS_WORKER_RUNTIME",
+    "value": "python",
+    "slotSetting": false
+  },
+  {
+    "name": "LANGUAGE_ENDPOINT",
+    "value": "https://language-name.cognitiveservices.azure.com/",
+    "slotSetting": false
+  },
+  {
+    "name": "SCM_DO_BUILD_DURING_DEPLOYMENT",
+    "value": "1",
+    "slotSetting": false
+  },
+  {
+    "name": "XDG_CACHE_HOME",
+    "value": "/tmp/.cache",
+    "slotSetting": false
+  }
+]

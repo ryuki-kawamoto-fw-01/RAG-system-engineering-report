@@ -1,0 +1,68 @@
+# Environment
+**/.env
+**/.venv/
+**/evidence
+
+# Logs
+**/*.log
+**/log/
+**/logs/
+
+# cache
+**/.cache/
+**/cache/
+**/caches/
+**/tmp/
+**/temp/
+
+# Test authentication state (contains sensitive information)
+tests/features/temp/auth_state.json
+frontend/tests/E2E/features/input/auth_state.json
+
+# Test evidence (screenshots and test results)
+test_evidence/
+frontend/tests/E2E/features/evidence/
+
+# frontend
+/frontend/node_modules
+/frontend/.next
+/frontend/.env.local
+/frontend/package-lock.json
+
+# backend
+/backend/orchestrator/__pycache__/*
+/backend/orchestrator/local.settings.json
+
+# Python
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+.Python
+
+# Tools
+Tools/get-log/.env.local
+
+# Github
+/.github/agents
+/.github/instructions
+/.github/prompts
+/.github/copilot-instructions.md
+
+# Terraform
+**/.terraform/
+**/*.tfstate
+**/*.tfstate.*
+**/*.tfplan
+**/crash.log
+
+# Terraform
+**/tfplan*
+**/*.tfplan
+
+# State dump
+**/downloaded-state.json
+
+# VSCode local settings
+.vscode/
+**/local.setting.json

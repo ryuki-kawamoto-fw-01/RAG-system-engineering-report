@@ -1,0 +1,4 @@
+data_source_name,storage_account_resource_id,container_name,folder_name
+datasource-blob-documents-01,/subscriptions/xxxx/resourceGroups/rg-aisearch-test-001-stg/providers/Microsoft.Storage/storageAccounts/saaisearchtest001stg,container04,docs-folder-01
+datasource-blob-documents-02,/subscriptions/xxxx/resourceGroups/rg-aisearch-test-001-stg/providers/Microsoft.Storage/storageAccounts/saaisearchtest001stg,container04,docs-folder-02
+datasource-blob-documents-03,/subscriptions/xxxx/resourceGroups/rg-aisearch-test-001-stg/providers/Microsoft.Storage/storageAccounts/saaisearchtest001stg,container04,docs-folder-03

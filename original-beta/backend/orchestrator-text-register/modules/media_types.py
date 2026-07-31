@@ -1,0 +1,6 @@
+txt = "text/plain"
+csv = "text/plain"
+pdf = "application/pdf"
+excel = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+word = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+powerpoint = "application/vnd.openxmlformats-officedocument.presentationml.presentation"

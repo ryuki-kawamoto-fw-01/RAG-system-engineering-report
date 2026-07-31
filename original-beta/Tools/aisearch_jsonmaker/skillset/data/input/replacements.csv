@@ -1,0 +1,3 @@
+skillset_name,openai_resource_name,openai_deployment_id,index_name
+sample-skillset-1,my-openai-resource,text-embedding-3-large-prod,sample-index-1
+sample-skillset-2,my-openai-resource,text-embedding-3-large-prod,sample-index-2

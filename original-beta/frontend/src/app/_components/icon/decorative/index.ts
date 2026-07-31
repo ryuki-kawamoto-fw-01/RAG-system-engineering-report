@@ -1,0 +1,16 @@
+export { default as Bulb } from './Bulb';
+export { default as Caution } from './Caution';
+export { default as Check } from './Check';
+export { default as Code } from './Code';
+export { default as Document } from './Document';
+export { default as Graph } from './Graph';
+export { default as Image } from './Image';
+export { default as Image2 } from './Image2';
+export { default as Mail } from './Mail';
+export { default as News } from './News';
+export { default as Pencil } from './Pencil';
+export { default as Phone } from './Phone';
+export { default as Puzzle } from './Puzzle';
+export { default as Scale } from './Scale';
+export { default as Spinner } from './Spinner';
+export { default as Warning } from './Warning';

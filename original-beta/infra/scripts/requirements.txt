@@ -1,0 +1,12 @@
+# Azure AI Search デプロイスクリプト (ai_search.py) の依存関係
+# GitHub Actions での実行を想定
+
+# Azure Search SDK - インデックス、スキルセット、データソース、インデクサーの管理
+# バージョン固定: 12.0.0では index_projections プロパティがサポートされないため
+azure-search-documents==11.6.0
+
+# Azure Identity - DefaultAzureCredential による AAD 認証
+azure-identity>=1.17.0
+
+# HTTP クライアント - REST API 呼び出し (Knowledge Sources/Agents)
+requests>=2.32.0

@@ -1,0 +1,136 @@
+version: "3.8"
+
+services:
+  orchestrator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PROXY: http://umproxy.prx.intra.hitachi.co.jp:8080/
+    platform: linux/amd64
+    command: sleep infinity
+    network_mode: service:azurite
+
+  orchestrator-rag:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PROXY: http://umproxy.prx.intra.hitachi.co.jp:8080/
+    platform: linux/amd64
+    command: sleep infinity
+    network_mode: service:azurite
+
+  orchestrator-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PROXY: http://umproxy.prx.intra.hitachi.co.jp:8080/
+    platform: linux/amd64
+    command: sleep infinity
+    network_mode: service:azurite
+
+  orchestrator-text-register:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PROXY: http://umproxy.prx.intra.hitachi.co.jp:8080/
+    platform: linux/amd64
+    command: sleep infinity
+    network_mode: service:azurite
+
+  orchestrator-prompt:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PROXY: http://umproxy.prx.intra.hitachi.co.jp:8080/
+    platform: linux/amd64
+    command: sleep infinity
+    network_mode: service:azurite
+
+  orchestrator-pii:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PROXY: http://umproxy.prx.intra.hitachi.co.jp:8080/
+    platform: linux/amd64
+    command: sleep infinity
+    network_mode: service:azurite
+
+  orchestrator-it:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PROXY: http://umproxy.prx.intra.hitachi.co.jp:8080/
+    platform: linux/amd64
+    command: sleep infinity
+    network_mode: service:azurite
+
+  manual:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PROXY: http://umproxy.prx.intra.hitachi.co.jp:8080/
+    platform: linux/amd64
+    command: sleep infinity
+    network_mode: service:azurite
+
+  pagesplitter:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PROXY: http://umproxy.prx.intra.hitachi.co.jp:8080/
+    platform: linux/amd64
+    command: sleep infinity
+    network_mode: service:azurite
+
+  markdown:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PROXY: http://umproxy.prx.intra.hitachi.co.jp:8080/
+    platform: linux/amd64
+    command: sleep infinity
+    network_mode: service:azurite
+
+  converttopdf:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PROXY: http://umproxy.prx.intra.hitachi.co.jp:8080/
+    platform: linux/amd64
+    command: sleep infinity
+    network_mode: service:azurite
+
+  orchestrator-mfg:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PROXY: http://umproxy.prx.intra.hitachi.co.jp:8080/
+    platform: linux/amd64
+    command: sleep infinity
+    network_mode: service:azurite
+
+  orchestrator-deep-research:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PROXY: http://umproxy.prx.intra.hitachi.co.jp:8080/
+    platform: linux/amd64
+    command: sleep infinity
+    network_mode: service:azurite
+
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite
+    restart: unless-stopped

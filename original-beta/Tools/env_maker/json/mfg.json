@@ -1,0 +1,117 @@
+[
+  {
+    "name": "AGENT_DEPLOYMENT_NAME",
+    "value": "aif-model-name",
+    "slotSetting": false
+  },
+  {
+    "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+    "value": "app-key-mfg",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_AI_FOUNDRY_PROJECT_ENDPOINT",
+    "value": "aif-url",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_AISEARCH_ENDPOINT",
+    "value": "https://aisearch-name.search.windows.net",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_AISEARCH_INDEX",
+    "value": "mfg-index-name",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_DOCUMENT_ENDPOINT",
+    "value": "https://di-name.cognitiveservices.azure.com/",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_OPENAI_VERSION",
+    "value": "2025-01-01-preview",
+    "slotSetting": false
+  },
+  {
+    "name": "AzureWebJobsStorage__accountName",
+    "value": "storage-name",
+    "slotSetting": false
+  },
+  {
+    "name": "AzureWebJobsStorage__blobServiceUri",
+    "value": "https://storage-name.blob.core.windows.net",
+    "slotSetting": false
+  },
+  {
+    "name": "AzureWebJobsStorage__credential",
+    "value": "managedidentity",
+    "slotSetting": false
+  },
+  {
+    "name": "AzureWebJobsStorage__queueServiceUri",
+    "value": "https://storage-name.queue.core.windows.net",
+    "slotSetting": false
+  },
+  {
+    "name": "AzureWebJobsStorage__tableServiceUri",
+    "value": "https://storage-name.table.core.windows.net",
+    "slotSetting": false
+  },
+  {
+    "name": "BUILD_FLAGS",
+    "value": "UseExpressBuild",
+    "slotSetting": false
+  },
+  {
+    "name": "DEPLOYMENT_NAME",
+    "value": "aif-model-name",
+    "slotSetting": false
+  },
+  {
+    "name": "EMBEDDING_MODEL",
+    "value": "embedding-model-name",
+    "slotSetting": false
+  },
+  {
+    "name": "ENABLE_ORYX_BUILD",
+    "value": "true",
+    "slotSetting": false
+  },
+  {
+    "name": "FUNCTIONS_EXTENSION_VERSION",
+    "value": "~4",
+    "slotSetting": false
+  },
+  {
+    "name": "FUNCTIONS_WORKER_RUNTIME",
+    "value": "python",
+    "slotSetting": false
+  },
+  {
+    "name": "LOAD_BALANCER_ENDPOINT",
+    "value": "load-balancer-url",
+    "slotSetting": false
+  },
+  {
+    "name": "MODEL_IDENTIFIER",
+    "value": "model-id",
+    "slotSetting": false
+  },
+  {
+    "name": "PROJECT_CONNECTION_STRING",
+    "value": "eastus2.api.azureml.ms;91c8de69-0ec5-4dfe-8684-bab9dbce4eea;rg-genashi-test-01;proj-genashi-test-01",
+    "slotSetting": false
+  },
+  {
+    "name": "SCM_DO_BUILD_DURING_DEPLOYMENT",
+    "value": "1",
+    "slotSetting": false
+  },
+  {
+    "name": "XDG_CACHE_HOME",
+    "value": "/tmp/.cache",
+    "slotSetting": false
+  }
+]

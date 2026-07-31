@@ -1,0 +1,23 @@
+/* 横スクロール用のカスタムスクロールバー */
+.scrollbar-thin {
+  scrollbar-width: thin; /* Firefox用 */
+  scrollbar-color: #9ca3af #e5e7eb; /* Firefox用: thumb track */
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  height: 8px; /* Chrome, Safari, Opera用 */
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: #e5e7eb;
+  border-radius: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #9ca3af;
+  border-radius: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}

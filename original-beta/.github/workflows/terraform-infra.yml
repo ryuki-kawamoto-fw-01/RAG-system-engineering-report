@@ -1,0 +1,781 @@
+name: CI/CD Pipeline (Infra)
+
+# ============================================
+# 【重要】このワークフローの使用条件と目的
+# ============================================
+# このワークフローは2回目以降の実行専用です。
+# 既存環境に対するインフラ変更を適用します。
+# 
+# 【前提条件】
+# - 初回構築が完了していること
+# - Function Appsにアプリケーションがデプロイ済みであること
+# - 既存のTerraform Stateが存在すること
+# 
+# 【実行内容】
+# - インフラ設定の変更適用 (init_flag=false)
+# - Key Vaultシークレットの更新（Function App Host Keys等）
+# - 環境変数の再設定（テンプレートファイルから）
+# - Azure AI Search スキーマのデプロイ
+# 
+# 【実行されない内容】
+# - アプリケーションコードのビルドとデプロイ
+#   → アプリ更新が必要な場合は別途デプロイ作業を実施してください
+# - Phase 1 (init_flag=true) の初期構築
+#   → 初回構築は別のワークフローで実施してください
+# 
+# 【処理フロー】
+# 1. リソース情報取得（既存のTerraform stateから）
+# 2. ネットワークアクセス一時開放（Storage, Key Vault, Function Apps）
+# 3. Terraform Plan/Apply (CORE - init_flag=false)
+# 4. ネットワークアクセス復元（Function Apps）
+# 5. ネットワークアクセス一時開放（Azure AI Search）
+# 6. Azure AI Search スキーマデプロイ
+# 7. ネットワークアクセス復元（Azure AI Search）
+# 8. Terraform Plan/Apply (AI Service - init_flag=false)
+# 9. 最終セキュリティ強化（Storage, Key Vault）
+# ============================================
+
+on:
+  push:
+    branches:
+      - feature/XXX
+    paths:
+    - 'infra/tenant/**/trial/**' # infra/tenant/{テナント名}/trial/ 以下の変更をトリガー
+
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  # Terraform settings
+  TF_VERSION: "1.14.3"
+  WORKDIR_CORE: infra/tenant/hisys/trial/core
+  WORKDIR_AI: infra/tenant/hisys/trial/ai_service
+  ARM_CLIENT_ID: ${{ secrets.TRIAL96_ARM_CLIENT_ID }}
+  ARM_TENANT_ID: ${{ secrets.TRIAL96_ARM_TENANT_ID }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.TRIAL96_ARM_SUBSCRIPTION_ID }}
+  ARM_USE_OIDC: true
+  # Frontend Authentication settings
+  FRONTEND_AUTH_CLIENT_ID: ${{ secrets.TRIAL96_FRONTEND_AUTH_CLIENT_ID }}
+  FRONTEND_AUTH_CLIENT_SECRET: ${{ secrets.TRIAL96_FRONTEND_AUTH_CLIENT_SECRET }}
+  # Azure AI Search Schema settings
+  SCHEMAS_DIR: infra/tenant/hisys/trial/ai_service/schemas
+  # Deployment control flags (set to 'true' to skip for faster iteration)
+
+jobs:
+  # ============================================
+  # Infrastructure (Terraform) Jobs
+  # ============================================
+  terraform-plan-and-apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    environment: trial
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # # ============================================
+      # # 2回目以降の構築判定: Terraform Stateが存在することを確認
+      # # ============================================
+      # - name: Check if Terraform State exists
+      #   id: check-state
+      #   run: |
+      #     echo "Checking if Terraform State exists..."
+          
+      #     # Terraform初期化（ステート確認のため）
+      #     cd ${{ env.WORKDIR_CORE }}
+      #     terraform init -input=false -backend=true || {
+      #       echo "❌ Terraform init failed - cannot verify state"
+      #       echo "This workflow requires existing Terraform State."
+      #       echo "Please use terraform-ci-cd.yml for initial deployment."
+      #       echo "state_exists=false" >> $GITHUB_OUTPUT
+      #       exit 0
+      #     }
+          
+      #     # Stateファイルの存在確認
+      #     if terraform state list 2>/dev/null | grep -q .; then
+      #       echo "✅ Terraform State found - proceeding with infrastructure update"
+      #       echo "state_exists=true" >> $GITHUB_OUTPUT
+      #     else
+      #       echo "❌ No Terraform State found - this is an initial deployment"
+      #       echo "Please use terraform-ci-cd.yml for initial deployment."
+      #       echo "state_exists=false" >> $GITHUB_OUTPUT
+      #     fi
+
+      # - name: Exit if state does not exist
+      #   if: steps.check-state.outputs.state_exists == 'false'
+      #   run: |
+      #     echo "::error::No Terraform State found. Use terraform-ci-cd.yml for initial deployment."
+      #     exit 1
+
+      - name: Azure Login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.TRIAL96_ARM_CLIENT_ID }}
+          tenant-id: ${{ secrets.TRIAL96_ARM_TENANT_ID }}
+          subscription-id: ${{ secrets.TRIAL96_ARM_SUBSCRIPTION_ID }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+          terraform_wrapper: false  # terraform output -raw を使うため wrapper を無効化
+
+      # ============================================
+      # Infrastructure Deployment (CORE) - Phase 2 Only
+      # ============================================
+      # init_flag=false でセキュリティ設定を維持したままデプロイ
+
+      # CORE - Step 1: Terraform Init and Validate
+      - name: Terraform Init (core)
+        working-directory: ${{ env.WORKDIR_CORE }}
+        run: terraform init -upgrade -input=false
+
+      - name: Terraform Validate (core)
+        working-directory: ${{ env.WORKDIR_CORE }}
+        run: terraform validate
+
+      # Terraform Plan 実行前に既存 Storage Account のネットワークルールを一時的に開放
+      # （既存リソースの状態確認のため）
+      # Terraform init後、既存のステートから値を取得
+      - name: Get Storage Account and Resource Group names from Terraform (Initial Check)
+        id: get-storage-info-initial
+        working-directory: ${{ env.WORKDIR_CORE }}
+        run: |
+          # 既存のステートファイルから値を取得（存在する場合）
+          echo "Checking for existing Terraform outputs..."
+          STORAGE_ACCOUNT_NAME_TEMP=$(terraform output -raw storage_account_name 2>/dev/null || echo "")
+          RESOURCE_GROUP_TEMP=$(terraform output -raw resource_group_name 2>/dev/null || echo "")
+          
+          if [ -n "$STORAGE_ACCOUNT_NAME_TEMP" ] && [ -n "$RESOURCE_GROUP_TEMP" ]; then
+            echo "✅ Found existing Terraform state:"
+            echo "  Storage Account: $STORAGE_ACCOUNT_NAME_TEMP"
+            echo "  Resource Group: $RESOURCE_GROUP_TEMP"
+          else
+            echo "ℹ️ No existing Terraform outputs found (likely initial deployment)"
+            echo "  Storage Account: [not found]"
+            echo "  Resource Group: [not found]"
+          fi
+          
+          echo "STORAGE_ACCOUNT_NAME_TEMP=$STORAGE_ACCOUNT_NAME_TEMP" >> $GITHUB_ENV
+          echo "RESOURCE_GROUP_TEMP=$RESOURCE_GROUP_TEMP" >> $GITHUB_ENV
+
+      - name: Temporarily allow network access to Storage Account (Initial)
+        run: |
+          echo "========================================"
+          echo "Attempting to open Storage Account network access"
+          echo "========================================"
+          
+          if [ -n "${{ env.STORAGE_ACCOUNT_NAME_TEMP }}" ] && [ -n "${{ env.RESOURCE_GROUP_TEMP }}" ]; then
+            echo "Storage Account: ${{ env.STORAGE_ACCOUNT_NAME_TEMP }}"
+            echo "Resource Group: ${{ env.RESOURCE_GROUP_TEMP }}"
+            echo "Checking if Storage Account exists..."
+            
+            if az storage account show --name "${{ env.STORAGE_ACCOUNT_NAME_TEMP }}" --resource-group "${{ env.RESOURCE_GROUP_TEMP }}" >/dev/null 2>&1; then
+              echo "✅ Storage Account exists, updating network access..."
+              az storage account update \
+                --name "${{ env.STORAGE_ACCOUNT_NAME_TEMP }}" \
+                --resource-group "${{ env.RESOURCE_GROUP_TEMP }}" \
+                --public-network-access Enabled \
+                --default-action Allow \
+                && echo "✅ Storage Account network access enabled" \
+                || echo "⚠️ Failed to update Storage Account network rules, continuing..."
+            else
+              echo "ℹ️ Storage Account does not exist yet, skipping network access configuration..."
+            fi
+          else
+            echo "ℹ️ Storage Account information not available (likely initial deployment)"
+            echo "Skipping network access configuration..."
+          fi
+          echo "========================================"
+
+      # ============================================
+      # Key Vault ネットワークアクセス一時開放
+      # ============================================
+      # Terraform Plan/Apply実行のため、Key Vaultのネットワークアクセスを一時開放
+      # （既存シークレットの状態確認のため）
+      - name: Get Key Vault name from Terraform output (Before Plan)
+        id: get-key-vault-name-initial
+        working-directory: ${{ env.WORKDIR_CORE }}
+        run: |
+          echo "Retrieving Key Vault name from Terraform output..."
+          KEY_VAULT_NAME=$(terraform output -raw key_vault_name 2>/dev/null || echo "")
+          
+          if [ -n "$KEY_VAULT_NAME" ]; then
+            echo "✅ Key Vault name retrieved: $KEY_VAULT_NAME"
+          else
+            echo "ℹ️ Key Vault name not found (likely initial deployment)"
+          fi
+          
+          echo "KEY_VAULT_NAME=$KEY_VAULT_NAME" >> $GITHUB_ENV
+
+      - name: Temporarily allow network access to Key Vault (Before Plan)
+        run: |
+          echo "=========================================="
+          echo "Opening network access for Key Vault before Terraform Plan..."
+          echo "=========================================="
+          
+          if [ -n "${{ env.KEY_VAULT_NAME }}" ]; then
+            echo "Key Vault: ${{ env.KEY_VAULT_NAME }}"
+            echo "Resource Group: ${{ env.RESOURCE_GROUP_TEMP }}"
+            echo "Checking if Key Vault exists..."
+            
+            if az keyvault show --name "${{ env.KEY_VAULT_NAME }}" --resource-group "${{ env.RESOURCE_GROUP_TEMP }}" >/dev/null 2>&1; then
+              echo "✅ Key Vault exists, updating network access..."
+              az keyvault update \
+                --name ${{ env.KEY_VAULT_NAME }} \
+                --resource-group ${{ env.RESOURCE_GROUP_TEMP }} \
+                --public-network-access Enabled \
+                --default-action Allow \
+                && echo "✅ Key Vault network access enabled" \
+                || echo "⚠️ Failed to update Key Vault network rules, continuing..."
+              
+              echo "Waiting for network configuration to propagate..."
+              sleep 60
+            else
+              echo "ℹ️ Key Vault does not exist yet, skipping network access configuration..."
+            fi
+          else
+            echo "ℹ️ Key Vault name not available (likely initial deployment)"
+            echo "Skipping network access configuration..."
+          fi
+          echo "=========================================="
+
+      - name: Terraform Plan with init_flag=true (core)
+        working-directory: ${{ env.WORKDIR_CORE }}
+        run: |
+          echo "Verifying PDF Function App environment variables configuration..."
+          echo "Content of env_vars/08-pdf.tpl:"
+          cat env_vars/08-pdf.tpl
+          echo ""
+          terraform plan -input=false -no-color -out=tfplan_core_init \
+            -var="init_flag=true" \
+            -var="frontend_auth_client_id=${{ env.FRONTEND_AUTH_CLIENT_ID }}" \
+            -var="frontend_auth_client_secret=${{ env.FRONTEND_AUTH_CLIENT_SECRET }}"
+
+      # CORE - Step 2: Apply with init_flag=true
+      # パブリックネットワークアクセスを有効化してインフラストラクチャをデプロイ
+      - name: Terraform Apply with init_flag=true (core)
+        working-directory: ${{ env.WORKDIR_CORE }}
+        run: terraform apply -input=false -auto-approve -parallelism=5 tfplan_core_init
+
+      # ============================================
+      # リソース情報の取得
+      # ============================================
+      # 既存のTerraform stateからリソース情報を取得
+      # Phase 2で使用するリソース情報を環境変数に設定
+      - name: Get Storage Account and Resource Group names from Terraform (After Apply)
+        id: get-storage-info-final
+        working-directory: ${{ env.WORKDIR_CORE }}
+        run: |
+          echo "Retrieving resource information from Terraform state..."
+          STORAGE_ACCOUNT_NAME=$(terraform output -raw storage_account_name)
+          RESOURCE_GROUP=$(terraform output -raw resource_group_name)
+          
+          echo "✅ Retrieved resource information:"
+          echo "  Storage Account: $STORAGE_ACCOUNT_NAME"
+          echo "  Resource Group: $RESOURCE_GROUP"
+          
+          echo "STORAGE_ACCOUNT_NAME=$STORAGE_ACCOUNT_NAME" >> $GITHUB_ENV
+          echo "RESOURCE_GROUP=$RESOURCE_GROUP" >> $GITHUB_ENV
+
+      - name: Get Event Grid System Topic name from Terraform output
+        id: get-event-grid-topic
+        working-directory: ${{ env.WORKDIR_CORE }}
+        run: |
+          EVENT_GRID_SYSTEM_TOPIC_NAME=$(terraform output -raw event_grid_system_topic_name)
+          echo "EVENT_GRID_SYSTEM_TOPIC_NAME=$EVENT_GRID_SYSTEM_TOPIC_NAME" >> $GITHUB_ENV
+
+      # ============================================
+      # Function App ネットワークアクセス一時開放
+      # ============================================
+      # Terraform Host Keys取得のため、Function Appのパブリックアクセスを一時的に有効化
+      - name: Temporarily enable Function App public network access
+        run: |
+          echo "=========================================="
+          echo "Enabling Function App Public Network Access"
+          echo "=========================================="
+          echo "This is required for Terraform to retrieve Host Keys"
+          echo ""
+          
+          # Terraform outputから すべての Function App名を取得
+          cd ${{ env.WORKDIR_CORE }}
+          
+          # バックエンド処理用 Function Apps (1-8)
+          CHAT_APP=$(terraform output -raw function_chat_name 2>/dev/null || echo "")
+          RAG_APP=$(terraform output -raw function_rag_name 2>/dev/null || echo "")
+          REGISTER_APP=$(terraform output -raw function_register_name 2>/dev/null || echo "")
+          PII_APP=$(terraform output -raw function_pii_name 2>/dev/null || echo "")
+          PROMPT_APP=$(terraform output -raw function_prompt_name 2>/dev/null || echo "")
+          MFG_APP=$(terraform output -raw function_mfg_name 2>/dev/null || echo "")
+          AGENT_RAG_APP=$(terraform output -raw function_agent_rag_name 2>/dev/null || echo "")
+          AGENT_DOC_APP=$(terraform output -raw function_agent_document_name 2>/dev/null || echo "")
+          
+          # データ前処理用 Function Apps (9-14)
+          PAGESPLITER_001_APP=$(terraform output -raw function_pagespliter_001_name 2>/dev/null || echo "")
+          MARKDOWN_001_APP=$(terraform output -raw function_markdown_001_name 2>/dev/null || echo "")
+          PDF_APP=$(terraform output -raw function_pdf_name 2>/dev/null || echo "")
+          PAGESPLITER_002_APP=$(terraform output -raw function_pagespliter_002_name 2>/dev/null || echo "")
+          MARKDOWN_002_APP=$(terraform output -raw function_markdown_002_name 2>/dev/null || echo "")
+          INDEXER_APP=$(terraform output -raw function_indexer_name 2>/dev/null || echo "")
+          
+          cd -
+          
+          # すべての Function Appのパブリックアクセスを有効化
+          echo "Enabling public network access for all 14 Function Apps..."
+          for app_name in "$CHAT_APP" "$RAG_APP" "$REGISTER_APP" "$PII_APP" "$PROMPT_APP" "$MFG_APP" "$AGENT_RAG_APP" "$AGENT_DOC_APP" "$PAGESPLITER_001_APP" "$MARKDOWN_001_APP" "$PDF_APP" "$PAGESPLITER_002_APP" "$MARKDOWN_002_APP" "$INDEXER_APP"; do
+            if [ -n "$app_name" ]; then
+              echo "  - $app_name"
+              az functionapp update \
+                --name "$app_name" \
+                --resource-group ${{ env.RESOURCE_GROUP }} \
+                --set publicNetworkAccess=Enabled
+            fi
+          done
+          
+          echo ""
+          echo "✅ All Function Apps public network access enabled (14 apps)"
+          echo ""
+          
+          # SCMサイトでメインサイトのIP制限を使用（Terraform Host Keys取得のため）
+          # メインサイトは "Allow all" なので、SCMも全アクセス許可となる
+          echo "Configuring SCM to use main site IP restrictions (allows Terraform Host Keys retrieval)..."
+          for app_name in "$CHAT_APP" "$RAG_APP" "$REGISTER_APP" "$PII_APP" "$PROMPT_APP" "$MFG_APP" "$AGENT_RAG_APP" "$AGENT_DOC_APP" "$PAGESPLITER_001_APP" "$MARKDOWN_001_APP" "$PDF_APP" "$PAGESPLITER_002_APP" "$MARKDOWN_002_APP" "$INDEXER_APP"; do
+            if [ -n "$app_name" ]; then
+              echo "  - $app_name (setting scmIpSecurityRestrictionsUseMain=true)"
+              az webapp config set \
+                --name "$app_name" \
+                --resource-group ${{ env.RESOURCE_GROUP }} \
+                --generic-configurations '{"scmIpSecurityRestrictionsUseMain": true}'
+            fi
+          done
+          
+          echo ""
+          echo "✅ All Function Apps SCM configured to use main site IP restrictions (14 apps)"
+          echo "   Main site: Allow all → SCM site: Allow all (inherits main)"
+          echo ""
+          
+          # 設定の伝播を待機
+          echo "Waiting for network configuration to propagate..."
+          sleep 60
+
+      # Function Appの完全起動を待機（Host Keys取得エラー回避のため）
+      - name: Wait for Function Apps to be fully ready
+        run: |
+          echo "Waiting for Function Apps to fully start (1 minute)..."
+          echo "This helps avoid 'InternalServerError from host runtime' errors."
+          sleep 60
+          echo "✅ Wait completed. Function Apps should be ready now."
+
+      # ============================================
+      # Terraform State 修正: Load Balancer 環境変数リソースの削除
+      # ============================================
+      # 【一時的な修正】count パラメータ削除に伴う State クリーンアップ
+      # 修正前のコードで作成された loadbalancer_appsettings[0] を State から削除し、
+      # 新しい loadbalancer_appsettings（配列インデックスなし）として再作成する
+      - name: Remove loadbalancer_appsettings from Terraform State
+        working-directory: ${{ env.WORKDIR_CORE }}
+        run: |
+          echo "=========================================="
+          echo "Cleaning up Terraform State"
+          echo "=========================================="
+          echo "Removing loadbalancer_appsettings resource from State"
+          echo "This forces Terraform to recreate it with all 23 environment variables"
+          echo ""
+          echo "Background:"
+          echo "  - State has 23 variables (correct)"
+          echo "  - Azure actual has 2 variables (incorrect - overwritten by deployment)"
+          echo "  - azapi_update_resource refresh doesn't detect this difference"
+          echo "  - Solution: Remove from State to force recreation"
+          echo ""
+          
+          # State からリソースを削除（存在しない場合はエラーを無視）
+          terraform state rm 'module.app_service.azapi_update_resource.loadbalancer_appsettings' || echo "Resource not found in state, skipping..."
+          
+          echo ""
+          echo "✅ State cleanup completed"
+          echo "Terraform Plan will now show 'loadbalancer_appsettings' as new resource to create"
+          echo ""
+
+      # ============================================
+      # CORE Terraform Plan and Apply (Phase 2)
+      # ============================================
+      # メイン処理: init_flag=false で既存インフラに変更を適用
+      - name: Terraform Plan without init_flag (core)
+        working-directory: ${{ env.WORKDIR_CORE }}
+        run: |
+          terraform plan -input=false -no-color -out=tfplan_core \
+            -var="frontend_auth_client_id=${{ env.FRONTEND_AUTH_CLIENT_ID }}" \
+            -var="frontend_auth_client_secret=${{ env.FRONTEND_AUTH_CLIENT_SECRET }}"
+
+      # CORE - Apply without init_flag
+      - name: Terraform Apply without init_flag (core)
+        working-directory: ${{ env.WORKDIR_CORE }}
+        run: terraform apply -input=false -auto-approve tfplan_core
+
+      # ============================================
+      # Azure Re-authentication
+      # ============================================
+      # Terraform Apply完了後、次の操作のためトークンを更新
+      - name: Azure Re-login (Refresh Token)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.TRIAL96_ARM_CLIENT_ID }}
+          tenant-id: ${{ secrets.TRIAL96_ARM_TENANT_ID }}
+          subscription-id: ${{ secrets.TRIAL96_ARM_SUBSCRIPTION_ID }}
+
+      # ============================================
+      # Function Apps: Restore Private Network Access
+      # ============================================
+      # Terraform Apply完了後、Function Appのパブリックアクセスを無効化
+      # (Host Keys取得のため一時的にEnabledにしていたものをDisabledに戻す)
+      - name: Restore Function App private network access
+        run: |
+          echo "=========================================="
+          echo "Restoring Function App Private Access"
+          echo "=========================================="
+          echo "After Terraform Apply, Function Apps need to be set to private network."
+          echo ""
+          
+          # Terraform outputから すべての Function App名を取得
+          cd ${{ env.WORKDIR_CORE }}
+          
+          # バックエンド処理用 Function Apps (1-8)
+          CHAT_APP=$(terraform output -raw function_chat_name 2>/dev/null || echo "")
+          RAG_APP=$(terraform output -raw function_rag_name 2>/dev/null || echo "")
+          REGISTER_APP=$(terraform output -raw function_register_name 2>/dev/null || echo "")
+          PII_APP=$(terraform output -raw function_pii_name 2>/dev/null || echo "")
+          PROMPT_APP=$(terraform output -raw function_prompt_name 2>/dev/null || echo "")
+          MFG_APP=$(terraform output -raw function_mfg_name 2>/dev/null || echo "")
+          AGENT_RAG_APP=$(terraform output -raw function_agent_rag_name 2>/dev/null || echo "")
+          AGENT_DOC_APP=$(terraform output -raw function_agent_document_name 2>/dev/null || echo "")
+          
+          # データ前処理用 Function Apps (9-14)
+          PAGESPLITER_001_APP=$(terraform output -raw function_pagespliter_001_name 2>/dev/null || echo "")
+          MARKDOWN_001_APP=$(terraform output -raw function_markdown_001_name 2>/dev/null || echo "")
+          PDF_APP=$(terraform output -raw function_pdf_name 2>/dev/null || echo "")
+          PAGESPLITER_002_APP=$(terraform output -raw function_pagespliter_002_name 2>/dev/null || echo "")
+          MARKDOWN_002_APP=$(terraform output -raw function_markdown_002_name 2>/dev/null || echo "")
+          INDEXER_APP=$(terraform output -raw function_indexer_name 2>/dev/null || echo "")
+          
+          cd -
+          
+          # すべての Function Appのパブリックアクセスを無効化
+          echo "Disabling public network access for all 14 Function Apps..."
+          for app_name in "$CHAT_APP" "$RAG_APP" "$REGISTER_APP" "$PII_APP" "$PROMPT_APP" "$MFG_APP" "$AGENT_RAG_APP" "$AGENT_DOC_APP" "$PAGESPLITER_001_APP" "$MARKDOWN_001_APP" "$PDF_APP" "$PAGESPLITER_002_APP" "$MARKDOWN_002_APP" "$INDEXER_APP"; do
+            if [ -n "$app_name" ]; then
+              echo "  - $app_name"
+              az functionapp update \
+                --name "$app_name" \
+                --resource-group ${{ env.RESOURCE_GROUP }} \
+                --set publicNetworkAccess=Disabled
+            fi
+          done
+          
+          echo ""
+          echo "✅ All Function Apps are now on private network (14 apps)"
+          echo "   Public access: Disabled"
+          echo "   VNet integration: Active"
+          echo ""
+          
+          # SCMサイトの設定を元に戻す（独自のIP制限を使用 + デフォルトアクションをDenyに設定）
+          echo "Restoring SCM to use separate IP restrictions with Deny default action..."
+          for app_name in "$CHAT_APP" "$RAG_APP" "$REGISTER_APP" "$PII_APP" "$PROMPT_APP" "$MFG_APP" "$AGENT_RAG_APP" "$AGENT_DOC_APP" "$PAGESPLITER_001_APP" "$MARKDOWN_001_APP" "$PDF_APP" "$PAGESPLITER_002_APP" "$MARKDOWN_002_APP" "$INDEXER_APP"; do
+            if [ -n "$app_name" ]; then
+              echo "  - $app_name (scmUseMain=false, scmDefaultAction=Deny)"
+              az webapp config set \
+                --name "$app_name" \
+                --resource-group ${{ env.RESOURCE_GROUP }} \
+                --generic-configurations '{"scmIpSecurityRestrictionsUseMain": false, "scmIpSecurityRestrictionsDefaultAction": "Deny"}'
+            fi
+          done
+          
+          echo ""
+          echo "✅ All Function Apps SCM restored to separate IP restrictions (14 apps)"
+          echo "   Main site: Disabled (private VNet) | SCM site: Deny all (scmUseMain=false, scmDefaultAction=Deny)"
+          echo ""
+          echo "=========================================="
+
+      # ============================================
+      # AI Service Infrastructure Deployment (Phase 2 Only)
+      # ============================================
+      # 2回目以降の実行: AIサービスの既存インフラに変更を適用
+
+      - name: Azure Re-login before AI service deployment
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.TRIAL96_ARM_CLIENT_ID }}
+          tenant-id: ${{ secrets.TRIAL96_ARM_TENANT_ID }}
+          subscription-id: ${{ secrets.TRIAL96_ARM_SUBSCRIPTION_ID }}
+
+      # AI_SERVICE - Step 1: Init and Validate
+      - name: Terraform Init (ai_service)
+        working-directory: ${{ env.WORKDIR_AI }}
+        run: terraform init -upgrade -input=false
+
+      - name: Terraform Validate (ai_service)
+        working-directory: ${{ env.WORKDIR_AI }}
+        run: terraform validate
+
+      # AI_SERVICE - Step 2: Azure AI Search Schema Deployment
+      # Azure AI Searchのインデックス、データソース、スキルセット、インデクサーを作成
+      - name: Get Azure AI Search service name from Terraform output
+        id: get-search-name
+        working-directory: ${{ env.WORKDIR_AI }}
+        run: |
+          SEARCH_SERVICE_NAME=$(terraform output -raw ai_search_service_name)
+          echo "SEARCH_SERVICE_NAME=$SEARCH_SERVICE_NAME" >> $GITHUB_ENV
+          echo "SERVICE_NAME=$SEARCH_SERVICE_NAME" >> $GITHUB_ENV
+
+      - name: Setup Python for AI Search Schema Deployment
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+          cache-dependency-path: infra/scripts/requirements.txt
+
+      - name: Install Python dependencies for AI Search
+        run: pip install -r infra/scripts/requirements.txt
+
+      # ============================================
+      # Azure AI Search ネットワークアクセス一時開放
+      # ============================================
+      # スキーマデプロイのため、AI Searchのパブリックアクセスを一時的に有効化
+      - name: Temporarily allow network access to Azure AI Search
+        run: |
+          echo "=========================================="
+          echo "Opening Azure AI Search network access for schema deployment"
+          echo "=========================================="
+          echo "AI Search Service: ${{ env.SEARCH_SERVICE_NAME }}"
+          echo "Resource Group: ${{ env.RESOURCE_GROUP }}"
+          echo ""
+          
+          az search service update \
+            --name ${{ env.SEARCH_SERVICE_NAME }} \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --public-network-access Enabled
+          
+          echo "✅ Azure AI Search network access enabled"
+          echo "Waiting for network configuration to propagate..."
+          sleep 60
+          echo "=========================================="
+
+      # Azure AI Search スキーマデプロイの直前にトークンを更新
+      # （長時間処理後のトークン有効期限切れを防止）
+      - name: Azure Login before AI Search Schema Deployment
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.TRIAL96_ARM_CLIENT_ID }}
+          tenant-id: ${{ secrets.TRIAL96_ARM_TENANT_ID }}
+          subscription-id: ${{ secrets.TRIAL96_ARM_SUBSCRIPTION_ID }}
+
+      - name: Deploy Azure AI Search schemas
+        run: |
+          echo "Deploying Azure AI Search schemas"
+          echo "  Service Name: $SERVICE_NAME"
+          echo "  Resource Group: $RESOURCE_GROUP"
+          echo "  Schemas Directory: $SCHEMAS_DIR"
+          python infra/scripts/ai_search.py \
+            --service-name "$SERVICE_NAME" \
+            --schemas-dir "$SCHEMAS_DIR" \
+            --resource-group "$RESOURCE_GROUP" \
+            --subscription-id "$ARM_SUBSCRIPTION_ID" \
+            --verbose
+
+      # スキーマデプロイ完了後の待機時間（Azure AI Searchの操作完了を確実にするため）
+      - name: Wait for Azure AI Search operations to complete
+        run: |
+          echo "Waiting for Azure AI Search operations to complete..."
+          sleep 60
+
+      # ============================================
+      # AI Service Terraform Plan and Apply (Phase 2)
+      # ============================================
+      # メイン処理: init_flag=false で既存AIサービスに変更を適用
+
+      # AI_SERVICE - Step 3: Plan without init_flag
+      - name: Terraform Plan without init_flag (ai_service)
+        working-directory: ${{ env.WORKDIR_AI }}
+        run: terraform plan -input=false -no-color -out=tfplan_ai
+
+      # AI_SERVICE - Step 4: Apply without init_flag
+      - name: Terraform Apply without init_flag (ai_service)
+        working-directory: ${{ env.WORKDIR_AI }}
+        run: terraform apply -input=false -auto-approve tfplan_ai
+
+      # ============================================
+      # Final Security Hardening
+      # ============================================
+      # すべてのデプロイ完了後、Storage AccountとKey Vaultを完全にプライベートに戻す
+
+      - name: Azure Re-login before final security hardening
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.TRIAL96_ARM_CLIENT_ID }}
+          tenant-id: ${{ secrets.TRIAL96_ARM_TENANT_ID }}
+          subscription-id: ${{ secrets.TRIAL96_ARM_SUBSCRIPTION_ID }}
+
+      - name: Disable public network access for Storage Account and Key Vault
+        run: |
+          echo "=========================================="
+          echo "Final Security Hardening"
+          echo "=========================================="
+          echo "Disabling public network access for Storage Account and Key Vault..."
+          echo ""
+          
+          # Storage Accountのパブリックネットワークアクセスを無効化
+          echo "1. Storage Account: ${{ env.STORAGE_ACCOUNT_NAME }}"
+          echo "   Current status:"
+          az storage account show \
+            --name ${{ env.STORAGE_ACCOUNT_NAME }} \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --query "{name:name, publicNetworkAccess:publicNetworkAccess, defaultAction:networkRuleSet.defaultAction}" \
+            -o table
+          
+          echo "   Disabling public network access..."
+          az storage account update \
+            --name ${{ env.STORAGE_ACCOUNT_NAME }} \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --public-network-access Disabled
+          
+          if [ $? -ne 0 ]; then
+            echo "   ❌ Error: Failed to disable Storage Account public network access"
+            exit 1
+          fi
+          
+          echo "   ✅ Storage Account public network access disabled"
+          echo ""
+          
+          # Key Vaultのパブリックネットワークアクセスを無効化
+          echo "2. Key Vault: ${{ env.KEY_VAULT_NAME }}"
+          echo "   Current status:"
+          az keyvault show \
+            --name ${{ env.KEY_VAULT_NAME }} \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --query "{name:name, publicNetworkAccess:properties.publicNetworkAccess, defaultAction:properties.networkAcls.defaultAction}" \
+            -o table
+          
+          echo "   Disabling public network access and setting default action to Deny..."
+          az keyvault update \
+            --name ${{ env.KEY_VAULT_NAME }} \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --public-network-access Disabled \
+            --default-action Deny
+          
+          if [ $? -ne 0 ]; then
+            echo "   ❌ Error: Failed to disable Key Vault public network access and set default action"
+            exit 1
+          fi
+          
+          echo "   ✅ Key Vault public network access disabled and default action set to Deny"
+          echo ""
+          
+          # 設定変更後の確認
+          echo "Final verification:"
+          echo "Storage Account:"
+          az storage account show \
+            --name ${{ env.STORAGE_ACCOUNT_NAME }} \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --query "{name:name, publicNetworkAccess:publicNetworkAccess, defaultAction:networkRuleSet.defaultAction}" \
+            -o table
+          
+          echo ""
+          echo "Key Vault:"
+          az keyvault show \
+            --name ${{ env.KEY_VAULT_NAME }} \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --query "{name:name, publicNetworkAccess:properties.publicNetworkAccess, defaultAction:properties.networkAcls.defaultAction}" \
+            -o table
+          
+          echo ""
+          echo "=========================================="
+          echo "✅ Final Security Hardening Complete"
+          echo "=========================================="
+          echo "All resources are now fully secured:"
+          echo "  - Storage Account: Public Network Access = Disabled"
+          echo "  - Key Vault: Public Network Access = Disabled, Default Action = Deny"
+          echo "  - Azure AI Search: Public Network Access = Disabled"
+          echo "  - Function Apps (14): Public Network Access = Disabled"
+          echo "  - All services: Private Endpoint access only"
+          echo "=========================================="
+
+      # ============================================
+      # Restart Critical Services
+      # ============================================
+      # セキュリティ設定変更後、フロントエンド、ロードバランサー、PDF Functionを再起動
+      # Private Endpoint経由の接続を確実にするため
+      
+      - name: Get Frontend, Load Balancer, and PDF Function App names from Terraform
+        id: get-restart-targets
+        working-directory: ${{ env.WORKDIR_CORE }}
+        run: |
+          echo "Retrieving service names from Terraform output..."
+          FRONTEND_APP=$(terraform output -raw frontend_app_name 2>/dev/null || echo "")
+          LOADBALANCER_APP=$(terraform output -raw loadbalancer_app_name 2>/dev/null || echo "")
+          PDF_FUNCTION_APP=$(terraform output -raw function_pdf_name 2>/dev/null || echo "")
+          
+          echo "FRONTEND_APP=$FRONTEND_APP" >> $GITHUB_ENV
+          echo "LOADBALANCER_APP=$LOADBALANCER_APP" >> $GITHUB_ENV
+          echo "PDF_FUNCTION_APP=$PDF_FUNCTION_APP" >> $GITHUB_ENV
+          
+          echo "✅ Service names retrieved:"
+          echo "  Frontend: $FRONTEND_APP"
+          echo "  Load Balancer: $LOADBALANCER_APP"
+          echo "  PDF Function: $PDF_FUNCTION_APP"
+
+      - name: Restart Frontend, Load Balancer, and PDF Function
+        run: |
+          echo "=========================================="
+          echo "Restarting Critical Services"
+          echo "=========================================="
+          echo "After network security changes, restarting services to ensure"
+          echo "proper Private Endpoint connections are established."
+          echo ""
+          
+          # Frontend App Serviceの再起動
+          if [ -n "${{ env.FRONTEND_APP }}" ]; then
+            echo "1. Restarting Frontend App Service: ${{ env.FRONTEND_APP }}"
+            az webapp restart \
+              --name ${{ env.FRONTEND_APP }} \
+              --resource-group ${{ env.RESOURCE_GROUP }}
+            echo "   ✅ Frontend App Service restarted"
+          else
+            echo "   ⚠️ Frontend App Service name not found, skipping restart"
+          fi
+          echo ""
+          
+          # Load Balancer App Serviceの再起動
+          if [ -n "${{ env.LOADBALANCER_APP }}" ]; then
+            echo "2. Restarting Load Balancer App Service: ${{ env.LOADBALANCER_APP }}"
+            az webapp restart \
+              --name ${{ env.LOADBALANCER_APP }} \
+              --resource-group ${{ env.RESOURCE_GROUP }}
+            echo "   ✅ Load Balancer App Service restarted"
+          else
+            echo "   ⚠️ Load Balancer App Service name not found, skipping restart"
+          fi
+          echo ""
+          
+          # PDF Function Appの再起動
+          if [ -n "${{ env.PDF_FUNCTION_APP }}" ]; then
+            echo "3. Restarting PDF Function App: ${{ env.PDF_FUNCTION_APP }}"
+            az functionapp restart \
+              --name ${{ env.PDF_FUNCTION_APP }} \
+              --resource-group ${{ env.RESOURCE_GROUP }}
+            echo "   ✅ PDF Function App restarted"
+          else
+            echo "   ⚠️ PDF Function App name not found, skipping restart"
+          fi
+          echo ""
+          
+          echo "=========================================="
+          echo "✅ Service Restart Complete"
+          echo "=========================================="
+          echo "All critical services have been restarted:"
+          echo "  - Frontend App Service"
+          echo "  - Load Balancer App Service"
+          echo "  - PDF Function App"
+          echo ""
+          echo "Services are now using Private Endpoint connections only."
+          echo "=========================================="

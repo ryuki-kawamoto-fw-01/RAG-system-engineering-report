@@ -1,0 +1,34 @@
+{
+  "name": "index-genashi-trial-01-knowledge-source",
+  "kind": "searchIndex",
+  "description": "index-genashi-trial-01用のナレッジソース",
+  "encryptionKey": null,
+  "searchIndexParameters": {
+    "searchIndexName": "index-genashi-trial-01",
+    "semanticConfigurationName": null,
+    "sourceDataFields": [
+      {
+        "name": "chunk"
+      },
+      {
+        "name": "pagedata_path"
+      },
+      {
+        "name": "rawdata_name"
+      },
+      {
+        "name": "rawdata_path"
+      },
+      {
+        "name": "title"
+      }
+    ],
+    "searchFields": []
+  },
+  "azureBlobParameters": null,
+  "mcpToolParameters": null,
+  "webParameters": null,
+  "remoteSharePointParameters": null,
+  "indexedSharePointParameters": null,
+  "indexedOneLakeParameters": null
+}

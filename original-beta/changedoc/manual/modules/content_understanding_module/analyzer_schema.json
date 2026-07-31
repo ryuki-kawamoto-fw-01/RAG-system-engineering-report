@@ -1,0 +1,51 @@
+{
+    "description": "Analyze videos to extract transcript and structured fields for each segment in the video.",
+    "baseAnalyzerId": "prebuilt-videoAnalyzer",
+    "config": {
+        "locales": ["en-US", "ja-JP"],
+        "returnDetails": true,
+        "enableFace": false,
+        "disableFaceBlurring": false,
+        "personDirectoryId": null,
+        "disableContentFiltering": false,
+        "segmentationMode": "custom",
+        "segmentationDefinition": "Segment the video into the finest possible minimal procedural units. One segment = exactly one concrete action or operation (do not combine multiple actions). If multiple actions or phases are present, split further; treat preparatory actions, main actions, and concluding actions separately. Each segment must contain exactly one atomic procedural step."
+    },
+    "fieldSchema": {
+        "fields": {
+            "Segments": {
+                "type": "array",
+                "method": "generate",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "SegmentId": {
+                            "type": "string",
+                            "method": "generate",
+                            "description": "Unique identifier for the video segment."
+                        },
+                        "StartTimeMs": {
+                            "type": "integer",
+                            "method": "generate",
+                            "description": "The start time of the segment in milliseconds."
+                        },
+                        "EndTimeMs": {
+                            "type": "integer",
+                            "method": "generate",
+                            "description": "The end time of the segment in milliseconds."
+                        },
+                        "Description": {
+                            "type": "string",
+                            "method": "generate"
+                        },
+                        "procedure": {
+                            "type": "string",
+                            "method": "generate",
+                            "description": "実施内容を番号付き手順形式（1. から開始）で日本語出力"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

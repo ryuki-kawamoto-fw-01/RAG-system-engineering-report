@@ -1,0 +1,31 @@
+{
+  "name": "skillset-genashi-trial-qa",
+  "description": "generate embeddings",
+  "skills": [
+    {
+      "@odata.type": "#Microsoft.Skills.Text.AzureOpenAIEmbeddingSkill",
+      "name": "#1",
+      "context": "/document",
+      "resourceUri": "https://oai-genashi-trial-97-01.openai.azure.com",
+      "deploymentId": "text-embedding-3-large-genashi-trial",
+      "dimensions": 3072,
+      "modelName": "text-embedding-3-large",
+      "inputs": [
+        {
+          "name": "text",
+          "source": "/document/question",
+          "inputs": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "embedding",
+          "targetName": "questionVector"
+        }
+      ]
+    }
+  ],
+  "cognitive_services_account": {
+    "@odata.type": "#Microsoft.Azure.Search.DefaultCognitiveServices"
+  }
+}

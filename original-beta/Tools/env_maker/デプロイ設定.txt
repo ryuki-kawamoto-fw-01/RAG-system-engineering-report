@@ -1,0 +1,42 @@
+# Azureデプロイ設定ファイル
+# このファイルに各JSONファイルのデプロイ先情報を記述してください
+
+# リソースグループ（全てのデプロイで共通）
+リソースグループ：rg-example
+
+# 各JSONファイルのデプロイ先設定
+# フォーマット: <JSONファイル名>：<アプリ名>
+
+# App Service (load.json と front.json は自動的にApp Serviceとして認識)
+load.json：myapp-load
+
+front.json：myapp-frontend
+
+# Azure Functions (その他のJSONファイルは自動的にAzure Functionsとして認識)
+agent-doc.json：func-agent-doc
+
+agent-rag.json：func-agent-rag
+
+chat.json：func-chat
+
+indexer.json：func-indexer
+
+mark.json：func-mark
+
+mark2.json：func-mark2
+
+mfg.json：func-mfg
+
+page.json：func-page
+
+page2.json：func-page2
+
+pdf.json：func-pdf
+
+pii.json：func-pii
+
+prompt.json：func-prompt
+
+rag.json：func-rag
+
+text.json：func-text

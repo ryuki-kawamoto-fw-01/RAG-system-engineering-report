@@ -1,0 +1,27 @@
+{
+  "@odata.context": "https://srch-genashi-trial-97.search.windows.net/$metadata#datasources/$entity",
+  "@odata.etag": "\"0x8DEB78968A09F1E\"",
+  "name": "datasource-genashi-trial-qa",
+  "description": null,
+  "type": "cosmosdb",
+  "subtype": null,
+  "indexerPermissionOptions": [],
+  "credentials": {
+    "connectionString": "ResourceId=/subscriptions/f6ad11c0-2675-4843-a3b5-2ab3972292ac/resourceGroups/rg-genashi-trial-97/providers/Microsoft.DocumentDB/databaseAccounts/cosno-genashi-trial-97;Database=cosmos-genashi-trial-01;IdentityAuthType=AccessToken"
+  },
+  "container": {
+    "name": "past-qa",
+    "query": null
+  },
+  "dataChangeDetectionPolicy": {
+    "@odata.type": "#Microsoft.Azure.Search.HighWaterMarkChangeDetectionPolicy",
+    "highWaterMarkColumnName": "_ts"
+  },
+  "dataDeletionDetectionPolicy": {
+    "@odata.type": "#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy",
+    "softDeleteColumnName": "isDeleted",
+    "softDeleteMarkerValue": "true"
+  },
+  "encryptionKey": null,
+  "identity": null
+}

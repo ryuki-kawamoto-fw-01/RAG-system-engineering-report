@@ -1,0 +1,44 @@
+### decode_split_file_path
+POST http://localhost:7071/api/decode_split_file_path
+Content-Type: application/json
+
+{
+  "values": [
+    {
+      "recordId": "1",
+      "data": {
+        "storage_file_path_name": "MDRf44Kk44Oz44OH44OD44Kv44K5RF9BR0VOVC9UVFMvREEvVFRTLURBLTAyMFIzL1RUUy1EQS0wMjBSMy01LnBkZg==" 
+      }
+    }
+  ]
+}
+
+### decode_source_file_path
+POST http://localhost:7071/api/decode_source_file_path
+Content-Type: application/json
+
+{
+  "values": [
+    {
+      "recordId": "1",
+      "data": {
+        "storage_file_path_name": "MDRf44Kk44Oz44OH44OD44Kv44K5RF9BR0VOVC9UVFMvREEvVFRTLURBLTAyMFIzL1RUUy1EQS0wMjBSMy01LnBkZg==" 
+      }
+    }
+  ]
+}
+
+### decode_description
+POST http://localhost:7071/api/decode_description
+Content-Type: application/json
+
+{
+  "values": [
+    {
+      "recordId": "1",
+      "data": {
+        "description": "6YW457Sg5qyg5LmP55eH6Ziy5q2i5Yem572u44Gr6Zai44GZ44KL6KaP5qC8" 
+      }
+    }
+  ]
+}

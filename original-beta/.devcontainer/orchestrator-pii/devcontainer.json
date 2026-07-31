@@ -1,0 +1,55 @@
+{
+    "name": "orchestrator-pii",
+    "dockerComposeFile": "../docker-compose.yml",
+    "service": "orchestrator-pii",
+    "mounts": [
+        "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
+    ],
+    "workspaceFolder": "/workspace/backend/orchestrator-pii",
+    "forwardPorts": [
+        7071,
+        10000,
+        10001,
+        10002
+    ],
+    "features": {
+        "ghcr.io/devcontainers/features/azure-cli:1": {
+            "installBicep": false,
+        },
+        "ghcr.io/stuartleeks/dev-container-features/shell-history:0": {},
+        "ghcr.io/azure/azure-dev/azd:0.1.0": {},
+        "ghcr.io/devcontainers/features/git:1": {},
+        "ghcr.io/jlaundry/devcontainer-features/azure-functions-core-tools:1": {},
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+    },
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "extensions.verifySignatures": false,
+                "[python]": {
+                    "editor.defaultFormatter": "ms-python.black-formatter",
+                    "editor.formatOnSave": true,
+                    "editor.codeActionsOnSave": {
+                        "source.organizeImports": true
+                    }
+                }
+            },
+            "extensions": [
+                "ms-azuretools.vscode-azurefunctions",
+                "ms-azuretools.vscode-docker",
+                "ms-python.python",
+                "humao.rest-client",
+                "github.copilot",
+                "github.copilot-chat",
+                "njpwerner.autodocstring",
+                "ms-python.isort",
+                "mhutchie.git-graph",
+                "donjayamanne.githistory",
+                "streetsidesoftware.code-spell-checker",
+                "ms-python.flake8",
+                "ms-python.black-formatter"
+            ]
+        }
+    },
+    "postAttachCommand": "pip install -r requirements.txt"
+}

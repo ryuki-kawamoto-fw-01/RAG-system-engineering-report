@@ -1,0 +1,512 @@
+[
+  {
+    "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+    "value": "app-key-front",
+    "slotSetting": false
+  },
+  {
+    "name": "ApplicationInsightsAgent_EXTENSION_VERSION",
+    "value": "~3",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_ADVICE_CONSULTING_CONTAINER_NAME",
+    "value": "advice-consulting",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_ADVICE_REACT_CONTAINER_NAME",
+    "value": "advice-react",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_AGENT_MESSAGE_CONTAINER_NAME",
+    "value": "message",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_AGENT_THREAD_CONTAINER_NAME",
+    "value": "thread",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_BAN_WORD_CONTAINER_NAME",
+    "value": "ban-word",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_BRAINSTORMING_CONTAINER_NAME",
+    "value": "brainstorming",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_BUSINESS_PLAN_CONTAINER_NAME",
+    "value": "business-plan",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_CODE_EXPLANATION_CONTAINER_NAME",
+    "value": "code-explanation",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_COMPANY_ANALYSIS_CONTAINER_NAME",
+    "value": "company-analysis",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_CORPORATE_SURVEY_CONTAINER_NAME",
+    "value": "corporate-survey",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_CREATE_DESIGN_DOCUMENT_CONTAINER_NAME",
+    "value": "create-design-document",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_CREATE_IDEA_CONTAINER_NAME",
+    "value": "create-idea",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_CREATE_MINUTES_CONTAINER_NAME",
+    "value": "create-minutes",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_CREATE_NEW_MAIL_CONTAINER_NAME",
+    "value": "create-mail",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_CREATE_TECHNOLOGY_PROPOSAL_CONTAINER_NAME",
+    "value": "create-technology-proposal",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_CRISIS_MANAGEMENT_SCENARIOS_CONTAINER_NAME",
+    "value": "crisis-management-scenarios",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_DATABASE_NAME",
+    "value": "cosmos-database-name-01",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_DATABASE_NAME_02",
+    "value": "cosmos-database-name-02",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_DATABASE_NAME_03",
+    "value": "cosmos-database-name-03",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_DATABASE_NAME_04",
+    "value": "cosmos-database-name-04",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_DEEP_MESSAGE_CONTAINER_NAME",
+    "value": "message",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_DEEP_THREAD_CONTAINER_NAME",
+    "value": "thread",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_DEFECT_ANALYSIS_REPORT_CONTAINER_NAME",
+    "value": "defect-analysis-report",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_DESIGN_DOCUMENT_REVIEW_CONTAINER_NAME",
+    "value": "design-document-review",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_DESIGN_DOCUMENT_REVIEW_NAME",
+    "value": "design-document-review",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_DICTIONARY_CONTAINER_NAME",
+    "value": "dictionary",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_ERROR_ANALYSIS_CONTAINER_NAME",
+    "value": "error-analysis",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_FLOW_DESIGNER_CONTAINER_NAME",
+    "value": "flow-designer",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_HIYARI_HAT_REGISTER_CONTAINER_NAME",
+    "value": "hiyari-hat",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_HIYARI_HAT_SEARCH_CONTAINER_NAME",
+    "value": "hiyari-hat-search",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_IMAGE_GENERATION_CONTAINER_NAME",
+    "value": "image-generation",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_INCIDENT_REPORT_CONTAINER_NAME",
+    "value": "incident-report",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_JUDGE_IDEA_CONTAINER_NAME",
+    "value": "judge-idea",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_KEY_POINT_EXTRACTION_CONTAINER_NAME",
+    "value": "key-point-extraction",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_MARKET_RESEARCH_CONTAINER_NAME",
+    "value": "market-research",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_MARKETING_STRATEGY_CONTAINER_NAME",
+    "value": "marketing-strategy",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_MESSAGE_CONTAINER_NAME",
+    "value": "message",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_MODIFY_SUPPOSED_QUESTION_CONTAINER_NAME",
+    "value": "supposed-question",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_NEEDS_SURVEY_CONTAINER_NAME",
+    "value": "needs-survey",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_NEW_PRODUCT_PROPOSAL_CONTAINER_NAME",
+    "value": "new-product-proposal",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_PRODUCT_AARRR_CONTAINER_NAM",
+    "value": "product-expansion-aarrr",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_PRODUCT_AARRR_CONTAINER_NAME",
+    "value": "product-expansion-aarrr",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_PRODUCT_CATCHPHRASE_CONTAINER_NAME",
+    "value": "product-catchphrase",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_PRODUCT_PROMOTION_STRATEGY_CONTAINER_NAME",
+    "value": "product-promotion-strategy",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_PRODUCT_SERVICE_BENEFIT_IDEA_CONTAINER_NAME",
+    "value": "product-service-benefit-idea",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_PRODUCTION_TECH_LIST_CONTAINER_NAME",
+    "value": "production-tech-list",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_PROMPT_CONTAINER_NAME",
+    "value": "create-prompt",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_QA_CONTAINER_NAME",
+    "value": "past-qa",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_QUALITY_REPORT_CONTAINER_NAME",
+    "value": "quality-report",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_QUALITY_STANDARD_DOCUMENT_CONTAINER_NAME",
+    "value": "quality-standard-document",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_RAG_MESSAGE_CONTAINER_NAME",
+    "value": "message-rag",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_RAG_THREAD_CONTAINER_NAME",
+    "value": "thread-rag",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_RESEARCH_REPORT_CONTAINER_NAME",
+    "value": "research-report",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_RISK_ASSESSMENT_CONTAINER_NAME",
+    "value": "risk-assessment",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_SALES_FORECAST_CONTAINER_NAME",
+    "value": "sales-forecast",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_SCHEDULE_CONTAINER_NAME",
+    "value": "schedule",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_SUMMARY_CONTAINER_NAME",
+    "value": "summary",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_TALK_SCRIPT_CONTAINER_NAME",
+    "value": "talk-script",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_TASK_BREAKDOWN_CONTAINER_NAME",
+    "value": "task-breakdown",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_TECHNOLOGY_TRAINING_CONTAINER_NAME",
+    "value": "technology-training",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_TEMPLATE_CONTAINER_NAME",
+    "value": "template",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_TEXT_CHECK_CONTAINER_NAME",
+    "value": "text-check",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_TEXT_CORRECTION_CONTAINER_NAME",
+    "value": "text-correction",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_THREAD_CONTAINER_NAME",
+    "value": "thread",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_TRANSCRIPTION_HANDWRITTEN_CONTAINER_NAME",
+    "value": "transcription-handwritten",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_TRANSLATE_CONTAINER_NAME",
+    "value": "translation",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_TROUBLE_SHOOTING_GUIDE_CONTAINER_NAME",
+    "value": "trouble-shooting-guide",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_URI",
+    "value": "https://cosmosdb-name.documents.azure.com:443/",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_USE_CASE_CONTAINER_NAME",
+    "value": "use-case-search",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_VOICE_MESSAGE_CONTAINER_NAME",
+    "value": "test",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_VOICE_THREAD_CONTAINER_NAME",
+    "value": "test",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_WALL_HITTING_CONTAINER_NAME",
+    "value": "wall-hitting",
+    "slotSetting": false
+  },
+  {
+    "name": "AZURE_COSMOSDB_TECHASSESS_CONTAINER_NAME",
+    "value": "tech-assess",
+    "slotSetting": false
+  },
+  {
+    "name": "MICROSOFT_PROVIDER_AUTHENTICATION_SECRET",
+    "value": "client-secret",
+    "slotSetting": true
+  },
+  {
+    "name": "NEXT_PUBLIC_STANDARD_PREVIEW_STORAGE_CONTAINER_NAME",
+    "value": "st-agent-container-name-01",
+    "slotSetting": false
+  },
+  {
+    "name": "NEXT_PUBLIC_STANDARD_STORAGE_CONTAINER_NAME",
+    "value": "st-agent-container-name-01",
+    "slotSetting": false
+  },
+  {
+    "name": "NEXT_PUBLIC_DISABLED_ROUTE_PREFIXES",
+    "value": "disabled-route-prefixes",
+    "slotSetting": false
+  },
+  {
+    "name": "ORCHESTRATOR_AGENT_API_CREDENTIAL",
+    "value": "agent-rag-credential",
+    "slotSetting": false
+  },
+  {
+    "name": "ORCHESTRATOR_AGENT_API_ENDPOINT",
+    "value": "https://agent-rag-name.azurewebsites.net/api",
+    "slotSetting": false
+  },
+  {
+    "name": "ORCHESTRATOR_API_URL",
+    "value": "chat-url",
+    "slotSetting": false
+  },
+  {
+    "name": "ORCHESTRATOR_DOCUMENT_API_CREDENTIAL",
+    "value": "text-credential",
+    "slotSetting": false
+  },
+  {
+    "name": "ORCHESTRATOR_DOCUMENT_API_ENDPOINT",
+    "value": "https://text-name.azurewebsites.net/api/",
+    "slotSetting": false
+  },
+  {
+    "name": "ORCHESTRATOR_FILE_API_CREDENTIAL",
+    "value": "chat-credential",
+    "slotSetting": false
+  },
+  {
+    "name": "ORCHESTRATOR_FILE_API_ENDPOINT",
+    "value": "https://chat-name.azurewebsites.net/api/",
+    "slotSetting": false
+  },
+  {
+    "name": "ORCHESTRATOR_IT_API_CREDENTIAL",
+    "value": "mfg-credential",
+    "slotSetting": false
+  },
+  {
+    "name": "ORCHESTRATOR_IT_API_ENDPOINT",
+    "value": "https://mfg-name.azurewebsites.net/api",
+    "slotSetting": false
+  },
+  {
+    "name": "ORCHESTRATOR_MANUAL_API_CREDENTIAL",
+    "value": "movie-credential",
+    "slotSetting": false
+  },
+  {
+    "name": "ORCHESTRATOR_MANUAL_API_ENDPOINT",
+    "value": "https://movie-name.azurewebsites.net/api",
+    "slotSetting": false
+  },
+  {
+    "name": "ORCHESTRATOR_MFG_API_CREDENTIAL",
+    "value": "mfg-credential",
+    "slotSetting": false
+  },
+  {
+    "name": "ORCHESTRATOR_MFG_API_ENDPOINT",
+    "value": "https://mfg-name.azurewebsites.net/api",
+    "slotSetting": false
+  },
+  {
+    "name": "ORCHESTRATOR_PII_API_URL",
+    "value": "pii-url",
+    "slotSetting": false
+  },
+  {
+    "name": "ORCHESTRATOR_RAG_API_URL",
+    "value": "rag-url",
+    "slotSetting": false
+  },
+  {
+    "name": "ORCHESTRATOR_STANDARD_API_CREDENTIAL",
+    "value": "agent-doc-credential",
+    "slotSetting": false
+  },
+  {
+    "name": "ORCHESTRATOR_STANDARD_API_ENDPOINT",
+    "value": "https://agent-doc-name.azurewebsites.net/api/",
+    "slotSetting": false
+  },
+  {
+    "name": "ORCHESTRATOR_USE_CASE_API_CREDENTIAL",
+    "value": "prompt-credential",
+    "slotSetting": false
+  },
+  {
+    "name": "ORCHESTRATOR_USE_CASE_API_ENDPOINT",
+    "value": "https://prompt-name.azurewebsites.net/api",
+    "slotSetting": false
+  },
+  {
+    "name": "SCM_DO_BUILD_DURING_DEPLOYMENT",
+    "value": "true",
+    "slotSetting": false
+  },
+  {
+    "name": "WEBSITE_CONTENTOVERVNET",
+    "value": "1",
+    "slotSetting": false
+  },
+  {
+    "name": "WEBSITE_HTTPLOGGING_RETENTION_DAYS",
+    "value": "3",
+    "slotSetting": false
+  },
+  {
+    "name": "XDT_MicrosoftApplicationInsights_Mode",
+    "value": "default",
+    "slotSetting": false
+  }
+]

@@ -1,0 +1,10 @@
+### startOchestrator
+POST http://localhost:7071/api/startOrchestrator
+Content-Type: application/json
+
+{
+    "query":"生成AIのトレンドについて教えて"
+}
+
+### getResult
+GET http://localhost:7071/api/getResult?instance_id=5fde1aad408647ee90fa765f8961c1a2

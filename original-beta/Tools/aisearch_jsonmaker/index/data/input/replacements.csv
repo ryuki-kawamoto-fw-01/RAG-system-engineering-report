@@ -1,0 +1,4 @@
+index_name,vector_profile_name,semantic_name,algorithm_name,vectorizer_name,aoai_name,deployment_id
+index-01,vector-profile-01,semantic-01,vector-config-01,vectorizer-01,oai-XXXX,text-embedding-3-large-prod
+index-02,vector-profile-01,semantic-01,vector-config-01,vectorizer-01,oai-XXXX,text-embedding-3-large-prod
+index-03,vector-profile-01,semantic-01,vector-config-01,vectorizer-01,oai-XXXX,text-embedding-3-large-prod

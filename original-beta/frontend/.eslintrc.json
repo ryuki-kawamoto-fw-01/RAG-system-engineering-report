@@ -1,0 +1,43 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "next/core-web-vitals",
+    "plugin:tailwindcss/recommended",
+    "prettier"
+  ],
+  "plugins": ["unused-imports"],
+  "rules": {
+    // FIXME: 各環境の画像リソースドメインが決まり次第、Next Imageに置き換える
+    "@next/next/no-img-element": "off",
+    "no-irregular-whitespace": "off",
+    "import/order": [
+      "error",
+      {
+        "groups": ["builtin", "external", "internal", "parent", "sibling", "object", "index"],
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ],
+    "unused-imports/no-unused-imports": "error",
+    "tailwindcss/no-custom-classname": "off",
+    // 修正が膨大なのでairbnb-eslint-configは一旦断念
+    // 個別に基本的なルールを追加する
+    "no-console": ["warn", { "allow": ["warn", "error"] }],
+    "eqeqeq": "error",
+    "object-shorthand": "error",
+    "no-else-return": "error",
+    "yoda": "error",
+    "react/function-component-definition": [
+      "error",
+      {
+        "namedComponents": "function-declaration",
+        "unnamedComponents": "arrow-function"
+      }
+    ],
+    "react/jsx-curly-brace-presence": "error",
+    "react/self-closing-comp": "error"
+  }
+}
