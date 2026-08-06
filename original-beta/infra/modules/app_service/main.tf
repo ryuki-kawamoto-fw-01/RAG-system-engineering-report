@@ -32,8 +32,8 @@ locals {
 		{
 			APPLICATIONINSIGHTS_CONNECTION_STRING = azurerm_application_insights.frontend.connection_string
 			MICROSOFT_PROVIDER_AUTHENTICATION_SECRET = local.frontend_auth_secret_value
-			# standaloneビルドはzip展開が必要なためWRFPは無効化
-			WEBSITE_RUN_FROM_PACKAGE                 = "0"
+			# WRFP=1でOryx buildをスキップ、app_command_line=node server.jsで起動
+			WEBSITE_RUN_FROM_PACKAGE                 = "1"
 		}
 	)
 
