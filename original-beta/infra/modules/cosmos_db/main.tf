@@ -117,6 +117,7 @@ resource "azurerm_cosmosdb_sql_database" "databases" {
 resource "azurerm_cosmosdb_sql_container" "containers" {
 	for_each = local.container_map
     # 各Database内にContainerを作成する
+	depends_on = [azurerm_cosmosdb_sql_database.databases]
 	name                = each.value.name
 	resource_group_name = var.resource_group_name
 	account_name        = azurerm_cosmosdb_account.main.name

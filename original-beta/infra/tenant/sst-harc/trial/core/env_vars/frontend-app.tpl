@@ -103,7 +103,6 @@
   "SCM_DO_BUILD_DURING_DEPLOYMENT": "true",
   "WEBSITE_AUTH_AAD_ALLOWED_TENANTS": "${tenant_id}",
   "WEBSITE_CONTENTOVERVNET": "1",
-  "WEBSITE_HTTPLOGGING_RETENTION_DAYS": "3",
   "XDT_MicrosoftApplicationInsights_Mode": "default",
 
   "NEXT_PUBLIC_AOAI_ENDPOINT": "dummy",

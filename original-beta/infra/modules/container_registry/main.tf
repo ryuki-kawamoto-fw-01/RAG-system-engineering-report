@@ -14,10 +14,13 @@ resource "azurerm_container_registry" "acr" {
     type = "SystemAssigned"
   }
 
-  network_rule_set {
-    # init_flag対応: 初回はAllow、2回目以降は指定値
-    default_action = var.init_flag ? "Allow" : var.network_default_action
-    ip_rule         = []
+  dynamic "network_rule_set" {
+    # network_rule_set は Premium SKU のみ指定可能
+    for_each = var.sku == "Premium" ? [1] : []
+    content {
+      default_action = var.init_flag ? "Allow" : var.network_default_action
+      ip_rule        = []
+    }
   }
 
   network_rule_bypass_option = "AzureServices"
