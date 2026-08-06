@@ -425,15 +425,6 @@ module "cosmos_db" {
 #
 # Key Vault名:
 #   kv-genashi-trial-{environment_prefix}
-#
-# init_flag対応の段階的デプロイ:
-#   【1回目】init_flag=true
-#     - network_acls.bypass = "AzureServices"
-#     - network_acls.virtual_network_subnet_ids = []
-#
-#   【2回目】init_flag=false
-#     - network_acls.bypass = "None"
-#     - network_acls.virtual_network_subnet_ids = [subnet_02]
 # -----------------------------------------------------------------------------
 
 module "key_vault" {

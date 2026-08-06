@@ -197,7 +197,7 @@ locals {
     subscriptions = {
       convert_to_pdf = {
         name                  = "converttopdf"
-        function_name         = "converttopdf"
+        function_name         = "blob_trigger"
         target_container_name = "genashi-trial-01"
         target_container_path = "/blobServices/default/containers/genashi-trial-01/blobs/"
         subject_begins_with   = "/blobServices/default/containers/genashi-trial-01/blobs/"
@@ -215,7 +215,7 @@ locals {
 
       pagesplitter = {
         name                  = "pagesplitter"
-        function_name         = "pagesplitter"
+        function_name         = "page_splitter"
         target_container_name = "genashi-trial-03"
         target_container_path = "/blobServices/default/containers/genashi-trial-03/blobs/"
         subject_begins_with   = "/blobServices/default/containers/genashi-trial-03/blobs/"
@@ -606,7 +606,7 @@ locals {
     orchestrator_api_url                 = "ORCHESTRATOR-API-URL"
     orchestrator_document_api_credential = "ORCHESTRATOR-DOCUMENT-API-CREDENTIAL"
     orchestrator_file_api_credential     = "ORCHESTRATOR-FILE-API-CREDENTIAL"
-    orchestrator_it_api_credential       = "ORCHESTRATOR-MFG-API-CREDENTIAL"
+    orchestrator_it_api_credential       = "ORCHESTRATOR-IT-API-CREDENTIAL"
     orchestrator_mfg_api_credential      = "ORCHESTRATOR-MFG-API-CREDENTIAL"
     orchestrator_pii_api_url             = "ORCHESTRATOR-PII-API-URL"
     orchestrator_rag_api_url             = "ORCHESTRATOR-RAG-API-URL"

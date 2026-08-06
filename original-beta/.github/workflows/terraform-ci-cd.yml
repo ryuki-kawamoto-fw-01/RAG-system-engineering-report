@@ -1,1 +1,332 @@
-﻿
+﻿name: Infra CI/CD (Core 5-Phase Deploy)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  # Terraform settings
+  TF_VERSION: "1.14.3"
+  WORKDIR_CORE: infra/tenant/sst-harc/trial/core
+  ENVIRONMENT_PREFIX: "hs01"
+  # Azure credentials (OIDC)
+  ARM_CLIENT_ID: ${{ secrets.TRIALhs01_ARM_CLIENT_ID }}
+  ARM_TENANT_ID: ${{ secrets.TRIALhs01_ARM_TENANT_ID }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.TRIALhs01_ARM_SUBSCRIPTION_ID }}
+  ARM_USE_OIDC: true
+  # Frontend Authentication
+  FRONTEND_AUTH_CLIENT_ID: ${{ secrets.TRIALHS_FRONTEND_AUTH_CLIENT_ID }}
+  FRONTEND_AUTH_CLIENT_SECRET: ${{ secrets.TRIALHS_FRONTEND_AUTH_CLIENT_SECRET }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    environment: trial
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # ------------------------------------------------------------------
+      # Azure Login (OIDC)
+      # ------------------------------------------------------------------
+      - name: Azure Login OIDC
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.TRIALhs01_ARM_CLIENT_ID }}
+          tenant-id: ${{ secrets.TRIALhs01_ARM_TENANT_ID }}
+          subscription-id: ${{ secrets.TRIALhs01_ARM_SUBSCRIPTION_ID }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+          terraform_wrapper: false
+
+      # ================================================================
+      # Phase 1: init_flag=true — 全体の皮をデプロイ
+      #   - Resource Group / VNet / Private DNS Zone (本体のみ)
+      #   - Storage Account / CosmosDB / Key Vault (パブリックアクセス有効状態)
+      #   - App Service Plan / Frontend / Load Balancer / Function App x14
+      #   - Container Registry
+      # ================================================================
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Phase 1 - Terraform Init / Validate / Apply (init_flag=true)
+        working-directory: ${{ env.WORKDIR_CORE }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          terraform init -input=false -upgrade
+          terraform validate
+          terraform plan \
+            -input=false \
+            -var="tenant_id=${ARM_TENANT_ID}" \
+            -var="subscription_id=${ARM_SUBSCRIPTION_ID}" \
+            -var="environment_prefix=${ENVIRONMENT_PREFIX}" \
+            -var="frontend_auth_client_id=${FRONTEND_AUTH_CLIENT_ID}" \
+            -var="frontend_auth_client_secret=${FRONTEND_AUTH_CLIENT_SECRET}" \
+            -var="init_flag=true" \
+            -out=tfplan-phase1
+          terraform apply -input=false tfplan-phase1
+
+      - name: Prepare resource names (Terraform output preferred)
+        working-directory: ${{ env.WORKDIR_CORE }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          tfout() {
+            local key="$1"
+            terraform output -raw "$key" 2>/dev/null || true
+          }
+
+          prefix="${ENVIRONMENT_PREFIX}"
+
+          RESOURCE_GROUP="$(tfout resource_group_name)"
+          STORAGE_ACCOUNT_NAME="$(tfout storage_account_name)"
+          ACR_NAME="$(tfout container_registry_name)"
+          FRONTEND_APP_NAME="$(tfout frontend_app_service_name)"
+          LOADBALANCER_APP_NAME="$(tfout loadbalancer_app_service_name)"
+          FUNCTION_CHAT_NAME="$(tfout function_chat_name)"
+          FUNCTION_RAG_NAME="$(tfout function_rag_name)"
+          FUNCTION_REGISTER_NAME="$(tfout function_register_name)"
+          FUNCTION_PII_NAME="$(tfout function_pii_name)"
+          FUNCTION_PROMPT_NAME="$(tfout function_prompt_name)"
+          FUNCTION_MFG_NAME="$(tfout function_mfg_name)"
+          FUNCTION_AGENT_RAG_NAME="$(tfout function_agent_rag_name)"
+          FUNCTION_AGENT_DOCUMENT_NAME="$(tfout function_agent_document_name)"
+          FUNCTION_PAGESPLITTER_001_NAME="$(tfout function_pagespliter_001_name)"
+          FUNCTION_MARKDOWN_001_NAME="$(tfout function_markdown_001_name)"
+          FUNCTION_PDF_NAME="$(tfout function_pdf_name)"
+          FUNCTION_PAGESPLITTER_002_NAME="$(tfout function_pagespliter_002_name)"
+          FUNCTION_MARKDOWN_002_NAME="$(tfout function_markdown_002_name)"
+          FUNCTION_INDEXER_NAME="$(tfout function_indexer_name)"
+
+          {
+            echo "RESOURCE_GROUP=${RESOURCE_GROUP:-rg-genashi-trial-${prefix}}"
+            echo "STORAGE_ACCOUNT_NAME=${STORAGE_ACCOUNT_NAME:-stgenashitrial${prefix}}"
+            echo "ACR_NAME=${ACR_NAME:-crgenashitrial${prefix}}"
+            echo "FRONTEND_APP_NAME=${FRONTEND_APP_NAME:-frontend-genashi-trial-${prefix}-01}"
+            echo "LOADBALANCER_APP_NAME=${LOADBALANCER_APP_NAME:-app-load-balancer-genashi-trial-${prefix}-01}"
+            echo "FUNCTION_CHAT_NAME=${FUNCTION_CHAT_NAME:-func-genashi-trial-${prefix}-01-chat}"
+            echo "FUNCTION_RAG_NAME=${FUNCTION_RAG_NAME:-func-genashi-trial-${prefix}-02-rag}"
+            echo "FUNCTION_REGISTER_NAME=${FUNCTION_REGISTER_NAME:-func-genashi-trial-${prefix}-03-text-register}"
+            echo "FUNCTION_PII_NAME=${FUNCTION_PII_NAME:-func-genashi-trial-${prefix}-04-pii}"
+            echo "FUNCTION_PROMPT_NAME=${FUNCTION_PROMPT_NAME:-func-genashi-trial-${prefix}-05-prompt}"
+            echo "FUNCTION_PAGESPLITTER_001_NAME=${FUNCTION_PAGESPLITTER_001_NAME:-func-genashi-trial-${prefix}-06-pagesplitter}"
+            echo "FUNCTION_MARKDOWN_001_NAME=${FUNCTION_MARKDOWN_001_NAME:-func-genashi-trial-${prefix}-07-markdown}"
+            echo "FUNCTION_PDF_NAME=${FUNCTION_PDF_NAME:-func-genashi-trial-${prefix}-08-pdf}"
+            echo "FUNCTION_MFG_NAME=${FUNCTION_MFG_NAME:-func-genashi-trial-${prefix}-09-mfg}"
+            echo "FUNCTION_AGENT_RAG_NAME=${FUNCTION_AGENT_RAG_NAME:-func-genashi-trial-${prefix}-10-agent-rag}"
+            echo "FUNCTION_AGENT_DOCUMENT_NAME=${FUNCTION_AGENT_DOCUMENT_NAME:-func-genashi-trial-${prefix}-11-agent-document}"
+            echo "FUNCTION_PAGESPLITTER_002_NAME=${FUNCTION_PAGESPLITTER_002_NAME:-func-genashi-trial-${prefix}-12-page-std}"
+            echo "FUNCTION_MARKDOWN_002_NAME=${FUNCTION_MARKDOWN_002_NAME:-func-genashi-trial-${prefix}-13-mark-std}"
+            echo "FUNCTION_INDEXER_NAME=${FUNCTION_INDEXER_NAME:-func-genashi-trial-${prefix}-14-indexer}"
+          } >> "$GITHUB_ENV"
+
+      # ================================================================
+      # Phase 2: アプリケーションデプロイ
+      # ================================================================
+      - name: Phase 2-1 - Frontend build and deploy
+        shell: bash
+        run: |
+          set -euo pipefail
+          pushd frontend
+          npm install
+          npm run format
+          npm run lint
+          npm run build
+
+          rm -rf /tmp/frontend-staging
+          mkdir -p /tmp/frontend-staging
+          cp -r .next /tmp/frontend-staging/
+          if [ -d public ]; then cp -r public /tmp/frontend-staging/; fi
+          cp package.json /tmp/frontend-staging/
+          if [ -f package-lock.json ]; then cp package-lock.json /tmp/frontend-staging/; fi
+          if [ -f next.config.mjs ]; then cp next.config.mjs /tmp/frontend-staging/; fi
+
+          pushd /tmp/frontend-staging
+          zip -qr /tmp/frontend-deploy.zip .
+          popd
+          popd
+
+          az webapp deploy \
+            --resource-group "$RESOURCE_GROUP" \
+            --name "$FRONTEND_APP_NAME" \
+            --src-path /tmp/frontend-deploy.zip \
+            --type zip
+
+      - name: Phase 2-2 - Load Balancer build and deploy
+        shell: bash
+        run: |
+          set -euo pipefail
+          pushd loadbalancer/openai-aca-lb/src
+          dotnet restore
+          dotnet build --configuration Release --no-restore
+          dotnet publish --configuration Release --no-build --output ./publish
+          pushd publish
+          zip -qr ../publish.zip .
+          popd
+          popd
+
+          az webapp deploy \
+            --resource-group "$RESOURCE_GROUP" \
+            --name "$LOADBALANCER_APP_NAME" \
+            --src-path loadbalancer/openai-aca-lb/src/publish.zip \
+            --type zip
+
+      - name: Phase 2-3 - Temporarily open Storage network for function deployments
+        shell: bash
+        run: |
+          set -euo pipefail
+          az storage account update \
+            --name "$STORAGE_ACCOUNT_NAME" \
+            --resource-group "$RESOURCE_GROUP" \
+            --default-action Allow
+
+      - name: Phase 2-4 - Deploy Python Function Apps (13 apps except PDF)
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          resolve_existing_path() {
+            for candidate in "$@"; do
+              if [ -d "$candidate" ]; then
+                echo "$candidate"
+                return 0
+              fi
+            done
+            return 1
+          }
+
+          deploy_python_func() {
+            local app_name="$1"
+            shift
+            local app_path
+            app_path="$(resolve_existing_path "$@")" || {
+              echo "No valid source directory found for ${app_name}. Candidates: $*" >&2
+              return 1
+            }
+            echo "Deploying ${app_name} from ${app_path}"
+
+            pushd "$app_path" >/dev/null
+            rm -rf .python_packages
+            python -m pip install -r requirements.txt -t .python_packages/lib/site-packages
+            zip_path="/tmp/${app_name}.zip"
+            rm -f "$zip_path"
+            zip -qr "$zip_path" .
+            popd >/dev/null
+
+            az webapp deploy \
+              --resource-group "$RESOURCE_GROUP" \
+              --name "$app_name" \
+              --src-path "$zip_path" \
+              --type zip
+          }
+
+          deploy_python_func "$FUNCTION_CHAT_NAME" "backend/orchestrator"
+          deploy_python_func "$FUNCTION_RAG_NAME" "backend/orchestrator-rag"
+          deploy_python_func "$FUNCTION_REGISTER_NAME" "backend/orchestrator-text-register"
+          deploy_python_func "$FUNCTION_PII_NAME" "backend/orchestrator-pii"
+          deploy_python_func "$FUNCTION_PROMPT_NAME" "backend/orchestrator-prompt"
+          deploy_python_func "$FUNCTION_MFG_NAME" "backend/orchestrator-mfg" "changedoc/mfg"
+          deploy_python_func "$FUNCTION_AGENT_RAG_NAME" "backend/orchestrator-agent" "changedoc/agent-rag"
+          deploy_python_func "$FUNCTION_AGENT_DOCUMENT_NAME" "backend/orchestrator-text-register" "changedoc/agent-document"
+          deploy_python_func "$FUNCTION_PAGESPLITTER_001_NAME" "changedoc/pagesplitter"
+          deploy_python_func "$FUNCTION_MARKDOWN_001_NAME" "changedoc/markdown"
+          deploy_python_func "$FUNCTION_PAGESPLITTER_002_NAME" "changedoc_standard/pagesplitter" "changedoc/pagesplitter"
+          deploy_python_func "$FUNCTION_MARKDOWN_002_NAME" "changedoc_standard/markdown" "changedoc/markdown"
+          deploy_python_func "$FUNCTION_INDEXER_NAME" "changedoc_standard/indexer" "changedoc/indexer"
+
+      - name: Phase 2-5 - Deploy PDF Function (container image)
+        shell: bash
+        run: |
+          set -euo pipefail
+          image_name="${ACR_NAME}.azurecr.io/convert-to-pdf:v1"
+
+          az functionapp stop --name "$FUNCTION_PDF_NAME" --resource-group "$RESOURCE_GROUP"
+          az acr login --name "$ACR_NAME"
+
+          pushd changedoc/converttopdf
+          docker build --build-arg _PROXY="" -t "$image_name" -f Dockerfile .
+          popd
+
+          docker push "$image_name"
+
+          az functionapp config container set \
+            --name "$FUNCTION_PDF_NAME" \
+            --resource-group "$RESOURCE_GROUP" \
+            --docker-custom-image-name "$image_name" \
+            --docker-registry-server-url "https://${ACR_NAME}.azurecr.io"
+
+          az functionapp start --name "$FUNCTION_PDF_NAME" --resource-group "$RESOURCE_GROUP"
+          echo "Waiting for PDF Function container startup before Phase 3..."
+          sleep 180
+
+      - name: Azure Re-login before Phase 3
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.TRIALhs01_ARM_CLIENT_ID }}
+          tenant-id: ${{ secrets.TRIALhs01_ARM_TENANT_ID }}
+          subscription-id: ${{ secrets.TRIALhs01_ARM_SUBSCRIPTION_ID }}
+
+      # ================================================================
+      # Phase 3: init_flag=false で core を最終化
+      # ================================================================
+      - name: Phase 3 - Terraform Apply (init_flag=false)
+        working-directory: ${{ env.WORKDIR_CORE }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          terraform plan \
+            -input=false \
+            -var="tenant_id=${ARM_TENANT_ID}" \
+            -var="subscription_id=${ARM_SUBSCRIPTION_ID}" \
+            -var="environment_prefix=${ENVIRONMENT_PREFIX}" \
+            -var="frontend_auth_client_id=${FRONTEND_AUTH_CLIENT_ID}" \
+            -var="frontend_auth_client_secret=${FRONTEND_AUTH_CLIENT_SECRET}" \
+            -var="init_flag=false" \
+            -out=tfplan-phase2
+          terraform apply -input=false tfplan-phase2
+
+      # ================================================================
+      # Phase 4: 安全復元（フェイルセーフ）
+      # ================================================================
+      - name: Phase 4 - Restore Storage network rule to Deny (safety)
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          az storage account update \
+            --name "$STORAGE_ACCOUNT_NAME" \
+            --resource-group "$RESOURCE_GROUP" \
+            --default-action Deny || true
+
+      # ================================================================
+      # Phase 5: 最終確認
+      # ================================================================
+      - name: Phase 5 - Verify app states
+        shell: bash
+        run: |
+          set -euo pipefail
+          az webapp show --resource-group "$RESOURCE_GROUP" --name "$FRONTEND_APP_NAME" --query "{name:name,state:state,defaultHostName:defaultHostName}" -o table
+          az webapp show --resource-group "$RESOURCE_GROUP" --name "$LOADBALANCER_APP_NAME" --query "{name:name,state:state,defaultHostName:defaultHostName}" -o table
+          az functionapp list --resource-group "$RESOURCE_GROUP" --query "[].{name:name,state:state,host:defaultHostName}" -o table
