@@ -119,6 +119,8 @@ resource "azurerm_linux_web_app" "frontend" {
 		application_stack {
 			node_version = var.frontend_app_service_runtime_stack
 		}
+		# standalone出力のエントリポイント
+		app_command_line = "node server.js"
 
 		dynamic "ip_restriction" {
 			for_each = var.init_flag ? [] : local.frontend_ip_restrictions

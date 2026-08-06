@@ -202,11 +202,12 @@ jobs:
 
           rm -rf /tmp/frontend-staging
           mkdir -p /tmp/frontend-staging
-          cp -r .next /tmp/frontend-staging/
-          if [ -d public ]; then cp -r public /tmp/frontend-staging/; fi
-          cp package.json /tmp/frontend-staging/
-          if [ -f package-lock.json ]; then cp package-lock.json /tmp/frontend-staging/; fi
-          if [ -f next.config.mjs ]; then cp next.config.mjs /tmp/frontend-staging/; fi
+          # standalone出力: server.js と最小限のnode_modulesを含む
+          cp -r .next/standalone/. /tmp/frontend-staging/
+          # static アセットを standalone 内の正しいパスへコピー
+          mkdir -p /tmp/frontend-staging/.next/static
+          cp -r .next/static/. /tmp/frontend-staging/.next/static/
+          if [ -d public ]; then cp -r public /tmp/frontend-staging/public; fi
 
           pushd /tmp/frontend-staging
           zip -qr /tmp/frontend-deploy.zip .
