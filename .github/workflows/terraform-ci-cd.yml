@@ -307,6 +307,13 @@ jobs:
           deploy_python_func "$FUNCTION_MARKDOWN_002_NAME" "original-beta/changedoc_standard/markdown" "original-beta/changedoc/markdown"
           deploy_python_func "$FUNCTION_INDEXER_NAME" "original-beta/changedoc_standard/indexer" "original-beta/changedoc/indexer"
 
+      - name: Re-authenticate to Azure before ACR operations
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.TRIALhs01_ARM_CLIENT_ID }}
+          tenant-id: ${{ secrets.TRIALhs01_ARM_TENANT_ID }}
+          subscription-id: ${{ secrets.TRIALhs01_ARM_SUBSCRIPTION_ID }}
+
       - name: Phase 2-4 - Deploy PDF Function (container image)
         shell: bash
         run: |
