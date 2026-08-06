@@ -51,6 +51,7 @@ Tools/get-log/.env.local
 
 # Terraform
 **/.terraform/
+**/.terraform-local/
 **/*.tfstate
 **/*.tfstate.*
 **/*.tfplan
