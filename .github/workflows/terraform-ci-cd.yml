@@ -390,6 +390,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          terraform init -input=false -upgrade
           terraform plan \
             -input=false \
             -var="tenant_id=${ARM_TENANT_ID}" \

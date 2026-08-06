@@ -32,7 +32,8 @@ locals {
 		{
 			APPLICATIONINSIGHTS_CONNECTION_STRING = azurerm_application_insights.frontend.connection_string
 			MICROSOFT_PROVIDER_AUTHENTICATION_SECRET = local.frontend_auth_secret_value
-			WEBSITE_RUN_FROM_PACKAGE                 = "1"
+			# standaloneビルドはzip展開が必要なためWRFPは無効化
+			WEBSITE_RUN_FROM_PACKAGE                 = "0"
 		}
 	)
 
@@ -161,7 +162,6 @@ resource "azurerm_linux_web_app" "frontend" {
 
 	lifecycle {
 		ignore_changes = [
-			app_settings["WEBSITE_RUN_FROM_PACKAGE"],
 			app_settings["SCM_DO_BUILD_DURING_DEPLOYMENT"]
 		]
 	}
@@ -212,7 +212,7 @@ resource "azurerm_linux_web_app" "loadbalancer" {
 	lifecycle {
 		ignore_changes = [
 			app_settings["WEBSITE_RUN_FROM_PACKAGE"],
-			app_settings["SCM_DO_BUILD_DURING_DEPLOYMENT"]
+			app_settings["SCM_DO_BUILD_DURING_DEPLOYMENT"],
 		]
 	}
 }

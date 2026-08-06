@@ -100,7 +100,7 @@
   "ORCHESTRATOR_USE_CASE_API_CREDENTIAL":"@Microsoft.KeyVault(VaultName=kv-genashi-trial-${environment_prefix};SecretName=ORCHESTRATOR-USE-CASE-API-CREDENTIAL)",
   "ORCHESTRATOR_USE_CASE_API_ENDPOINT": "https://func-genashi-trial-${environment_prefix}-05-prompt.azurewebsites.net/api",
 
-  "SCM_DO_BUILD_DURING_DEPLOYMENT": "true",
+  "SCM_DO_BUILD_DURING_DEPLOYMENT": "false",
   "WEBSITE_AUTH_AAD_ALLOWED_TENANTS": "${tenant_id}",
   "WEBSITE_CONTENTOVERVNET": "1",
   "XDT_MicrosoftApplicationInsights_Mode": "default",

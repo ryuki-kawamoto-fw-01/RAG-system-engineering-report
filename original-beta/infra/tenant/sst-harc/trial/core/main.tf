@@ -1436,8 +1436,10 @@ module "azure_function_pdf" {
 
   create_acr_role_assignment   = local.function_app.pdf.create_acr_role_assignment
   container_registry_id        = module.container_registry.id
-  docker_registry_url          = local.container_registry_name
-  docker_image_name            = "【要確認】"
+  # Phase 2-4 でビルド・プッシュされるイメージ名・URL
+  docker_registry_url          = "https://${local.container_registry_name}.azurecr.io"
+  docker_image_name            = "convert-to-pdf"
+  docker_image_tag             = "v1"
 
   virtual_network_subnet_id    = module.vnet.subnet_02_id
   init_flag                    = var.init_flag
