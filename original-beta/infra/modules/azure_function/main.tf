@@ -28,11 +28,12 @@ resource "azurerm_linux_function_app" "this" {
 	}
 
 	site_config {
-		container_registry_use_managed_identity = var.use_container_image
+		container_registry_use_managed_identity = var.use_container_image && !var.init_flag
 
 		application_stack {
 			dynamic "docker" {
-				for_each = var.use_container_image ? [1] : []
+				# init_flag=true の時点ではイメージがまだ存在しないため、Pythonランタイムで作成する
+				for_each = var.use_container_image && !var.init_flag ? [1] : []
 
 				content {
 					registry_url = var.docker_registry_url
@@ -41,7 +42,7 @@ resource "azurerm_linux_function_app" "this" {
 				}
 			}
 
-			python_version = var.use_container_image ? null : var.python_version
+			python_version = (var.use_container_image && !var.init_flag) ? null : var.python_version
 		}
 
 		scm_ip_restriction_default_action = "Allow"

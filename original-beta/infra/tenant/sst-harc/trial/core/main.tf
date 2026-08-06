@@ -236,7 +236,7 @@ module "container_registry" {
   location                = local.rg_location
 
   # SKU設定
-  sku           = "Standard"
+  sku           = "Premium"
   admin_enabled = false
 
   # init_flag対応の段階的デプロイ
