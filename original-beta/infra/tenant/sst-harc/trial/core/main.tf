@@ -465,6 +465,15 @@ module "key_vault" {
   ]
 }
 
+# TerraformのSP自身にシークレット操作権限を付与（Phase 3でのシークレット作成に必要）
+resource "azurerm_role_assignment" "terraform_sp_kv_secrets_officer" {
+  scope                = module.key_vault.key_vault_id
+  role_definition_name = "Key Vault Secrets Officer"
+  principal_id         = data.azurerm_client_config.current.object_id
+
+  skip_service_principal_aad_check = true
+}
+
 
 # =============================================================================
 # 9. App Service
