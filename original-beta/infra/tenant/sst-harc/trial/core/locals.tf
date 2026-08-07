@@ -42,7 +42,7 @@ locals {
   }
 
   # ロケーション
-  location = "japanwest"
+  location = "japaneast"
 
   #サブスクリプションID
   subscription_id = var.subscription_id
