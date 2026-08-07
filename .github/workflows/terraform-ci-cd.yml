@@ -178,7 +178,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
 
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
@@ -210,9 +210,28 @@ jobs:
           if [ -d public ]; then cp -r public /tmp/frontend-staging/public; fi
 
           pushd /tmp/frontend-staging
+          if [ ! -f server.js ]; then
+            echo "ERROR: Next standalone output is missing server.js" >&2
+            exit 1
+          fi
           zip -qr /tmp/frontend-deploy.zip .
           popd
           popd
+
+          az webapp config set \
+            --resource-group "$RESOURCE_GROUP" \
+            --name "$FRONTEND_APP_NAME" \
+            --startup-file "node server.js"
+
+          az webapp config appsettings set \
+            --resource-group "$RESOURCE_GROUP" \
+            --name "$FRONTEND_APP_NAME" \
+            --settings \
+              SCM_DO_BUILD_DURING_DEPLOYMENT=false \
+              WEBSITE_RUN_FROM_PACKAGE=0 \
+              PORT=8080 \
+              WEBSITES_PORT=8080 \
+              NODE_ENV=production
 
           az webapp deploy \
             --resource-group "$RESOURCE_GROUP" \
