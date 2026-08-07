@@ -398,16 +398,32 @@ jobs:
         run: |
           set -euo pipefail
           terraform init -input=false -upgrade
-          terraform plan \
-            -input=false \
-            -var="tenant_id=${ARM_TENANT_ID}" \
-            -var="subscription_id=${ARM_SUBSCRIPTION_ID}" \
-            -var="environment_prefix=${ENVIRONMENT_PREFIX}" \
-            -var="frontend_auth_client_id=${FRONTEND_AUTH_CLIENT_ID}" \
-            -var="frontend_auth_client_secret=${FRONTEND_AUTH_CLIENT_SECRET}" \
-            -var="init_flag=false" \
-            -out=tfplan-phase2
-          terraform apply -input=false tfplan-phase2
+
+          run_tf() {
+            terraform plan \
+              -input=false \
+              -var="tenant_id=${ARM_TENANT_ID}" \
+              -var="subscription_id=${ARM_SUBSCRIPTION_ID}" \
+              -var="environment_prefix=${ENVIRONMENT_PREFIX}" \
+              -var="frontend_auth_client_id=${FRONTEND_AUTH_CLIENT_ID}" \
+              -var="frontend_auth_client_secret=${FRONTEND_AUTH_CLIENT_SECRET}" \
+              -var="init_flag=false" \
+              -out=tfplan-phase2 &&
+            terraform apply -input=false tfplan-phase2
+          }
+
+          # Function App runtime の起動完了を待ってからplan実行（最大5回リトライ）
+          for attempt in {1..5}; do
+            if run_tf; then
+              break
+            fi
+            if [ "$attempt" -eq 5 ]; then
+              echo "Terraform plan/apply failed after 5 attempts." >&2
+              exit 1
+            fi
+            echo "Attempt $attempt failed (Function App runtime may still be initializing). Retrying in 60s..."
+            sleep 60
+          done
 
   phase4_restore:
     name: Phase 4 - Safety Restore
