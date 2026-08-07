@@ -171,7 +171,7 @@ module "vnet" {
   source = "../../../../modules/vnet"
 
   resource_group_name = module.common.resource_group_name
-  location_name       = local.rg_location
+  location_name       = local.location
 
   # Virtual Network
   vnet_name     = local.vnet_name
@@ -811,7 +811,7 @@ module "private_endpoint_storage_blob" {
   source = "../../../../modules/private_endpoint"
 
   private_endpoint_name = local.pe_storage_blob_name
-  location              = local.rg_location
+  location              = local.location
   resource_group_name   = module.common.resource_group_name
   subnet_id             = module.vnet.subnet_01_id
 
@@ -831,7 +831,7 @@ module "private_endpoint_storage_queue" {
   source = "../../../../modules/private_endpoint"
 
   private_endpoint_name = local.pe_storage_queue_name
-  location              = local.rg_location
+  location              = local.location
   resource_group_name   = module.common.resource_group_name
   subnet_id             = module.vnet.subnet_01_id
 
@@ -851,7 +851,7 @@ module "private_endpoint_container_registry" {
   source = "../../../../modules/private_endpoint"
 
   private_endpoint_name = local.pe_container_registry_name
-  location              = local.rg_location
+  location              = local.location
   resource_group_name   = module.common.resource_group_name
   subnet_id             = module.vnet.subnet_01_id
 
@@ -871,7 +871,7 @@ module "private_endpoint_cosmos_db" {
   source = "../../../../modules/private_endpoint"
 
   private_endpoint_name = local.pe_cosmos_db_name
-  location              = local.rg_location
+  location              = local.location
   resource_group_name   = module.common.resource_group_name
   subnet_id             = module.vnet.subnet_01_id
 
@@ -891,7 +891,7 @@ module "private_endpoint_key_vault" {
   source = "../../../../modules/private_endpoint"
 
   private_endpoint_name = local.private_endpoint.key_vault
-  location              = local.rg_location
+  location              = local.location
   resource_group_name   = module.common.resource_group_name
   subnet_id             = module.vnet.subnet_01_id
 
@@ -912,7 +912,7 @@ module "private_endpoint_loadbalancer" {
   source = "../../../../modules/private_endpoint"
 
   private_endpoint_name = local.pe_load_balancer_name
-  location              = local.rg_location
+  location              = local.location
   resource_group_name   = module.common.resource_group_name
   subnet_id             = module.vnet.subnet_01_id
 
@@ -933,7 +933,7 @@ module "private_endpoint_function_chat" {
   source = "../../../../modules/private_endpoint"
 
   private_endpoint_name = local.pe_function_app_chat_name
-  location              = local.rg_location
+  location              = local.location
   resource_group_name   = module.common.resource_group_name
   subnet_id             = module.vnet.subnet_01_id
 
@@ -953,7 +953,7 @@ module "private_endpoint_function_rag" {
   source = "../../../../modules/private_endpoint"
 
   private_endpoint_name = local.pe_function_app_rag_name
-  location              = local.rg_location
+  location              = local.location
   resource_group_name   = module.common.resource_group_name
   subnet_id             = module.vnet.subnet_01_id
 
@@ -973,7 +973,7 @@ module "private_endpoint_function_register" {
   source = "../../../../modules/private_endpoint"
 
   private_endpoint_name = local.pe_function_app_register_name
-  location              = local.rg_location
+  location              = local.location
   resource_group_name   = module.common.resource_group_name
   subnet_id             = module.vnet.subnet_01_id
 
@@ -993,7 +993,7 @@ module "private_endpoint_function_pii" {
   source = "../../../../modules/private_endpoint"
 
   private_endpoint_name = local.pe_function_app_pii_name
-  location              = local.rg_location
+  location              = local.location
   resource_group_name   = module.common.resource_group_name
   subnet_id             = module.vnet.subnet_01_id
 
@@ -1013,7 +1013,7 @@ module "private_endpoint_function_prompt" {
   source = "../../../../modules/private_endpoint"
 
   private_endpoint_name = local.pe_function_app_prompt_name
-  location              = local.rg_location
+  location              = local.location
   resource_group_name   = module.common.resource_group_name
   subnet_id             = module.vnet.subnet_01_id
 
@@ -1033,7 +1033,7 @@ module "private_endpoint_function_pdf" {
   source = "../../../../modules/private_endpoint"
 
   private_endpoint_name = local.pe_function_app_pdf_name
-  location              = local.rg_location
+  location              = local.location
   resource_group_name   = module.common.resource_group_name
   subnet_id             = module.vnet.subnet_01_id
 
@@ -1053,7 +1053,7 @@ module "private_endpoint_function_mfg" {
   source = "../../../../modules/private_endpoint"
 
   private_endpoint_name = local.pe_function_app_mfg_name
-  location              = local.rg_location
+  location              = local.location
   resource_group_name   = module.common.resource_group_name
   subnet_id             = module.vnet.subnet_01_id
 
@@ -1073,7 +1073,7 @@ module "private_endpoint_function_agent_rag" {
   source = "../../../../modules/private_endpoint"
 
   private_endpoint_name = local.pe_function_app_agent_rag_name
-  location              = local.rg_location
+  location              = local.location
   resource_group_name   = module.common.resource_group_name
   subnet_id             = module.vnet.subnet_01_id
 
@@ -1093,7 +1093,7 @@ module "private_endpoint_function_agent_document" {
   source = "../../../../modules/private_endpoint"
 
   private_endpoint_name = local.pe_function_app_agent_document_name
-  location              = local.rg_location
+  location              = local.location
   resource_group_name   = module.common.resource_group_name
   subnet_id             = module.vnet.subnet_01_id
 
@@ -1116,7 +1116,7 @@ module "private_endpoint_function_indexer" {
   # 正解ファイル側には存在が確認できているため実装するが、
   # 命名規則(pep-func-genashi-trial-hs-14-indexer)は要件定義書での再確認を推奨。
   private_endpoint_name = local.pe_function_app_indexer_name
-  location              = local.rg_location
+  location              = local.location
   resource_group_name   = module.common.resource_group_name
   subnet_id             = module.vnet.subnet_01_id
 
